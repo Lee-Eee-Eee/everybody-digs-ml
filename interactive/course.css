@@ -1,0 +1,9 @@
+/* Reading width and navigation for the integrated course. */
+:root{font-family:Arial,"Microsoft YaHei",sans-serif;line-height:1.75}
+.course-home{text-decoration:none;white-space:nowrap;font-size:14px}
+.prose{line-height:1.95;max-width:850px}
+.prose h3{margin-top:32px}.prose p{margin:16px 0}
+.prose mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;padding:7px 0}
+.source-box{max-width:850px}.task-box{line-height:1.85}
+@media(max-width:1450px){.lesson-grid{display:flex;flex-direction:column;gap:30px}#lab-pane{order:-1;width:100%;position:static;max-height:none;max-width:1000px}.shell{grid-template-columns:220px minmax(0,1fr)}main{padding:28px 30px}.prose{max-width:850px}}
+@media(max-width:750px){.shell{display:block}main{padding:22px 16px}.topbar{padding:0 15px;gap:12px}.brand{min-width:0}.course-home{font-size:12px}.completion{display:none}.lesson-header h1{font-size:25px}.prose{font-size:16px}#experiment{padding:14px}.foundation-mode #experiment{padding:14px}}

@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.ipynb linguist-documentation=true
+interactive/vendor/* linguist-vendored=true
+references/minGPT/* linguist-vendored=true

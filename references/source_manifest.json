@@ -1,0 +1,46 @@
+{
+  "ntu_source": "../NTU_HYLee/GenAI_ML/hw",
+  "notebooks": [
+    {
+      "file": "HW01_Gen_AI_ML_Hw1.ipynb",
+      "sha256": "296484ab182e8fa8b17f7987b9e366399a67f2136d1c0dafc92351307cb88e59"
+    },
+    {
+      "file": "HW02_Build_a_Basic_RAG_System.ipynb",
+      "sha256": "507dfe3dfca75e0123452dad19218543ed8fdbddd8517565d9154724ca146793"
+    },
+    {
+      "file": "HW03_Exploring_Generative_AI.ipynb",
+      "sha256": "80d5e1c0ff4aaa3942d2ce4baa761327e62e9c73f74678b6f14ae95ff9061f71"
+    },
+    {
+      "file": "HW04_LLM_Malicious_Instruction_Defense.ipynb",
+      "sha256": "2e878a6a401eaed423f0d1dd91c6c09b8f428222432eeca425e583958cec35c3"
+    },
+    {
+      "file": "HW05_Regression.ipynb",
+      "sha256": "9f0b276f33a2d355cc06f6a0d41999d260781892c3a9b077e5f7136173d92c79"
+    },
+    {
+      "file": "HW06.ipynb",
+      "sha256": "8893e1eed68aa7d70a9b966a6457f49ba494085268206d1b0c8be47659af1a62"
+    },
+    {
+      "file": "HW07_LLM_FT+RL.ipynb",
+      "sha256": "aa657b6900c4c9b1b0b4b9781853dcd660e1086b756bc25922d0374766d5048a"
+    },
+    {
+      "file": "HW08_Fine_tuning_Leads_to_Forgetting.ipynb",
+      "sha256": "5e28adb13ba0e1798361880009c97e2077b0192865a4d5290aa95af9d8502487"
+    },
+    {
+      "file": "HW09_Diffusion_Model_and_Its_Customization.ipynb",
+      "sha256": "d1dfa6cd033eb13bb4f00de6359d80590f15750aa6648f486cccdf4c654a5228"
+    },
+    {
+      "file": "HW10_Speech_Generation.ipynb",
+      "sha256": "b8459b08195df034f76c8bb352db787990f730bef5f117200f092892d108787c"
+    }
+  ],
+  "minGPT_commit": "37baab71b9abea1b76ab957409a1cc2fbfba8a26"
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="从可点击的小网络到反向传播、批处理、真实训练与残差连接。18节离线交互实验，配套Python与PyTorch学习本。">
+  <title>神经网络 · 交互学习室</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="foundations.css">
+  <link rel="stylesheet" href="course.css">
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <script defer src="vendor/tex-svg-full.js"></script>
+  <script defer src="engine.js"></script>
+  <script defer src="lessons.js"></script>
+  <script defer src="foundations-engine.js"></script>
+  <script defer src="foundations-lessons.js"></script>
+  <script defer src="foundations-intro.js"></script>
+  <script defer src="foundations-extra.js"></script>
+  <script defer src="foundations-residual.js"></script>
+  <script defer src="foundations-app.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#lesson-title">跳到正文</a>
+  <header class="topbar">
+    <a class="brand" href="#network"><span class="brand-mark" aria-hidden="true">∂</span><span>神经网络<span class="brand-sub">交互学习室</span></span></a>
+    <a class="quiet course-home" href="../index.html">← 完整学习路线</a>
+    <button class="quiet" id="menu-toggle" aria-expanded="false" aria-controls="syllabus">实验目录</button>
+    <span id="completion" class="completion" aria-live="polite">18 节实验</span>
+  </header>
+  <div class="shell">
+    <nav id="syllabus" aria-label="实验章节"><div class="nav-heading">从一张小网络开始</div><div id="chapter-list"></div><div class="nav-foot">点击节点，改变一项，再解释变化。<br>进度保存在当前浏览器。</div></nav>
+    <main id="main">
+      <section class="lesson-header"><div class="eyebrow" id="lesson-kicker"></div><h1 id="lesson-title" tabindex="-1"></h1><p id="lesson-intro"></p><div id="lesson-map"></div></section>
+      <div class="lesson-grid">
+        <article id="lesson-body" class="prose"></article>
+        <aside id="lab-pane" aria-labelledby="lab-title"><div class="lab-head"><span class="live-dot"></span><h2 id="lab-title">动手实验</h2><span class="local-badge">浏览器现场计算</span></div><div id="experiment"></div><div class="task-box"><span class="task-label">试一次</span><p id="task-text"></p></div></aside>
+      </div>
+      <section class="checkpoint" aria-labelledby="quiz-heading"><div class="eyebrow">把观察变成自己的判断</div><h2 id="quiz-heading">留一道小题</h2><form id="quiz-form"><fieldset><legend id="quiz-question"></legend><div id="quiz-options"></div></fieldset><button class="primary" type="submit">看看解释</button></form><div id="quiz-feedback" aria-live="polite"></div></section>
+      <nav class="lesson-footer" aria-label="章节切换"><button id="previous" class="quiet">← 上一节</button><span id="chapter-counter"></span><button id="next" class="primary">下一节 →</button></nav>
+      <details class="source-box"><summary>继续读</summary><ul>
+        <li><a href="https://www.3blue1brown.com/lessons/backpropagation/">3Blue1Brown：从一次预测理解反向传播</a></li>
+        <li><a href="https://colah.github.io/posts/2015-08-Backprop/">Chris Olah：计算图与链式法则</a></li>
+        <li><a href="https://arxiv.org/abs/1512.03385">He 等：Deep Residual Learning for Image Recognition</a></li>
+        <li><a href="https://arxiv.org/abs/1603.05027">He 等：Identity Mappings in Deep Residual Networks</a></li>
+      </ul></details>
+    </main>
+  </div>
+  <noscript>启用JavaScript后即可运行这些离线实验。Python实现位于课程的lessons目录。</noscript>
+</body>
+</html>
