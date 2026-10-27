@@ -18,6 +18,21 @@
 
 **先预测，再计算；亲手实现，再比较结果。** 课程既有手写的核心计算，也使用 scikit-learn 和 PyTorch 构建完整实验。Notebook 正文以中文为主；[English guide](README.en.md)、[项目指南](docs/PROJECTS.md)和[术语速查](docs/REFERENCE.md)提供英文导航或双语内容。
 
+### 先来一个小挑战
+
+**把一条权重调大，输出一定会变吗？**
+
+1. [打开交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/#network)，保持其他设置不变，把输入 `x₁` 设为 `0.6`，拖动 `w₁`，观察节点输出。
+2. 再把 `x₁` 设为 `0`，重新拖动 `w₁`。这次输出发生了什么？为什么？
+3. 试着用加权和 `x₁w₁ + x₂w₂ + b` 解释，再去 [04 手写反向传播](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb)追踪权重如何影响损失。
+
+<details>
+<summary>查看解释</summary>
+
+当 `x₁ = 0`，这一条输入对加权和的贡献始终是 `x₁w₁ = 0`；其他量保持不变时，调整 `w₁` 不会改变当前输出。输入不为零时，该乘积会随 `w₁` 改变。
+
+</details>
+
 ### 选择你的第一步
 
 - **刚接触 Python 和 AI：** 从 [00 开始与环境](lessons/python_math/00_start_and_environment.ipynb) 出发，依次完成 01–07。

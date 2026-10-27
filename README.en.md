@@ -21,6 +21,21 @@ Each lesson pairs explanations and code with fill-in exercises and feedback. The
 
 > **Language:** Notebook explanations are primarily in Chinese. This guide, the [project briefs](docs/PROJECTS.md), [reference sheet](docs/REFERENCE.md), and lesson 19 provide English navigation or bilingual material.
 
+### Try a small challenge
+
+**Does increasing a weight always change the output?**
+
+1. [Open the interactive lab](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/#network), keep the other settings fixed, set input `x₁` to `0.6`, and move `w₁`. Watch the node output.
+2. Set `x₁` to `0` and move `w₁` again. What happens now, and why?
+3. Explain it using the weighted sum `x₁w₁ + x₂w₂ + b`, then follow how weights affect loss in [lesson 04](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb).
+
+<details>
+<summary>See the explanation</summary>
+
+When `x₁ = 0`, this input contributes `x₁w₁ = 0` to the weighted sum. With all other values fixed, moving `w₁` therefore does not change the current output. With a nonzero input, the product changes with `w₁`.
+
+</details>
+
 **Choose an entry point:**
 
 - **New to the course?** [Set up the environment](#get-started) and start with [lesson 00](lessons/python_math/00_start_and_environment.ipynb).
