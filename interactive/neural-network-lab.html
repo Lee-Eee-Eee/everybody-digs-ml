@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="从可点击的小网络到反向传播、批处理、真实训练与残差连接。18节离线交互实验，配套Python与PyTorch学习本。">
-  <title>神经网络 · 交互学习室</title>
+  <title>交互学习室 · Everybody Digs ML</title>
   <style>
 :root{--bg:#f7f6f2;--paper:#fff;--text:#23323b;--muted:#69767d;--line:#dce2e1;--blue:#2c647d;--blue-soft:#e9f1f4;--orange:#be7040;--orange-soft:#fbf0e8;--green:#557363;--danger:#aa4740;--side:#eff1ee;--shadow:0 8px 30px #26343c08;font-family:"Segoe UI","Microsoft YaHei",sans-serif;color:var(--text);background:var(--bg);font-size:16px;line-height:1.65}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}a{color:var(--blue);text-underline-offset:3px}button,a,input,select{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b5d4e1;outline-offset:3px}button:disabled{opacity:.42;cursor:default}.skip-link{position:absolute;top:-100px;left:20px;background:white;padding:10px;z-index:20}.skip-link:focus{top:10px}.topbar{height:78px;display:flex;align-items:center;gap:28px;padding:0 30px;background:#fdfdfb;position:sticky;top:0;border-bottom:1px solid var(--line);z-index:10}.brand{display:flex;gap:12px;align-items:center;min-width:230px;text-decoration:none;color:var(--text);font-weight:650;letter-spacing:.04em}.brand-mark{font-family:Georgia,serif;font-size:42px;line-height:1;color:var(--blue)}.brand-sub{font-weight:400;font-size:12px;letter-spacing:.16em;display:block;color:var(--muted)}.header-note{font-size:14px;color:var(--muted)}.completion{margin-left:auto;font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}#menu-toggle{display:none}.shell{display:grid;grid-template-columns:244px minmax(0,1fr);max-width:1800px;margin:auto}#syllabus{position:sticky;top:78px;height:calc(100vh - 78px);overflow:auto;padding:27px 15px;background:var(--side);border-right:1px solid var(--line)}.nav-heading{font-weight:650;font-size:14px;margin:0 12px 18px}.nav-heading span{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:4px}.nav-group{font-size:11px;letter-spacing:.06em;color:var(--muted);padding:21px 12px 7px}.chapter{width:100%;text-align:left;border:0;background:transparent;padding:10px 11px;display:flex;gap:10px;align-items:flex-start;border-radius:7px;color:var(--text);font-size:13px;line-height:1.5;margin:2px 0}.chapter:hover{background:#ffffff8c}.chapter.active{background:var(--paper);box-shadow:var(--shadow);color:var(--blue);font-weight:600}.chapter-number{font-size:11px;margin-top:2px;font-variant-numeric:tabular-nums;min-width:18px;color:var(--muted)}.chapter.done .chapter-number{color:var(--green)}.nav-foot{font-size:11px;line-height:1.8;color:var(--muted);padding:25px 12px}main{min-width:0;padding:42px 40px 40px}.lesson-header{max-width:950px;margin:0 0 30px}.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--blue);font-weight:600;margin-bottom:12px}h1{font-size:34px;font-weight:650;line-height:1.4;letter-spacing:-.02em;margin:0 0 16px}#lesson-intro{font-size:17px;color:var(--muted);max-width:760px;margin:0}#lesson-map{display:flex;gap:6px;margin-top:24px}.chapter-dot{width:24px;height:3px;background:var(--line);border:0;cursor:pointer;padding:0}.chapter-dot.current{background:var(--blue)}.chapter-dot.complete{background:var(--green)}.lesson-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,1.04fr);gap:34px;align-items:start}.prose{font-size:16px;line-height:1.9;min-width:0}.prose>:first-child{margin-top:0}.prose h2{font-size:21px;line-height:1.5;margin:32px 0 14px;font-weight:650}.prose h3{font-size:17px;margin:25px 0 10px;color:var(--blue)}.prose p{margin:13px 0}.prose ul,.prose ol{padding-left:24px}.prose li{margin:9px 0}.prose strong{font-weight:650}.prose blockquote{margin:22px 0;padding:12px 18px;border-left:3px solid var(--blue);background:var(--blue-soft)}.prose .note{background:var(--blue-soft);padding:14px 18px;border-radius:5px;margin:22px 0}.prose code{font-size:.88em;background:#e9eeec;padding:2px 4px;border-radius:3px}.prose table{width:100%;font-size:13px;border-collapse:collapse;display:block;overflow:auto}.prose th,.prose td{padding:8px;border-bottom:1px solid var(--line);white-space:normal}.prose details{margin:18px 0;padding:13px;background:#eef1ed}.prose summary{cursor:pointer;font-weight:600}mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;padding:4px 0;font-size:103%!important}#lab-pane{background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);position:sticky;top:104px;max-height:calc(100vh - 128px);overflow:auto;min-width:0}.lab-head{display:flex;align-items:center;gap:8px;padding:18px 20px 13px;border-bottom:1px solid #eef0ef}.lab-head h2{font-size:15px;margin:0;font-weight:600}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}.local-badge{font-size:10px;color:var(--muted);margin-left:auto}#experiment{padding:19px}.lab-description,.lab-note{font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 15px}.lab-note{margin:12px 0 0}.control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 20px;margin-bottom:18px}.control{display:block;min-width:0;font-size:12px}.control-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:5px;align-items:center}.control output{font-variant-numeric:tabular-nums;font-weight:600;color:var(--blue)}input[type=range]{width:100%;accent-color:var(--blue);height:18px;display:block}select,input[type=number]{width:100%;border:1px solid #cfd8d9;border-radius:5px;background:white;padding:6px 8px;font-size:13px;color:var(--text)}input[type=checkbox]{accent-color:var(--blue)}.buttons{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:15px 0}.primary,.quiet{border:1px solid var(--line);border-radius:5px;padding:8px 13px;font-size:13px;font-weight:500;background:white;color:var(--text)}.primary{background:var(--blue);border-color:var(--blue);color:white}.primary:hover{background:#23556c}.quiet:hover{background:#f2f5f4}.small-button{font-size:11px;padding:6px 9px}.lab-visual{width:100%;height:auto;display:block;overflow:visible}.plot-grid{stroke:#e6eceb;stroke-width:1}.axis{stroke:#a5b3b7;stroke-width:1}.plot-label{fill:var(--muted);font-size:13px}.node{fill:#f5f8f7;stroke:#bdcacd;stroke-width:1.5}.node.active{fill:#e7f1f5;stroke:var(--blue);stroke-width:2}.edge{stroke:#9aaeb7;stroke-width:1.5;fill:none}.edge.active{stroke:var(--blue);stroke-width:3}.node-text{font-size:15px;fill:var(--text);text-anchor:middle}.value-text{font-size:13px;fill:var(--blue);font-variant-numeric:tabular-nums}.stat-row{display:flex;flex-wrap:wrap;gap:12px 20px;font-size:12px;margin:12px 0}.stat-row strong{color:var(--blue);font-size:16px;font-variant-numeric:tabular-nums;margin-left:5px}.numeric-block{font-family:Consolas,"Microsoft YaHei",monospace;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6f5;padding:12px;border-radius:5px;font-variant-numeric:tabular-nums;line-height:1.8}.selected-detail{border-left:3px solid var(--orange);padding:8px 12px;font-size:12px;background:var(--orange-soft);margin-top:12px;line-height:1.8}.task-box{margin:0 19px 19px;background:#f3f5f0;border-radius:6px;padding:12px 14px}.task-label{font-size:11px;color:var(--green);font-weight:600;letter-spacing:.08em}.task-box p{font-size:12px;line-height:1.8;margin:5px 0 0}.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:10px 0}.legend span:before{content:"";display:inline-block;width:15px;height:3px;margin-right:6px;vertical-align:middle;background:var(--swatch,var(--blue))}.checkpoint{max-width:850px;margin:42px 0 20px;padding:28px;background:#fefefd;border:1px solid var(--line);border-radius:8px}.checkpoint h2{font-size:21px;margin:0 0 15px}.checkpoint fieldset{border:0;margin:0;padding:0}.checkpoint legend{font-size:15px;line-height:1.8;margin-bottom:15px}.quiz-option{display:flex;align-items:flex-start;gap:10px;font-size:14px;padding:10px 13px;margin:7px 0;border:1px solid var(--line);border-radius:5px;cursor:pointer}.quiz-option:has(input:checked){border-color:var(--blue);background:var(--blue-soft)}.quiz-option input{margin:5px 0;accent-color:var(--blue)}#quiz-form>.primary{margin-top:12px}#quiz-feedback{font-size:14px;line-height:1.8;margin-top:15px}.feedback-good{color:#3d6956}.feedback-retry{color:var(--danger)}.lesson-footer{display:flex;align-items:center;justify-content:space-between;margin:30px 0;font-size:12px;color:var(--muted)}.source-box{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding:22px 0;line-height:1.9}.source-box summary{cursor:pointer}.source-box li{margin:7px 0}.matrix-row{display:flex;align-items:center;gap:8px;overflow:auto;margin:15px 0;padding-bottom:6px}.matrix{border-collapse:collapse;font-family:Consolas,monospace;font-size:11px;text-align:center}.matrix td{border:1px solid var(--line);padding:6px;background:#f5f7f6;min-width:40px}.matrix caption{font-family:"Segoe UI","Microsoft YaHei",sans-serif;color:var(--blue);font-size:12px;padding:6px}.matrix .selected{background:#e6f0f6;outline:1px solid var(--blue)}.kernel-input{width:60px!important;text-align:center;padding:3px!important;font-size:12px!important}.heatmap-pair{display:grid;grid-template-columns:1fr 1fr;gap:15px}.heatmap-pair canvas{width:100%;height:auto;image-rendering:pixelated}.canvas-caption{font-size:12px;text-align:center;color:var(--muted);margin:5px 0}.decision-canvas{width:100%;height:auto;max-width:460px;display:block;margin:0 auto;border:1px solid var(--line)}.train-status{font-size:12px;color:var(--muted);margin:10px 0;min-height:21px}.table-small{width:100%;border-collapse:collapse;font-size:11px;text-align:right}.table-small th,.table-small td{padding:6px 5px;border-bottom:1px solid var(--line)}.table-small th:first-child,.table-small td:first-child{text-align:left}.error-message{color:var(--danger);background:#fff0ed;padding:14px;font-size:13px}.feature-bars{display:flex;align-items:center;gap:6px;height:95px;padding:10px 4px}.feature-bar{flex:1;background:var(--blue);position:relative;min-width:10px}.feature-bar span{position:absolute;top:-20px;width:100%;text-align:center;font-size:10px}.feature-bar.zero{height:2px!important;background:#b7c1bf}.feature-bar.negative{background:var(--orange)}
 @media(min-width:1650px){main{padding-left:55px;padding-right:55px}.lesson-grid{gap:52px}.prose{font-size:17px}}@media(max-width:1200px){.shell{grid-template-columns:210px minmax(0,1fr)}main{padding:30px 26px}.lesson-grid{grid-template-columns:minmax(0,1fr);gap:28px}#lab-pane{position:relative;top:auto;max-height:none;order:-1;max-width:740px}.control-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.lab-visual{max-height:390px}h1{font-size:30px}.prose{max-width:750px}}@media(max-width:750px){.topbar{height:68px;padding:0 17px;gap:8px}.brand{min-width:0;font-size:14px}.brand-mark{font-size:35px}.brand-sub{font-size:10px}.header-note{display:none}.completion{font-size:10px}#menu-toggle{display:block;font-size:11px;padding:7px}.shell{display:block}#syllabus{display:none;position:fixed;top:68px;left:0;width:260px;height:calc(100vh - 68px);z-index:9;box-shadow:8px 0 20px #293b3e18}#syllabus.open{display:block}main{padding:27px 17px}h1{font-size:26px}#lesson-intro{font-size:15px}.lesson-grid{gap:25px}.prose{font-size:15px;line-height:1.95}#experiment{padding:15px}.lab-head{padding:14px}.control-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.local-badge{font-size:9px}.checkpoint{padding:20px}.matrix td{min-width:34px;padding:4px}.node-text{font-size:16px}.selected-detail{font-size:11px}.heatmap-pair{gap:10px}.chapter-dot{width:16px}.lesson-header{margin-bottom:23px}.task-box{margin:0 15px 15px}.lesson-footer{gap:10px}.lesson-footer button{font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
@@ -39,6 +39,38 @@
 .foundation-mode main{padding-top:24px}.foundation-mode .lesson-header h1{font-size:29px;margin-bottom:9px}.foundation-mode #lesson-kicker{margin-bottom:7px}.foundation-mode #lesson-intro{font-size:15px;max-width:900px}.foundation-mode #lesson-map{display:none}.foundation-mode .lesson-header{margin-bottom:15px}.foundation-mode .lab-head{padding:13px 20px}.foundation-mode #experiment:has(>#fc-network){display:flex;flex-direction:column}.foundation-mode #experiment>#fc-network{order:-4}.foundation-mode #experiment>.fc-step-controls:first-of-type{order:-3}.foundation-mode #experiment>#fc-explain{order:-2}.foundation-mode #experiment>.fc-step-note{order:-1;margin-top:14px}
 body.foundation-mode .lesson-header{margin-bottom:12px}body.foundation-mode #lab-pane>.lab-head{display:none}body.foundation-mode #experiment>.fc-step-controls:not(#fc-update-actions){order:-6;margin-top:0}body.foundation-mode #experiment>#fc-live-step{order:-5}body.foundation-mode #experiment>#fc-network{order:-4}body.foundation-mode #experiment>#fc-explain{order:-3}.fc-live-step{font-size:16px;font-weight:600;line-height:1.7;margin:2px 0 10px;color:#2c647d}
 .fc-live-equation{font-family:"Cambria Math",Consolas,"Microsoft YaHei",serif;font-size:17px;font-weight:400;line-height:1.8;margin-top:4px;overflow-wrap:anywhere;color:#26383f}
+
+/* First experiment: keep controls and the computed pathway together. */
+.fi-discovery{color:#203b48}
+.fi-discovery-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.fi-discovery-head h2{font-size:23px;line-height:1.35;margin:3px 0 8px;color:#17384b}
+.fi-discovery-head p{margin:0;color:#506b75;font-size:15px;line-height:1.7}
+.fi-kicker{font-size:11px;letter-spacing:.08em;color:#287a77;font-weight:700}
+.fi-status{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:#4a756b;font-size:12px;padding:5px 10px;background:#eef7f2;border:1px solid #d7e9df;border-radius:30px}
+.fi-status span{width:7px;height:7px;border-radius:50%;background:#37a27b}
+.fi-discovery-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0 13px}
+.fi-discovery-controls .control{min-width:0;border:1px solid #dce9e8;background:#f7fbfa;border-radius:10px;padding:14px 16px}
+.fi-discovery-controls .control-top{font-size:15px;font-weight:650;color:#23495b}
+.fi-discovery-controls output{font-size:19px!important;color:#166c70;font-variant-numeric:tabular-nums}
+.fi-discovery-controls input[type=range]{width:100%;margin-top:14px;accent-color:#287e7a}
+.fi-preset{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.fi-preset>span{font-size:13px;color:#5d737b;margin-right:3px}
+.fi-discovery .fi-preset button{border:1px solid #c4dbd6;border-radius:6px;color:#25625f;background:#fff;font-size:13px;padding:6px 11px}
+.fi-discovery .fi-preset button:hover{background:#e8f5f0}
+.fi-discovery button:focus-visible,.fi-map-details summary:focus-visible,.fi-next-link a:focus-visible{outline:3px solid #287e7a;outline-offset:3px}
+.fi-observation{padding:13px 16px;border-left:3px solid #d49055;border-radius:4px;background:#fff7ed;color:#624832;font-size:14px;line-height:1.75}
+.fi-observation strong{color:#8a4b28}
+.fi-chain{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 8px}
+.fi-chain-step{min-width:0;border:1px solid #dbe8e8;border-radius:9px;padding:12px;background:#fff;display:flex;flex-direction:column;gap:5px;line-height:1.45}
+.fi-chain-step span{font-size:12px;font-weight:650;color:#60808a}
+.fi-chain-step strong{font-size:17px;color:#176c6f;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.fi-chain-step small{font-size:12px;color:#697e87;overflow-wrap:anywhere}
+.fi-caption{font-size:12px;color:#647a80;margin:12px 0 18px;line-height:1.7}
+.fi-map-details{border:1px solid #dce8e7;background:#fbfdfc;border-radius:9px;padding:14px;margin:18px 0}
+.fi-map-details summary{font-size:14px;color:#245e6a;font-weight:650;cursor:pointer}
+.fi-next-link{margin:14px 0 0;font-size:14px;color:#5b7079}
+.fi-next-link a{font-weight:650;color:#176b71;text-underline-offset:3px}
+@media(max-width:750px){.fi-discovery-head{display:block}.fi-status{margin-top:12px}.fi-discovery-controls{grid-template-columns:1fr;gap:10px}.fi-chain{grid-template-columns:repeat(2,minmax(0,1fr))}.fi-chain-step strong{font-size:15px}}
 
 </style>
   <style>
@@ -808,15 +840,15 @@ window.NNLESSONS = [
 window.FOUNDATIONLESSONS = [
 {
  id:'neuron', title:'两项读数怎样变成一个判断', short:'认识网络里的数', mode:'foundation-map',
- intro:'一条记录只有两个特征。我们想让两个输出分别靠近1和0，从这张能点、能改的小网络开始。',
+ intro:'先做一个小实验：改变输入和权重，观察一个节点怎样影响预测。',
  body:String.raw`<h3>先找到输入与答案</h3>
-<p>输入是 \((x_1,x_2)=(0.6,0.2)\)，希望得到的答案是 \((d_1,d_2)=(1,0)\)。网络把输入交给两个隐藏节点，再由它们共同算出两个输出。隐藏节点没有另外给出的标准答案，它们的作用会通过最终误差逐渐学出来。</p>
+<p>初始输入是 \((x_1,x_2)=(0.6,0.2)\)，希望得到的答案是 \((d_1,d_2)=(1,0)\)。上面的滑块可以改变输入，网络图会显示当前数值。网络把输入交给两个隐藏节点，再由它们共同算出两个输出。隐藏节点没有另外给出的标准答案，它们的作用会通过最终误差逐渐学出来。</p>
 <p>图上三列依次是输入 x、隐藏值 h、输出 y。点击一个节点，操作区会显示它来自哪一步计算。蓝色数值是当前前向结果；后面出现的橙色数字表示损失对它的变化率。</p>
 <h3>连线上的数决定影响有多大</h3>
 <p>\(w_{ij}\) 连接输入 i 与隐藏节点 j，\(v_{jk}\) 连接隐藏节点 j 与输出 k。下标先写来源，再写去向。比如 \(w_{21}=0.4\) 将第二个输入送到第一个隐藏节点。每条边有自己的权重，一份输入可以沿多条边参与计算。</p>
 <p>层号 l 也能帮助定位：输入层为0，隐藏层为1，输出层为2。\(x_j^{(1)}\) 表示第1层的第 j 个值，上标记录位置。这个实验简写成 \(h_j\)。</p>
 <p>下一节只展开一个隐藏节点。等它的计算清楚了，整张网络就是同样的动作重复几次。也可以回到 <a href="../lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb">第04课</a>，把网络写成 NumPy 代码。</p>`,
- task:'点击 x₂、h₁ 与连接 w₂₁，沿着来源与去向找出它们的关系。到下一节展开神经元后，再改变这条连接的权重。',
+ task:'先把 x₁ 设为 0，改变 w₁₁；再把 x₁ 设为 0.6，重复操作。展开完整网络，找到这条连接的起点和终点。',
  quiz:{question:'改变 w₂₁ 后，它最先影响哪一步？',options:['第一个隐藏节点的加权和','目标 d₁','输入 x₂ 本身'],correct:0,explanation:'w₂₁ 与 x₂ 相乘，乘积进入第一个隐藏节点的加权和，再继续影响后续输出。'}
 },
 {
@@ -946,14 +978,61 @@ window.FOUNDATIONLESSONS = [
   }
 
   function mapLab(ctx,shared){
-    var root=ctx.root,F=ctx.fmt,selected='x1',initial=shared.graph();
+    var root=ctx.root,F=ctx.fmt,selected='x1',s=shared.state;
     var choices=[['x1','输入 x₁'],['x2','输入 x₂'],['h1','隐藏输出 h₁'],['h2','隐藏输出 h₂'],['y1','预测 y₁'],['y2','预测 y₂'],['d1','目标 d₁'],['d2','目标 d₂'],['L','总损失 L']];
     ['w0_11','w0_12','w0_21','w0_22','w1_11','w1_12','w1_21','w1_22'].forEach(function(id){var m=/^w([01])_([12])([12])$/.exec(id);choices.push([id,'权重 '+weightName(+m[1],m[2],m[3])]);});
-    root.innerHTML=css()+'<section class="fi-lab"><div id="fi-map-network"></div><div class="fc-controls fi-controls">'+ctx.select('点图中元素，或在这里选择','fi-map-item',choices,selected)+'<button type="button" id="fi-map-reset">恢复课程初始数值</button></div><div class="fc-card fi-card fi-node-detail" id="fi-map-detail" aria-live="polite"></div><div class="fc-step-note fi-note">输入和目标由样本给定；权重连接相邻两层，调整它便会改变随后算出的值。下一节可以展开一个隐藏节点。</div></section>';
+    root.innerHTML=css()+`<section class="fi-lab fi-discovery">
+      <div class="fi-discovery-head">
+        <div><span class="fi-kicker">第一个实验 · LIVE</span><h2>一条连接，能改变什么？</h2>
+          <p>先猜：如果输入是 0，改变这条连接的权重，输出还会变化吗？</p></div>
+        <div class="fi-status"><span aria-hidden="true"></span> 本地实时计算</div>
+      </div>
+      <div class="fi-discovery-controls">
+        ${ctx.range('输入 x₁','fi-map-x1',-2,2,.05,s.x[0])}
+        ${ctx.range('权重 w₁₁','fi-map-w11',-3,3,.05,s.W0[0][0])}
+      </div>
+      <div class="fi-preset" role="group" aria-label="输入预设">
+        <span>试试两种输入</span>
+        <button type="button" id="fi-input-zero">x₁ = 0</button>
+        <button type="button" id="fi-input-nonzero">x₁ = 0.6</button>
+        <button type="button" id="fi-map-reset">恢复初始样例</button>
+      </div>
+      <div class="fi-observation" id="fi-observation"></div>
+      <div class="fi-chain" id="fi-chain" role="group" aria-label="当前数值的计算路径"></div>
+      <p class="fi-caption">本例没有偏置；隐藏输出 h₁ 与 h₂ 一起决定 y₁。图中的所有数值都由当前网络重新计算。</p>
+      <details class="fi-map-details"><summary>展开完整网络：点击节点和连线，查看它们的身份</summary>
+        <div id="fi-map-network"></div>
+        <div class="fc-controls fi-controls">${ctx.select('选择图中元素','fi-map-item',choices,selected)}</div>
+        <div class="fc-card fi-card fi-node-detail" id="fi-map-detail" aria-live="polite"></div>
+      </details>
+      <p class="fi-next-link">想亲手算清隐藏节点？<a href="#chain">下一节：乘法、求和与激活 →</a></p>
+    </section>`;
     function choose(id){if(!shared.graph().byId[id])return;selected=id;var sel=root.querySelector('#fi-map-item');if(!choices.some(function(c){return c[0]===id;})){var opt=document.createElement('option');opt.value=id;opt.textContent=shared.graph().byId[id].label;sel.appendChild(opt);}sel.value=id;draw();}
-    function draw(){var g=shared.graph(),detail=identity(selected,g,F);root.querySelector('#fi-map-network').innerHTML=netHTML(shared,g,{known:null,selected:selected,forwardEdges:[],reverseEdges:[]});root.querySelector('#fi-map-detail').innerHTML='<span class="fi-identity">'+detail.role+'</span><h3>'+esc(detail.title)+'</h3><p>'+detail.body+'</p>';bindItems(root.querySelector('#fi-map-network'),choose);}
-    root.querySelector('#fi-map-reset').addEventListener('click',function(){shared.reset();draw();});
-    ctx.controls(function(){selected=root.querySelector('#fi-map-item').value;draw();});draw();
+    function draw(){
+      var g=shared.graph(),r=g.result,detail=identity(selected,g,F),p1=s.x[0]*s.W0[0][0],p2=s.x[1]*s.W0[1][0];
+      root.querySelector('#fi-observation').innerHTML=s.x[0]===0
+        ? '<strong>现在试着拖动 w₁₁。</strong> x₁ = 0，所以 x₁w₁₁ 始终为 0；其他量不变时，h₁ 和 y₁ 都不会改变。'
+        : '<strong>现在试着拖动 w₁₁。</strong> x₁ 不为 0，它与权重的乘积会改变；沿计算路径观察 h₁ 和 y₁。';
+      root.querySelector('#fi-chain').innerHTML=
+        '<div class="fi-chain-step"><span>① 当前乘积</span><strong>'+F(s.x[0],3)+' × '+F(s.W0[0][0],3)+' = '+F(p1,5)+'</strong><small>x₁ × w₁₁</small></div>'+
+        '<div class="fi-chain-step"><span>② 隐藏层</span><strong>h₁ = '+F(r.h[0],6)+'</strong><small>Sigmoid('+F(p1,4)+' + '+F(p2,4)+')</small></div>'+
+        '<div class="fi-chain-step"><span>③ 网络预测</span><strong>y₁ = '+F(r.y[0],6)+'</strong><small>由 h₁ 和 h₂ 共同计算</small></div>'+
+        '<div class="fi-chain-step"><span>④ 与目标比较</span><strong>L = '+F(r.loss,6)+'</strong><small>两项 ½(预测−目标)² 之和</small></div>';
+      root.querySelector('#fi-map-network').innerHTML=netHTML(shared,g,{known:null,selected:selected,forwardEdges:[],reverseEdges:[]});
+      root.querySelector('#fi-map-detail').innerHTML='<span class="fi-identity">'+detail.role+'</span><h3>'+esc(detail.title)+'</h3><p>'+detail.body+'</p>';
+      bindItems(root.querySelector('#fi-map-network'),choose);
+    }
+    function sync(){root.querySelector('#fi-map-x1').value=s.x[0];root.querySelector('#fi-map-w11').value=s.W0[0][0];ctx.outputs();}
+    root.querySelector('#fi-input-zero').addEventListener('click',function(){s.x[0]=0;sync();draw();});
+    root.querySelector('#fi-input-nonzero').addEventListener('click',function(){s.x[0]=.6;sync();draw();});
+    root.querySelector('#fi-map-reset').addEventListener('click',function(){shared.reset();sync();draw();});
+    ctx.controls(function(el){
+      if(el.id==='fi-map-x1')s.x[0]=+el.value;
+      else if(el.id==='fi-map-w11')s.W0[0][0]=+el.value;
+      else if(el.id==='fi-map-item')selected=el.value;
+      draw();
+    });
+    sync();draw();
   }
 
   function svgText(x,y,t,color,cls){return '<text x="'+x+'" y="'+y+'" text-anchor="middle"'+(color?' style="fill:'+color+'"':'')+(cls?' class="'+cls+'"':'')+'>'+esc(t)+'</text>';}
@@ -1944,7 +2023,7 @@ function renderLesson(index){
   $('#lesson-body').innerHTML=l.body;$('#task-text').innerHTML=l.task;
   if(location.hostname.endsWith('.github.io')) {
     document.querySelectorAll('a[href^="../lessons/"],a[href="../README.md"]').forEach(link=>{
-      link.href='https://github.com/Lee-Eee-Eee/neural-networks-from-zero/blob/main/'+link.getAttribute('href').slice(3);
+      link.href='https://github.com/Lee-Eee-Eee/everybody-digs-ml/blob/main/'+link.getAttribute('href').slice(3);
     });
   }
   $('#lesson-map').innerHTML=lessons.map((x,i)=>`<button class="chapter-dot ${i===lessonIndex?'current':''} ${progress.done[x.id]?'complete':''}" title="${i+1}. ${x.title}" aria-label="跳到${x.title}" data-lesson="${i}"></button>`).join('');

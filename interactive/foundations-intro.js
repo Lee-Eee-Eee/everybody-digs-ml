@@ -26,14 +26,61 @@
   }
 
   function mapLab(ctx,shared){
-    var root=ctx.root,F=ctx.fmt,selected='x1',initial=shared.graph();
+    var root=ctx.root,F=ctx.fmt,selected='x1',s=shared.state;
     var choices=[['x1','输入 x₁'],['x2','输入 x₂'],['h1','隐藏输出 h₁'],['h2','隐藏输出 h₂'],['y1','预测 y₁'],['y2','预测 y₂'],['d1','目标 d₁'],['d2','目标 d₂'],['L','总损失 L']];
     ['w0_11','w0_12','w0_21','w0_22','w1_11','w1_12','w1_21','w1_22'].forEach(function(id){var m=/^w([01])_([12])([12])$/.exec(id);choices.push([id,'权重 '+weightName(+m[1],m[2],m[3])]);});
-    root.innerHTML=css()+'<section class="fi-lab"><div id="fi-map-network"></div><div class="fc-controls fi-controls">'+ctx.select('点图中元素，或在这里选择','fi-map-item',choices,selected)+'<button type="button" id="fi-map-reset">恢复课程初始数值</button></div><div class="fc-card fi-card fi-node-detail" id="fi-map-detail" aria-live="polite"></div><div class="fc-step-note fi-note">输入和目标由样本给定；权重连接相邻两层，调整它便会改变随后算出的值。下一节可以展开一个隐藏节点。</div></section>';
+    root.innerHTML=css()+`<section class="fi-lab fi-discovery">
+      <div class="fi-discovery-head">
+        <div><span class="fi-kicker">第一个实验 · LIVE</span><h2>一条连接，能改变什么？</h2>
+          <p>先猜：如果输入是 0，改变这条连接的权重，输出还会变化吗？</p></div>
+        <div class="fi-status"><span aria-hidden="true"></span> 本地实时计算</div>
+      </div>
+      <div class="fi-discovery-controls">
+        ${ctx.range('输入 x₁','fi-map-x1',-2,2,.05,s.x[0])}
+        ${ctx.range('权重 w₁₁','fi-map-w11',-3,3,.05,s.W0[0][0])}
+      </div>
+      <div class="fi-preset" role="group" aria-label="输入预设">
+        <span>试试两种输入</span>
+        <button type="button" id="fi-input-zero">x₁ = 0</button>
+        <button type="button" id="fi-input-nonzero">x₁ = 0.6</button>
+        <button type="button" id="fi-map-reset">恢复初始样例</button>
+      </div>
+      <div class="fi-observation" id="fi-observation"></div>
+      <div class="fi-chain" id="fi-chain" role="group" aria-label="当前数值的计算路径"></div>
+      <p class="fi-caption">本例没有偏置；隐藏输出 h₁ 与 h₂ 一起决定 y₁。图中的所有数值都由当前网络重新计算。</p>
+      <details class="fi-map-details"><summary>展开完整网络：点击节点和连线，查看它们的身份</summary>
+        <div id="fi-map-network"></div>
+        <div class="fc-controls fi-controls">${ctx.select('选择图中元素','fi-map-item',choices,selected)}</div>
+        <div class="fc-card fi-card fi-node-detail" id="fi-map-detail" aria-live="polite"></div>
+      </details>
+      <p class="fi-next-link">想亲手算清隐藏节点？<a href="#chain">下一节：乘法、求和与激活 →</a></p>
+    </section>`;
     function choose(id){if(!shared.graph().byId[id])return;selected=id;var sel=root.querySelector('#fi-map-item');if(!choices.some(function(c){return c[0]===id;})){var opt=document.createElement('option');opt.value=id;opt.textContent=shared.graph().byId[id].label;sel.appendChild(opt);}sel.value=id;draw();}
-    function draw(){var g=shared.graph(),detail=identity(selected,g,F);root.querySelector('#fi-map-network').innerHTML=netHTML(shared,g,{known:null,selected:selected,forwardEdges:[],reverseEdges:[]});root.querySelector('#fi-map-detail').innerHTML='<span class="fi-identity">'+detail.role+'</span><h3>'+esc(detail.title)+'</h3><p>'+detail.body+'</p>';bindItems(root.querySelector('#fi-map-network'),choose);}
-    root.querySelector('#fi-map-reset').addEventListener('click',function(){shared.reset();draw();});
-    ctx.controls(function(){selected=root.querySelector('#fi-map-item').value;draw();});draw();
+    function draw(){
+      var g=shared.graph(),r=g.result,detail=identity(selected,g,F),p1=s.x[0]*s.W0[0][0],p2=s.x[1]*s.W0[1][0];
+      root.querySelector('#fi-observation').innerHTML=s.x[0]===0
+        ? '<strong>现在试着拖动 w₁₁。</strong> x₁ = 0，所以 x₁w₁₁ 始终为 0；其他量不变时，h₁ 和 y₁ 都不会改变。'
+        : '<strong>现在试着拖动 w₁₁。</strong> x₁ 不为 0，它与权重的乘积会改变；沿计算路径观察 h₁ 和 y₁。';
+      root.querySelector('#fi-chain').innerHTML=
+        '<div class="fi-chain-step"><span>① 当前乘积</span><strong>'+F(s.x[0],3)+' × '+F(s.W0[0][0],3)+' = '+F(p1,5)+'</strong><small>x₁ × w₁₁</small></div>'+
+        '<div class="fi-chain-step"><span>② 隐藏层</span><strong>h₁ = '+F(r.h[0],6)+'</strong><small>Sigmoid('+F(p1,4)+' + '+F(p2,4)+')</small></div>'+
+        '<div class="fi-chain-step"><span>③ 网络预测</span><strong>y₁ = '+F(r.y[0],6)+'</strong><small>由 h₁ 和 h₂ 共同计算</small></div>'+
+        '<div class="fi-chain-step"><span>④ 与目标比较</span><strong>L = '+F(r.loss,6)+'</strong><small>两项 ½(预测−目标)² 之和</small></div>';
+      root.querySelector('#fi-map-network').innerHTML=netHTML(shared,g,{known:null,selected:selected,forwardEdges:[],reverseEdges:[]});
+      root.querySelector('#fi-map-detail').innerHTML='<span class="fi-identity">'+detail.role+'</span><h3>'+esc(detail.title)+'</h3><p>'+detail.body+'</p>';
+      bindItems(root.querySelector('#fi-map-network'),choose);
+    }
+    function sync(){root.querySelector('#fi-map-x1').value=s.x[0];root.querySelector('#fi-map-w11').value=s.W0[0][0];ctx.outputs();}
+    root.querySelector('#fi-input-zero').addEventListener('click',function(){s.x[0]=0;sync();draw();});
+    root.querySelector('#fi-input-nonzero').addEventListener('click',function(){s.x[0]=.6;sync();draw();});
+    root.querySelector('#fi-map-reset').addEventListener('click',function(){shared.reset();sync();draw();});
+    ctx.controls(function(el){
+      if(el.id==='fi-map-x1')s.x[0]=+el.value;
+      else if(el.id==='fi-map-w11')s.W0[0][0]=+el.value;
+      else if(el.id==='fi-map-item')selected=el.value;
+      draw();
+    });
+    sync();draw();
   }
 
   function svgText(x,y,t,color,cls){return '<text x="'+x+'" y="'+y+'" text-anchor="middle"'+(color?' style="fill:'+color+'"':'')+(cls?' class="'+cls+'"':'')+'>'+esc(t)+'</text>';}

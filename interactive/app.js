@@ -58,7 +58,7 @@ function renderLesson(index){
   $('#lesson-body').innerHTML=l.body;$('#task-text').innerHTML=l.task;
   if(location.hostname.endsWith('.github.io')) {
     document.querySelectorAll('a[href^="../lessons/"],a[href="../README.md"]').forEach(link=>{
-      link.href='https://github.com/Lee-Eee-Eee/neural-networks-from-zero/blob/main/'+link.getAttribute('href').slice(3);
+      link.href='https://github.com/Lee-Eee-Eee/everybody-digs-ml/blob/main/'+link.getAttribute('href').slice(3);
     });
   }
   $('#lesson-map').innerHTML=lessons.map((x,i)=>`<button class="chapter-dot ${i===lessonIndex?'current':''} ${progress.done[x.id]?'complete':''}" title="${i+1}. ${x.title}" aria-label="跳到${x.title}" data-lesson="${i}"></button>`).join('');

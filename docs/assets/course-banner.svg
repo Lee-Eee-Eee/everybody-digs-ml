@@ -1,58 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="430" viewBox="0 0 1440 430" role="img" aria-labelledby="title desc">
-  <title id="title">From Python to Neural Networks</title>
-  <desc id="desc">A dark navy and teal course banner with a stylized neural network and the words Learn by building, Understand by experimenting.</desc>
-  <defs>
-    <linearGradient id="background" x1="0" x2="1" y1="0" y2="1">
-      <stop stop-color="#101d32"/>
-      <stop offset="0.58" stop-color="#10283b"/>
-      <stop offset="1" stop-color="#0d3a43"/>
-    </linearGradient>
-    <radialGradient id="halo">
-      <stop stop-color="#57d0bb" stop-opacity=".22"/>
-      <stop offset="1" stop-color="#57d0bb" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="line" x1="0" x2="1">
-      <stop stop-color="#7dd7c9" stop-opacity=".2"/>
-      <stop offset=".5" stop-color="#a6efdf" stop-opacity=".55"/>
-      <stop offset="1" stop-color="#8cdbd7" stop-opacity=".22"/>
-    </linearGradient>
-    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
-      <path d="M36 0H0V36" fill="none" stroke="#d6f6ef" stroke-opacity=".045"/>
-    </pattern>
-  </defs>
-  <rect width="1440" height="430" rx="20" fill="url(#background)"/>
-  <rect width="1440" height="430" rx="20" fill="url(#grid)"/>
-  <ellipse cx="1135" cy="210" rx="370" ry="260" fill="url(#halo)"/>
-  <path d="M70 77h36" stroke="#80e4cf" stroke-width="3" stroke-linecap="round"/>
-  <text x="122" y="83" fill="#9bdccc" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="2.8">A HANDS-ON LEARNING JOURNEY</text>
-  <text x="70" y="172" fill="#f6fbfa" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" letter-spacing="-1.3">From Python to</text>
-  <text x="70" y="239" fill="#f6fbfa" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" letter-spacing="-1.3">Neural Networks</text>
-  <text x="72" y="294" fill="#c1d8d9" font-family="Arial, Helvetica, sans-serif" font-size="20" letter-spacing=".15">Learn by building <tspan fill="#7ee0ca">·</tspan> Understand by experimenting</text>
-  <rect x="70" y="337" width="226" height="36" rx="18" fill="#d9fff6" fill-opacity=".08" stroke="#9ee5d4" stroke-opacity=".25"/>
-  <text x="89" y="360" fill="#a5ded0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.4">PYTHON  /  PYTORCH</text>
-  <!-- A layered network; each edge and node is decorative. -->
-  <g fill="none" stroke="url(#line)" stroke-width="1.4">
-    <path d="M870 131L1000 87M870 131L1000 164M870 131L1000 244M870 131L1000 321"/>
-    <path d="M870 214L1000 87M870 214L1000 164M870 214L1000 244M870 214L1000 321"/>
-    <path d="M870 297L1000 87M870 297L1000 164M870 297L1000 244M870 297L1000 321"/>
-    <path d="M1000 87L1134 116M1000 87L1134 214M1000 87L1134 312"/>
-    <path d="M1000 164L1134 116M1000 164L1134 214M1000 164L1134 312"/>
-    <path d="M1000 244L1134 116M1000 244L1134 214M1000 244L1134 312"/>
-    <path d="M1000 321L1134 116M1000 321L1134 214M1000 321L1134 312"/>
-    <path d="M1134 116L1266 167M1134 116L1266 263M1134 214L1266 167M1134 214L1266 263M1134 312L1266 167M1134 312L1266 263"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="420" viewBox="0 0 1440 420" role="img" aria-labelledby="title desc">
+  <title id="title">Everybody Digs ML</title>
+  <desc id="desc">A course banner in navy, warm ivory, and orange with the course title and an abstract network motif.</desc>
+  <rect width="1440" height="420" fill="#f5f1e8"/>
+  <rect width="860" height="420" fill="#142d3b"/>
+  <rect x="0" y="0" width="13" height="420" fill="#e6784e"/>
+  <text x="65" y="67" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="3.2" fill="#9bcfc8">A HANDS-ON MACHINE LEARNING COURSE</text>
+  <text x="62" y="178" font-family="Arial, Helvetica, sans-serif" font-size="79" font-weight="700" letter-spacing="-2" fill="#f8f7f1">EVERYBODY</text>
+  <text x="62" y="272" font-family="Arial, Helvetica, sans-serif" font-size="97" font-weight="700" letter-spacing="-2.8" fill="#f8f7f1">DIGS <tspan fill="#f09a71">ML.</tspan></text>
+  <path d="M65 308H118" stroke="#f09a71" stroke-width="4" stroke-linecap="round"/>
+  <text x="137" y="315" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#d5e7e4">Learn the ideas · Build the models · Explore the results</text>
+  <text x="65" y="383" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#91b2b5">PYTHON / NUMPY / PYTORCH</text>
+  <g fill="none" stroke="#b8c6be" stroke-width="2.2" stroke-linecap="round">
+    <path d="M960 115L1094 86M960 115L1094 175M960 115L1094 264M960 115L1094 340"/>
+    <path d="M960 210L1094 86M960 210L1094 175M960 210L1094 264M960 210L1094 340"/>
+    <path d="M960 305L1094 86M960 305L1094 175M960 305L1094 264M960 305L1094 340"/>
+    <path d="M1094 86L1265 132M1094 86L1265 290M1094 175L1265 132M1094 175L1265 290M1094 264L1265 132M1094 264L1265 290M1094 340L1265 132M1094 340L1265 290"/>
   </g>
-  <g fill="#123b46" stroke="#9cebd9" stroke-width="2">
-    <circle cx="870" cy="131" r="9"/><circle cx="870" cy="214" r="9"/><circle cx="870" cy="297" r="9"/>
-    <circle cx="1000" cy="87" r="9"/><circle cx="1000" cy="164" r="9"/><circle cx="1000" cy="244" r="9"/><circle cx="1000" cy="321" r="9"/>
-    <circle cx="1134" cy="116" r="9"/><circle cx="1134" cy="214" r="9"/><circle cx="1134" cy="312" r="9"/>
-    <circle cx="1266" cy="167" r="10"/><circle cx="1266" cy="263" r="10"/>
+  <g fill="#285e70" stroke="#f5f1e8" stroke-width="5">
+    <circle cx="960" cy="115" r="14"/><circle cx="960" cy="210" r="14"/><circle cx="960" cy="305" r="14"/>
+    <circle cx="1094" cy="86" r="15"/><circle cx="1094" cy="175" r="15"/><circle cx="1094" cy="264" r="15"/><circle cx="1094" cy="340" r="15"/>
   </g>
-  <g fill="#b2f2e2">
-    <circle cx="870" cy="131" r="3"/><circle cx="870" cy="214" r="3"/><circle cx="870" cy="297" r="3"/>
-    <circle cx="1000" cy="87" r="3"/><circle cx="1000" cy="164" r="3"/><circle cx="1000" cy="244" r="3"/><circle cx="1000" cy="321" r="3"/>
-    <circle cx="1134" cy="116" r="3"/><circle cx="1134" cy="214" r="3"/><circle cx="1134" cy="312" r="3"/>
-    <circle cx="1266" cy="167" r="3.5"/><circle cx="1266" cy="263" r="3.5"/>
-  </g>
-  <path d="M1330 80h40M1350 60v40M793 326h24M805 314v24" stroke="#8ed7c9" stroke-opacity=".26" stroke-width="1.5"/>
-  <text x="1334" y="385" text-anchor="end" fill="#a2d8cd" fill-opacity=".62" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="2">EXPLORE  /  IMPLEMENT  /  EXPLAIN</text>
+  <g fill="#e6784e" stroke="#f5f1e8" stroke-width="5"><circle cx="1265" cy="132" r="25"/><circle cx="1265" cy="290" r="25"/></g>
+  <text x="906" y="388" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="2.2" fill="#456976">PREDICT  /  BUILD  /  EXPLORE</text>
 </svg>

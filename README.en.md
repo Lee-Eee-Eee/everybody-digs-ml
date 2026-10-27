@@ -1,107 +1,71 @@
-# From Python to Neural Networks
+# Everybody Digs ML
 
 <div align="center">
 
-<img src="docs/assets/course-banner.svg" alt="From Python to Neural Networks — Learn by building, understand by experimenting" width="100%">
+<img src="docs/assets/course-banner.svg" alt="Everybody Digs ML: learn machine learning by building and exploring" width="100%">
 
-**Learn by calculating, building, and experimenting.**<br>
-从 Python 到神经网络：从一行代码出发，亲手理解模型如何学习。
+**Start with Python. Build models. See how they learn.**
 
-[中文](README.md) · **English** · [Get started](#get-started) · [Course map](#course-map) · [Interactive lab](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/) · [Projects](docs/PROJECTS.md)
+[中文](README.md) · [Try it](#try-it-first) · [Learning paths](#learning-paths) · [Course map](#course-map) · [Get started](#get-started) · [Acknowledgments](#acknowledgments)
 
-**24 notebooks** · **139 exercises** · **18 interactive lessons** · **CPU-friendly examples**
+`24 notebooks`　 `139 exercises`　 `18 interactive lessons`　 `Python 3.12 · CPU`
 
 </div>
 
 ---
 
-Learn how models work by following the numbers: calculate a gradient, implement a small network, and compare models in an experiment. The course moves from Python and classical machine learning to CNNs, sequence models, a tiny character GPT, graphs, and a one-dimensional diffusion example.
+How can a model recognize a handwritten digit? What happens to a weight during training? How is the next character in a sequence chosen?
 
-Each lesson pairs explanations and code with fill-in exercises and feedback. The interactive lab lets you change a weight or follow a gradient before writing the corresponding code. The classical ML lessons combine worked calculations with scikit-learn models.
+This course brings **equations, code, and experiments** together. Work through a small calculation, implement it, then change a condition and explain the result. The path runs from Python and NumPy through classical machine learning, neural networks, Transformers, a tiny character GPT, graph networks, and diffusion.
 
-> **Language:** Notebook explanations are primarily in Chinese. This guide, the [project briefs](docs/PROJECTS.md), [reference sheet](docs/REFERENCE.md), and lesson 19 provide English navigation or bilingual material.
+> **Predict → run → change one thing → explain what happened.**
 
-### Try a small challenge
+Notebook explanations and the interactive lab are primarily in Chinese. This guide provides English navigation; the [project briefs](docs/PROJECTS.md) and [reference sheet](docs/REFERENCE.md) are bilingual.
+
+## Try it first
+
+<p align="center">
+  <a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network"><img src="docs/assets/training-demo.gif" alt="A small network learns XOR: predictions and loss change during training" width="760"></a>
+</p>
+
+<p align="center"><sub>The animation shows an independent NumPy network training on synthetic XOR data.<br><a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/">Open the interactive lab →</a></sub></p>
 
 **Does increasing a weight always change the output?**
 
-1. [Open the interactive lab](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/#network), keep the other settings fixed, set input `x₁` to `0.6`, and move `w₁`. Watch the node output.
-2. Set `x₁` to `0` and move `w₁` again. What happens now, and why?
-3. Explain it using the weighted sum `x₁w₁ + x₂w₂ + b`, then follow how weights affect loss in [lesson 04](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb).
+1. [Open the network experiment](https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network). Set input `x₁` to `0.6`, move `w₁₁`, and watch the hidden node and output.
+2. Set `x₁` to `0` and move `w₁₁` again, keeping the other settings fixed. What changes now?
+3. Explain the result using `a₁ = x₁w₁₁ + x₂w₂₁`, then follow how weights affect loss in [lesson 04](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb).
 
 <details>
-<summary>See the explanation</summary>
+<summary><strong>See the explanation</strong></summary>
 
-When `x₁ = 0`, this input contributes `x₁w₁ = 0` to the weighted sum. With all other values fixed, moving `w₁` therefore does not change the current output. With a nonzero input, the product changes with `w₁`.
+When `x₁ = 0`, the contribution `x₁w₁₁` stays zero. With other settings fixed, moving `w₁₁` does not change this node's weighted sum or its downstream outputs. With nonzero input, the product changes with the weight.
 
 </details>
 
-**Choose an entry point:**
+## What you will build and investigate
 
-- **New to the course?** [Set up the environment](#get-started) and start with [lesson 00](lessons/python_math/00_start_and_environment.ipynb).
-- **Want to explore first?** [Open the interactive lab](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/) and change a connection weight.
-- **Looking for a topic?** Jump to the [course map](#course-map) and choose a module.
+| Question | Practice | Start here |
+| :--- | :--- | :--- |
+| How does a model recognize a digit? | Compare kNN, SVM, MLP, CNN and a small ResNet; inspect prediction errors. | [Classical ML](lessons/classical_ml/20_classical_classification.ipynb) · [CNN](lessons/computer_vision/09_cnn_training_and_residuals.ipynb) · [ResNet](lessons/computer_vision/23_resnet_from_blocks.ipynb) |
+| How do parameters learn from mistakes? | Apply the chain rule, write a NumPy backward pass, and compare with autograd. | [Backpropagation](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb) · [autograd](lessons/neural_network_basics/05_torch_tensors_autograd.ipynb) |
+| How is text generated? | Work through Q/K/V and masking, train a tiny character GPT, then read minGPT. | [Attention](lessons/llm/12_attention_qkv.ipynb) · [GPT](lessons/llm/14_small_gpt_training.ipynb) · [minGPT](lessons/llm/15_mingpt_reading_and_generation.ipynb) |
+| What can one experiment tell us? | Compare baselines, select on validation data, inspect errors, and record multiple seeds. | [Experiments](lessons/experiments/18_research_experiments.ipynb) · [Evaluation](lessons/experiments/19_evaluation_and_decisions.ipynb) |
 
-## Get started
-
-### 1. Get the course
-
-Install [Git](https://git-scm.com/install/) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then open a terminal:
-
-```bash
-git clone https://github.com/Lee-Eee-Eee/neural-networks-from-zero.git
-cd neural-networks-from-zero
-```
-
-If you already have the folder, open a terminal in its root instead.
-
-### 2. Set up the environment and launch Jupyter
-
-```bash
-uv sync --locked
-uv run jupyter lab
-```
-
-The project specifies **Python 3.12** and CPU PyTorch. `uv sync --locked` installs the dependencies recorded in `uv.lock` into the project environment; `uv run` runs commands using that environment. The first setup may take time while packages are downloaded.
-
-Open `lessons/python_math/00_start_and_environment.ipynb` in JupyterLab. If prompted for a kernel, select the Python environment associated with this project. To check the interpreter from a terminal:
-
-```bash
-uv run python -c "import sys; print(sys.executable)"
-```
-
-The path should point into the project's `.venv`: typically `.venv\Scripts\python.exe` on Windows or `.venv/bin/python` on macOS/Linux. The introductory experiments use generated data, scikit-learn's bundled digits dataset, and a small course corpus. Lesson 20 also includes an optional MNIST download; the built-in 8×8 digits dataset and 28×28 MNIST are distinct.
-
-## Explore the course
-
-- [What you will learn](#what-you-will-learn) · [Learning paths](#learning-paths) · [Course map](#course-map)
-- [Interactive lab](#interactive-lab) · [Get started](#get-started) · [How to work through a lesson](#how-to-work-through-a-lesson)
-- [Project work](#project-work) · [Troubleshooting](#troubleshooting) · [Repository and maintenance](#repository-and-maintenance) · [Acknowledgments](#acknowledgments)
-
-## What you will learn
-
-| Practice | What you will do |
-| --- | --- |
-| **Read and write the computation** | Use Python, NumPy, and PyTorch; label tensor axes; trace individual values through a model. |
-| **Understand learning** | Apply the chain rule, write a small network's backward pass, and compare gradients with numerical checks and autograd. |
-| **Explore classical ML** | Compare kNN, logistic regression, SVM and clustering; use MSE, Ridge and LASSO on a continuous regression task. |
-| **Build models** | Work from sliding windows to CNNs, from recurrent states to LSTMs, and from Q/K/V to a small character GPT; explore GCNs and liquid time-constant networks. |
-| **Evaluate and investigate** | Compare against baselines, separate training, validation, and test data, inspect errors, and repeat experiments with different seeds. |
-| **Read original work** | Connect an implementation to selected papers, official documentation, and a local minGPT source snapshot. |
-
-The opening lessons introduce Python as they go. Curiosity and a willingness to run and change code are enough to start; algebra and derivatives become useful when you reach the neural-network lessons. Experienced Python users can skim 01–03 and begin with 04, returning to the earlier lessons whenever a shape or operation needs review.
+The course also explores RNNs/LSTMs, GNNs, liquid neural networks, and diffusion. Worked calculations reveal individual operations; scikit-learn and PyTorch experiments connect them into complete workflows.
 
 ## Learning paths
 
-![Course roadmap from Python and neural-network foundations to classical ML, model branches and experiments](docs/assets/course-roadmap.svg)
+![Course roadmap: Python, mathematics and training lead to classical ML, vision, sequences, language models and experiments](docs/assets/course-roadmap.svg)
 
-The diagram is a conceptual learning map. In text: **Python and mathematics → derivatives and training → choose classical ML, vision, sequences, language models, or other networks → experiments**. Lessons 20–23 are numbered after the original sequence but can be taken after the foundations.
+**Python and mathematics → neural-network foundations → choose a model branch → experiments and projects.**
 
-- **New to Python?** Start at [00](lessons/python_math/00_start_and_environment.ipynb) and follow 01–07 in order.
-- **Interested in classical ML?** After 03 and 06–07, continue with 20–21.
-- **Interested in language models?** Complete the foundations, then follow 12–15.
-- **Interested in images?** Continue with 08–09, then 23 and the digit-recognition project.
-- **Ready to investigate?** Use 18 for experiment design and 19 for classification metrics; each can be revisited alongside a model project.
+- **New to Python?** Start with [00](lessons/python_math/00_start_and_environment.ipynb), then follow 01–07.
+- **Classical algorithms?** After 03 and 06–07, continue with [20–21](lessons/classical_ml/20_classical_classification.ipynb).
+- **Images or language models?** Explore [08–09](lessons/computer_vision/08_convolution_from_windows.ipynb), [23](lessons/computer_vision/23_resnet_from_blocks.ipynb), or [12–15](lessons/llm/12_attention_qkv.ipynb).
+- **Ready to investigate?** Use [18–19](lessons/experiments/18_research_experiments.ipynb), then choose a [project brief](docs/PROJECTS.md).
+
+Lesson numbers are stable; the newer lessons 20–23 can be taken once their prerequisites are complete.
 
 ## Course map
 
@@ -195,138 +159,64 @@ Open a module to see its lessons and what you will practice. Lesson numbers rema
 
 </details>
 
-## Inside the notebooks
+## Get started
 
-The lessons combine diagrams, calculations, executable code, and exercises. This residual block appears in [lesson 23](lessons/computer_vision/23_resnet_from_blocks.ipynb), where you follow both paths and train a small classifier.
+The examples run on CPU. Install [Git](https://git-scm.com/downloads) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
 
-![A residual block with convolution and projection shortcut paths joining at an addition before ReLU](docs/assets/preview-resnet.png)
-
-<details>
-<summary><strong>See two more worked examples</strong></summary>
-
-![Two-dimensional kNN example showing the query point and its three nearest neighbors](docs/assets/preview-knn.png)
-
-**kNN:** compare distances and neighbor votes before applying classifiers to handwritten digits in [lesson 20](lessons/classical_ml/20_classical_classification.ipynb).
-
-![Progressively noisier versions of one handwritten digit](docs/assets/preview-diffusion.png)
-
-**Diffusion:** inspect a noise schedule on a digit before training a one-dimensional noise predictor in [lesson 22](lessons/other_networks/22_diffusion_from_noise.ipynb).
-
-</details>
-
-## Interactive lab
-
-The [online lab](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/) contains 18 browser lessons. Change a value, follow the computation, then reproduce the relevant operation in a notebook. For offline use, open [interactive/index.html](interactive/index.html) or the [standalone HTML file](interactive/neural-network-lab.html).
-
-| When studying | Open | Look for |
-| --- | --- | --- |
-| 04 | [Network computation](interactive/index.html#network) | How inputs and weights combine at a node. |
-| 04–05 | [Backpropagation](interactive/index.html#backprop) | How local derivatives carry a gradient along each edge. |
-| 06 | [Shared weights](interactive/index.html#matrix) | How contributions from multiple examples combine. |
-| 07 | [Training](interactive/index.html#training) | How the loss and classification boundary change together. |
-| 08 | [Convolution](interactive/index.html#convolution) | Which image pixels contribute to a particular output. |
-| 09 and 13 | [Residual connections](interactive/index.html#residual) | How a gradient splits at addition and merges at a shared input. |
-
-## How to work through a lesson
-
-1. **Read the opening question.** Before running a cell, predict the result or draw the relevant shapes.
-2. **Run the notebook in order.** Earlier cells define names that later cells use; read both the code and its output.
-3. **Fill in each exercise.** Replace the placeholder in the exercise cell, then run the following check cell. Expand the hint and reference answer when you need them.
-4. **Change one condition.** Modify a value or setting, rerun the relevant cells, and explain the observed change using the computation.
-5. **Keep an experiment record.** Note your question, data split, settings, seed, results, and an error or observation worth investigating.
-
-The notebooks include saved example outputs. Your own changes are saved in your local notebook. Restart the kernel and run from the beginning when earlier state may have become inconsistent.
-
-## Project work
-
-![Roles of training, validation and held-out test data](docs/assets/evaluation-workflow.svg)
-
-The diagram shows the roles of data in one experiment: fit on training data, select on validation, then evaluate the locked choice on test data.
-
-After the foundation lessons, choose a [bilingual project brief](docs/PROJECTS.md). Each brief specifies prerequisites, a question, a first experiment, and an extension:
-
-| Project | Central question | Suggested preparation |
-| --- | --- | --- |
-| **Digit recognition** | How do MLP and CNN errors differ on the same data? | 03, 06–09 |
-| **Rare-event screening** | Does high accuracy mean rare positive cases are found? | 07, 18–19 |
-| **Character prediction** | How does context length affect prediction and generation? | 12–14 |
-| **Graph neighbors** | What happens when nodes are relabeled or edges change? | 03, 16, 18 |
-
-For each project, compare against a baseline where appropriate, use validation data for choices, and report the held-out test result after those choices. The [bilingual reference sheet](docs/REFERENCE.md) collects notation, common shapes, the training loop, and debugging prompts.
-
-## Troubleshooting
-
-<details>
-<summary><strong>The notebook uses a different Python or cannot import a dependency</strong></summary>
-
-Run `uv sync --locked` from the repository root and launch Jupyter with `uv run jupyter lab`. Compare the notebook's Python with `uv run python -c "import sys; print(sys.executable)"`, then select the project environment as the kernel and restart it.
-
-</details>
-
-<details>
-<summary><strong>A cell reports <code>NameError</code> or an unexpected value</strong></summary>
-
-Notebook cells share state. Restart the kernel and run cells from the top in order; check that the exercise cell was filled and run before its check cell.
-
-</details>
-
-<details>
-<summary><strong>A tensor operation reports a shape mismatch</strong></summary>
-
-Print the `.shape` of each operand, label the sample, sequence, channel, or feature axes, and compare them with the operation's requirements. The [reference sheet](docs/REFERENCE.md) has common shape conventions.
-
-</details>
-
-## Repository and maintenance
-
-```text
-lessons/python_math/             Python and mathematics
-lessons/neural_network_basics/   Derivatives, MLP and training
-lessons/classical_ml/            Classical algorithms and regularization
-lessons/computer_vision/         CNNs and small residual networks
-lessons/sequence_models/         RNNs and LSTMs
-lessons/llm/                     Attention, Transformers and GPT
-lessons/other_networks/          GNN, LTC and diffusion
-lessons/experiments/             Experimental design and evaluation
-interactive/         Browser lab, standalone page and local MathJax assets
-models/              Reusable tiny GPT model
+```bash
+git clone https://github.com/Lee-Eee-Eee/everybody-digs-ml.git
+cd everybody-digs-ml
+uv sync --locked
+uv run jupyter lab
 ```
 
-| Path | Purpose |
-| --- | --- |
-| [`docs/`](docs/) | Bilingual project briefs and reference sheet. |
-| [`tools/chapters/`](tools/chapters/) | Source used to generate notebook content. |
-| [`tools/`](tools/) | Course generation, execution, and validation scripts. |
-| [`references/`](references/) | Source map, teaching notes, and local minGPT snapshot. |
-| [`support.py`](support.py) | Exercise feedback and figure helpers. |
-| [`course_manifest.json`](course_manifest.json) | Lesson names, paths, cell counts, and exercise counts. |
+Open [lesson 00](lessons/python_math/00_start_and_environment.ipynb) in JupyterLab and run the cells in order. Fill each exercise cell and run the following check; expand the hint or reference answer when needed.
 
-Run the course checks from the repository root:
+The project uses Python 3.12. Initial setup downloads dependencies. Select the Python kernel in the project's `.venv`: `.venv\Scripts\python.exe` on Windows or `.venv/bin/python` on macOS/Linux.
+
+<details>
+<summary><strong>Data, hardware and troubleshooting</strong></summary>
+
+- Default experiments use synthetic data, scikit-learn's bundled 8×8 `digits` dataset, and a short text corpus. No GPU is required. The separate 28×28 MNIST dataset is an optional download in lesson 20.
+- The models are teaching examples: lesson 14 trains a character GPT; lesson 22 trains a one-dimensional diffusion denoiser and visualizes image noising.
+- For `NameError` or unexpected state, restart the kernel and run cells from the beginning; make sure the exercise cell ran before its check.
+- For missing dependencies, run `uv sync --locked` from the project directory and launch Jupyter with `uv run jupyter lab`. Use `uv run python -c "import sys; print(sys.executable)"` to find the project interpreter.
+
+</details>
+
+## Explore further
+
+- **Interactive lab:** follow [backpropagation](interactive/index.html#backprop), [training](interactive/index.html#training), [convolution](interactive/index.html#convolution), and [residual connections](interactive/index.html#residual). For offline use, open [interactive/index.html](interactive/index.html) or the [standalone file](interactive/neural-network-lab.html). The lab is primarily in Chinese.
+- **Projects:** pick a [digit, rare-event, character, or graph task](docs/PROJECTS.md), then record the data, baseline, result, and interpretation.
+- **Reference:** [bilingual reference sheet](docs/REFERENCE.md) · [course design and sources](docs/COURSE_DESIGN.md) · [source map](references/SOURCES.md).
+- **Feedback:** report a lesson, explanation, or exercise issue on [GitHub Issues](https://github.com/Lee-Eee-Eee/everybody-digs-ml/issues), including the lesson, environment, and steps to reproduce it.
+
+<details>
+<summary><strong>Repository and maintenance</strong></summary>
+
+`lessons/` contains the notebooks by topic; `interactive/` contains the browser lab; `models/` contains the tiny GPT; `tools/chapters/` contains the sources used to generate lessons.
 
 ```bash
 uv run python tools/validate_course.py
 node tools/check_interactive.cjs
+# Regenerate the XOR animation from its NumPy training script
+uv run python tools/build_training_demo.py
+uv run python -B tools/execute_course.py --answers --pattern '01*.ipynb' --jobs 1
 ```
 
-To regenerate the README preview images from the saved notebook outputs, run `uv run python tools/export_readme_previews.py`.
+`uv run python tools/build_course.py` rebuilds notebooks from their sources. Filled exercise answers are preserved; prose and other code cells are rebuilt. Edit the relevant file in `tools/chapters/` when maintaining a lesson.
 
-To execute one lesson and save its outputs, run:
-
-```bash
-uv run python -B tools/execute_course.py --pattern '01*.ipynb' --jobs 1
-```
-
-This writes back to the selected notebook. Add `--answers` to execute reference solutions into `.build/` instead. `uv run python tools/build_course.py` rebuilds notebooks from their sources: filled exercise answers are preserved, while notebook prose and other code cells are rebuilt. Edit the corresponding file in `tools/chapters/` when maintaining lesson content.
+</details>
 
 ## Acknowledgments
 
-Thank you to the authors and maintainers of these open resources for the ideas, explanations, and implementations that support this course:
+Thank you to the authors and maintainers whose resources inform the course's structure and further reading:
 
-- [Build Your Own X: Machine Learning](https://github.com/amitshekhariitbhu/build-your-own-x-machine-learning) for its collection of hands-on machine-learning projects and tutorials.
-- [Andrej Karpathy's micrograd](https://github.com/karpathy/micrograd) and [minGPT](https://github.com/karpathy/minGPT) for approachable computation-graph and language-model implementations; lesson 15 reads a local minGPT snapshot.
-- [Dive into Deep Learning](https://github.com/d2l-ai/d2l-en), [Machine Learning with PyTorch and Scikit-Learn](https://github.com/rasbt/machine-learning-book), and [ML From Scratch](https://github.com/eriklindernoren/ML-From-Scratch) for accessible ways to connect explanation, code, and experiments.
-- [Happy-LLM](https://github.com/datawhalechina/happy-llm) and the [DDPM paper](https://arxiv.org/abs/2006.11239) for further language-model reading and diffusion principles.
-- The developers of [MathJax](https://www.mathjax.org/) for the mathematics display in the interactive lab.
-- The authors of [PyTorch's tutorials](https://docs.pytorch.org/tutorials/beginner/basics/intro.html), [Attention Is All You Need](https://arxiv.org/abs/1706.03762), [GCN](https://arxiv.org/abs/1609.02907), and [Liquid Time-constant Networks](https://arxiv.org/abs/2006.04439), whose work provides further reading throughout the course.
+- [Build Your Own X: Machine Learning](https://github.com/amitshekhariitbhu/build-your-own-x-machine-learning) for its collection of hands-on projects.
+- [micrograd](https://github.com/karpathy/micrograd) and [minGPT](https://github.com/karpathy/minGPT) for approachable computation graphs and GPT source code. Lesson 15 uses a local minGPT snapshot with its license retained.
+- [Dive into Deep Learning](https://github.com/d2l-ai/d2l-en), [Machine Learning with PyTorch and Scikit-Learn](https://github.com/rasbt/machine-learning-book), and [Happy-LLM](https://github.com/datawhalechina/happy-llm) for connecting explanation, code, and experiments.
+- [ML for Beginners](https://github.com/microsoft/ML-For-Beginners) and [LLMs from Scratch](https://github.com/rasbt/LLMs-from-scratch) for course navigation, setup, and prerequisite descriptions.
+- The authors of [PyTorch tutorials](https://docs.pytorch.org/tutorials/), [scikit-learn documentation](https://scikit-learn.org/stable/), [Attention Is All You Need](https://arxiv.org/abs/1706.03762), [ResNet](https://arxiv.org/abs/1512.03385), [GCN](https://arxiv.org/abs/1609.02907), [LTC](https://arxiv.org/abs/2006.04439), and [DDPM](https://arxiv.org/abs/2006.11239).
+- The developers of [MathJax](https://www.mathjax.org/) for the lab's mathematics rendering.
 
-See [course design and references](docs/COURSE_DESIGN.md) for how external ideas are adapted into the course’s own examples. See the [source map](references/SOURCES.md) and [teaching notes](references/TEACHING_NOTES.md) for reading questions and teaching references, and [third-party notices](THIRD_PARTY.md) for included materials and their licenses.
+See [course design and references](docs/COURSE_DESIGN.md) for our adaptations and [third-party notices](THIRD_PARTY.md) for included materials and their licenses.

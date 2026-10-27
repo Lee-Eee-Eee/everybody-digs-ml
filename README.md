@@ -1,100 +1,71 @@
-# 从 Python 到神经网络
+# Everybody Digs ML
 
 <div align="center">
 
-<img src="docs/assets/course-banner.svg" alt="From Python to Neural Networks — Learn by building, understand by experimenting" width="100%">
+<img src="docs/assets/course-banner.svg" alt="Everybody Digs ML：动手理解机器学习" width="100%">
 
-**从一行 Python 出发，亲手搭建、训练并理解机器学习模型。**
+**从一行 Python 出发，亲手理解机器如何学习。**
 
-[English](README.en.md) &nbsp; · &nbsp; [开始学习](#开始学习) &nbsp; · &nbsp; [学习路线](#学习路线) &nbsp; · &nbsp; [课程目录](#课程目录) &nbsp; · &nbsp; [交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/)
+[English](README.en.md) · [立即体验](#先动手再弄懂) · [学习路线](#学习路线) · [课程目录](#课程目录) · [开始学习](#开始学习) · [致谢](#致谢)
 
-`24 个 Notebook` &nbsp; `139 道练习` &nbsp; `18 节交互实验` &nbsp; `Python 3.12 · CPU`
+`24 个 Notebook`　 `139 道练习`　 `18 节交互实验`　 `Python 3.12 · CPU`
 
 </div>
 
 ---
 
-这是一套以**计算、代码和实验**为主线的学习教程：从 Python 和 NumPy 出发，理解经典机器学习、神经网络和语言模型，再用对照实验解释结果。每节课从一个具体问题开始，将公式推导、可运行代码、图示和练习放在一起。
+一个模型为什么会认错数字？训练时，权重究竟往哪个方向改变？生成文本时，每个字符又是怎样被选出来的？
 
-**先预测，再计算；亲手实现，再比较结果。** 课程既有手写的核心计算，也使用 scikit-learn 和 PyTorch 构建完整实验。Notebook 正文以中文为主；[English guide](README.en.md)、[项目指南](docs/PROJECTS.md)和[术语速查](docs/REFERENCE.md)提供英文导航或双语内容。
+这是一套把**公式、代码和实验**放在一起的机器学习教程：先手算一个小问题，再把它写成程序，最后改变条件，观察结果。课程从 Python 与 NumPy 出发，经过经典机器学习和神经网络，走向 Transformer、微型 GPT、图网络与扩散模型。
 
-### 先来一个小挑战
+> **先预测 → 再运行 → 改一点 → 解释发生了什么。**
 
-**把一条权重调大，输出一定会变吗？**
+Notebook 正文以中文为主；[English guide](README.en.md)提供英文导航，[项目指南](docs/PROJECTS.md)和[速查表](docs/REFERENCE.md)为中英双语。
 
-1. [打开交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/#network)，保持其他设置不变，把输入 `x₁` 设为 `0.6`，拖动 `w₁`，观察节点输出。
-2. 再把 `x₁` 设为 `0`，重新拖动 `w₁`。这次输出发生了什么？为什么？
-3. 试着用加权和 `x₁w₁ + x₂w₂ + b` 解释，再去 [04 手写反向传播](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb)追踪权重如何影响损失。
+## 先动手，再弄懂
+
+<p align="center">
+  <a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network"><img src="docs/assets/training-demo.gif" alt="小型网络训练 XOR：预测区域与损失随训练变化" width="760"></a>
+</p>
+
+<p align="center"><sub>动图展示一个独立 NumPy 小网络在合成 XOR 数据上的训练过程。<br><a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/">打开浏览器交互学习室 →</a></sub></p>
+
+**试一个问题：把一条权重调大，输出一定会变吗？**
+
+1. [打开神经网络实验](https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network)。把输入 `x₁` 设为 `0.6`，拖动 `w₁₁`，观察隐藏节点和输出。
+2. 把 `x₁` 设为 `0`，再次拖动 `w₁₁`。保持其他设置不变，这次发生了什么？
+3. 用加权和 `a₁ = x₁w₁₁ + x₂w₂₁` 解释，再到 [04 手写反向传播](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb)追踪权重如何影响损失。
 
 <details>
-<summary>查看解释</summary>
+<summary><strong>展开解释</strong></summary>
 
-当 `x₁ = 0`，这一条输入对加权和的贡献始终是 `x₁w₁ = 0`；其他量保持不变时，调整 `w₁` 不会改变当前输出。输入不为零时，该乘积会随 `w₁` 改变。
+当 `x₁ = 0`，乘积 `x₁w₁₁` 始终为零。其他设置不变时，改变 `w₁₁` 不会改变这个节点的加权和及其后续输出。输入不为零时，权重的变化会改变该乘积。
 
 </details>
 
-### 选择你的第一步
+## 你会亲手完成什么
 
-- **刚接触 Python 和 AI：** 从 [00 开始与环境](lessons/python_math/00_start_and_environment.ipynb) 出发，依次完成 01–07。
-- **想从手写数字认识算法：** 在完成基础后，学习 [20 经典分类与聚类](lessons/classical_ml/20_classical_classification.ipynb)、[21 回归与正则化](lessons/classical_ml/21_regression_regularization.ipynb)，再比较 [CNN](lessons/computer_vision/09_cnn_training_and_residuals.ipynb) 与[小型 ResNet](lessons/computer_vision/23_resnet_from_blocks.ipynb)。
-- **想理解语言模型：** 完成基础后，从 [12 注意力](lessons/llm/12_attention_qkv.ipynb)走到 [14 字符 GPT](lessons/llm/14_small_gpt_training.ipynb) 和 [15 minGPT 源码阅读](lessons/llm/15_mingpt_reading_and_generation.ipynb)。
-- **想先直观看看：** 打开[交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/)，改变网络权重，观察输出与梯度。
+| 一条问题线索 | 动手完成的事 | 对应课程 |
+| :--- | :--- | :--- |
+| 一张数字图片怎样被认出来？ | 从像素距离到 kNN、SVM、MLP、CNN 与小型 ResNet，比较分类结果和错例。 | [经典算法](lessons/classical_ml/20_classical_classification.ipynb) · [CNN](lessons/computer_vision/09_cnn_training_and_residuals.ipynb) · [ResNet](lessons/computer_vision/23_resnet_from_blocks.ipynb) |
+| 参数怎样从错误中学习？ | 计算链式法则，用 NumPy 手写反传，再与 PyTorch autograd 核对。 | [手写反传](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb) · [autograd](lessons/neural_network_basics/05_torch_tensors_autograd.ipynb) |
+| 模型怎样续写一段文字？ | 从 Q、K、V 和因果遮罩出发，训练微型字符 GPT，再阅读 minGPT 源码。 | [注意力](lessons/llm/12_attention_qkv.ipynb) · [字符 GPT](lessons/llm/14_small_gpt_training.ipynb) · [minGPT](lessons/llm/15_mingpt_reading_and_generation.ipynb) |
+| 一次实验能说明什么？ | 设置基线、验证集和对照，检查错例，并记录不同随机种子的结果。 | [研究实验](lessons/experiments/18_research_experiments.ipynb) · [分类评价](lessons/experiments/19_evaluation_and_decisions.ipynb) |
 
-## 开始学习
-
-### 1. 获取课程
-
-安装 [Git](https://git-scm.com/downloads) 和 [uv](https://docs.astral.sh/uv/getting-started/installation/)，然后在终端运行：
-
-```bash
-git clone https://github.com/Lee-Eee-Eee/neural-networks-from-zero.git
-cd neural-networks-from-zero
-```
-
-如果已经有本项目的本地副本，直接在终端进入项目文件夹即可。
-
-### 2. 创建环境并启动 Jupyter
-
-```bash
-uv sync --locked
-uv run jupyter lab
-```
-
-`uv` 会根据项目配置创建隔离环境并安装依赖。课程使用 **Python 3.12** 与 CPU 版 PyTorch；首次安装需要下载依赖。进入 JupyterLab 后，打开 `lessons/python_math/00_start_and_environment.ipynb`，选择项目环境对应的 Python 内核。
-
-| 系统 | 项目环境中的 Python |
-| :--- | :--- |
-| Windows | `.venv\Scripts\python.exe` |
-| macOS / Linux | `.venv/bin/python` |
-
-可用下面的命令确认当前项目使用的解释器：
-
-```bash
-uv run python -c "import sys; print(sys.executable)"
-```
-
-课程使用本地合成数据、scikit-learn 自带的手写数字数据和课程小语料，基础练习不需要下载大型数据集或配置 GPU。第 09 课使用 1,797 张 8×8 数字图像；第 14 课用 27 条合成短句进行字符级训练、验证和测试。第 20 课提供可选的 MNIST 下载实验，默认关闭；digits 与 28×28 MNIST 是不同的数据集。
-
-### 3. 完成第一节课
-
-1. 打开 [00 从这里开始](lessons/python_math/00_start_and_environment.ipynb)，按顺序运行代码格。
-2. 在输出出现之前先预测结果，再修改一个数值，观察结果如何变化。
-3. 在练习格中填写答案，运行紧随其后的检查格；遇到困难时展开提示和参考答案。
-4. 打开[交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/)，改变一条连接的权重，再回到 Notebook 解释变化。
+课程同时包含 RNN/LSTM、GNN、液体网络和扩散模型。手写计算帮助你理解核心操作，scikit-learn 与 PyTorch 实验帮助你把这些操作接成完整流程。
 
 ## 学习路线
 
-![课程路线：从 Python、数学和训练基础通往经典机器学习、视觉与序列、语言模型、其他网络及实验](docs/assets/course-roadmap.svg)
+![课程路线：Python、数学和训练基础通往经典机器学习、视觉、序列、语言模型、其他网络及实验](docs/assets/course-roadmap.svg)
 
-<sub>课程路线示意：先建立共同基础，再进入模型分支；第 20–23 课虽然编号较后，也可在相应基础完成后学习。</sub>
+**Python 与数学 → 神经网络基础 → 选择模型分支 → 实验与项目。**
 
-**文字路线：** Python 与数学 → 神经网络基础 → 经典算法 / 视觉 / 序列 / LLM / 其他网络 → 实验与项目。
+- **零基础：** 从 [00 开始](lessons/python_math/00_start_and_environment.ipynb)，按 01–07 顺序学习。
+- **先看经典算法：** 完成 03、06–07 后，进入 [20–21](lessons/classical_ml/20_classical_classification.ipynb)。
+- **对图像或语言感兴趣：** 从 [08–09](lessons/computer_vision/08_convolution_from_windows.ipynb)、[23](lessons/computer_vision/23_resnet_from_blocks.ipynb) 或 [12–15](lessons/llm/12_attention_qkv.ipynb) 选择一条路线。
+- **完成一个分支后：** 用 [18–19](lessons/experiments/18_research_experiments.ipynb) 整理实验，再选一个[项目任务](docs/PROJECTS.md)。
 
-**建议顺序：** 首次学习先完成 00–07，再根据兴趣选择分支；经典机器学习的 20–21 课建议在 03、06–07 后学习；第 23 课可在第 09 课后学习；第 18 课可在完成任一模型分支后学习，第 19 课在完成第 07 课后即可开始。完成每个阶段时，试着独立回答下列问题：
-
-1. **基础：** 我能否解释一个数组的各个轴，并手算一个权重对损失的影响？
-2. **模型：** 我能否追踪一次前向计算，说明参数怎样被更新？
-3. **实验：** 我能否说明基线、数据划分、评价指标和一次失败案例？
+课号保持原有编号；20–23 是后加入的专题，可按先修关系穿插学习。
 
 ## 课程目录
 
@@ -188,156 +159,67 @@ uv run python -c "import sys; print(sys.executable)"
 
 </details>
 
-## 课程预览
+## 开始学习
 
-下面的图来自学习本保存的实际输出：从两条计算路径理解残差块，再回到代码中追踪张量形状与梯度。
-
-![小型残差块：卷积分支和投影或恒等捷径在加法节点汇合，随后经过 ReLU](docs/assets/preview-resnet.png)
-
-<sub>图：[23 小型 ResNet](lessons/computer_vision/23_resnet_from_blocks.ipynb) · 主分支与捷径相加后再激活。</sub>
-
-<details>
-<summary><strong>再看两个例子：kNN 邻居投票与图像加噪</strong></summary>
-
-![二维 kNN 示例：查询点及三个最近邻](docs/assets/preview-knn.png)
-
-[20 经典分类](lessons/classical_ml/20_classical_classification.ipynb)：用二维样本观察距离与最近邻投票。
-
-![手写数字在不同扩散步数下逐渐加入噪声](docs/assets/preview-diffusion.png)
-
-[22 扩散模型](lessons/other_networks/22_diffusion_from_noise.ipynb)：固定同一图像与噪声，比较不同加噪时刻。训练与反向采样使用一维玩具数据。
-
-</details>
-
-## 交互学习室
-
-<div align="center">
-
-**[在线打开交互学习室 →](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/)**
-
-</div>
-
-实验在浏览器中计算。点选节点或修改参数，即可观察当前数值、梯度或模型行为；学习完一个概念，再回到对应 Notebook 自己实现。
-
-| 学习到这里 | 打开实验 | 观察什么 |
-| :--- | :--- | :--- |
-| 04：网络前向 | [读图与计算](interactive/index.html#network) | 节点如何组合输入、权重与偏置 |
-| 04–05：反向传播 | [沿边回传](interactive/index.html#backprop) | 梯度如何沿计算路径传播和相加 |
-| 06：批量训练 | [共用权重](interactive/index.html#matrix) | 多个样本的梯度如何汇合 |
-| 07：分类 | [真实训练](interactive/index.html#training) | 训练过程中的损失与决策边界 |
-| 08：卷积 | [窗口与共享核](interactive/index.html#convolution) | 一个输出对应哪些输入像素 |
-| 09、13：残差 | [两条支路](interactive/index.html#residual) | 加法节点处的前向和反向路径 |
-
-离线时可打开 [interactive/index.html](interactive/index.html)；也提供[单文件版](interactive/neural-network-lab.html)。
-
-## 把知识连成项目
-
-![训练、验证与测试的职责](docs/assets/evaluation-workflow.svg)
-
-<sub>实验流程示意：训练集拟合参数，验证集选择方案，锁定后使用测试集评价。</sub>
-
-完成基础课程后，从[双语项目指南](docs/PROJECTS.md)中选择一条路线，记录问题、配置、基线、结果和解释。
-
-| 项目 | 核心问题 | 对应课程 |
-| :--- | :--- | :--- |
-| **识别数字** | MLP 和 CNN 会在哪些样本上出错？ | 03、06–09 |
-| **筛选稀有事件** | 高准确率能否说明模型找到了少见正例？ | 07、18–19 |
-| **预测字符** | 上下文长度如何影响预测和生成？ | 12–14 |
-| **图上的邻居** | 节点重编号或改变边，会怎样影响 GCN 输出？ | 03、16、18 |
-
-阅读公式或排查代码时，可随手查阅[双语术语与形状速查](docs/REFERENCE.md)。
-
-## 常见问题
-
-<details>
-<summary><strong>找不到课程的 Python 内核怎么办？</strong></summary>
-
-先在项目根目录运行 `uv sync --locked` 和 `uv run jupyter lab`，再检查 Notebook 右上角选择的内核。运行 `uv run python -c "import sys; print(sys.executable)"` 可查看项目环境使用的解释器；若编辑器支持按路径选择解释器，请选择该路径。
-
-</details>
-
-<details>
-<summary><strong>运行代码时出现 NameError 或结果与预期不同？</strong></summary>
-
-Notebook 的后续代码格可能依赖前面建立的变量。重启内核后从第一格开始依次运行；完成练习时，先运行填写答案的代码格，再运行紧随其后的检查格。
-
-</details>
-
-<details>
-<summary><strong>练习的提示和答案在哪里？</strong></summary>
-
-练习与检查格之后有可展开的提示和参考答案。建议先独立尝试，再使用提示；检查结果也会指出哪些值还需要修改。
-
-</details>
-
-<details>
-<summary><strong>需要 GPU 或大型数据集吗？</strong></summary>
-
-课程默认使用 CPU 版 PyTorch，基础实验使用合成数据、scikit-learn 自带的 digits 数据和课程小语料。首次同步环境需要网络，训练速度会因设备不同而变化。
-
-</details>
-
-## 仓库结构与维护
-
-```text
-neural_networks_from_zero/
-├── lessons/
-│   ├── python_math/            # Python、数组与数学
-│   ├── neural_network_basics/  # 导数、MLP、训练
-│   ├── classical_ml/           # 经典算法与正则化
-│   ├── computer_vision/        # CNN、残差与小型 ResNet
-│   ├── sequence_models/        # RNN / LSTM
-│   ├── llm/                    # 注意力、Transformer、GPT
-│   ├── other_networks/         # GNN、LTC、扩散
-│   └── experiments/            # 实验设计与评价
-├── interactive/        # 浏览器交互实验与单文件版本
-├── models/             # 课程复用的微型 GPT
-├── docs/               # 双语项目指南、速查与文档资源
-├── references/         # 阅读资料、来源说明与 minGPT 快照
-├── tools/chapters/     # Notebook 内容的生成源
-├── support.py          # 练习反馈与绘图辅助
-├── course_manifest.json
-├── pyproject.toml
-└── uv.lock
-```
-
-<details>
-<summary><strong>运行与维护命令</strong></summary>
-
-在项目根目录执行：
+课程示例在 CPU 上运行。安装 [Git](https://git-scm.com/downloads) 和 [uv](https://docs.astral.sh/uv/getting-started/installation/) 后，在终端执行：
 
 ```bash
-# 检查 Notebook 结构、练习和本地链接
+git clone https://github.com/Lee-Eee-Eee/everybody-digs-ml.git
+cd everybody-digs-ml
+uv sync --locked
+uv run jupyter lab
+```
+
+在 JupyterLab 中打开 [00 开始与环境](lessons/python_math/00_start_and_environment.ipynb)，按顺序运行代码格。将练习格中的占位符替换为自己的答案，运行紧随其后的检查格；卡住时可展开提示和参考答案。
+
+项目使用 Python 3.12；首次同步环境需要下载依赖。Notebook 应选择项目 `.venv` 中的 Python 内核：Windows 为 `.venv\Scripts\python.exe`，macOS/Linux 为 `.venv/bin/python`。
+
+<details>
+<summary><strong>数据、硬件与常见问题</strong></summary>
+
+- 默认使用合成数据、scikit-learn 自带的 8×8 `digits` 数据和短文本语料，无需 GPU。28×28 MNIST 是单独的数据集；第 20 课提供默认关闭的下载实验。
+- 模型示例是教学用的小型模型：第 14 课训练字符 GPT；第 22 课用一维数据训练扩散去噪模型，并展示图像加噪。
+- 若出现 `NameError` 或输出与预期不符，重启内核并从第一格依次运行；检查练习格是否已经运行。
+- 若缺少依赖，确认从项目目录运行 `uv sync --locked`，再用 `uv run jupyter lab` 启动，并选择项目环境对应的内核。可用 `uv run python -c "import sys; print(sys.executable)"` 查看路径。
+
+</details>
+
+## 继续探索
+
+- **交互学习室：** 在浏览器中观察[反向传播](interactive/index.html#backprop)、[真实训练](interactive/index.html#training)、[卷积](interactive/index.html#convolution)和[残差](interactive/index.html#residual)。离线可打开 [interactive/index.html](interactive/index.html) 或[单文件版](interactive/neural-network-lab.html)。
+- **动手项目：** 从[识别数字、稀有事件筛选、字符预测和图网络](docs/PROJECTS.md)中选择一个问题，记录数据、对照、结果和解释。
+- **查阅与延伸：** [双语速查表](docs/REFERENCE.md) · [课程设计与参考](docs/COURSE_DESIGN.md) · [参考地图](references/SOURCES.md)。
+- **反馈：** 如果发现链接、讲解或练习问题，欢迎在 [GitHub Issues](https://github.com/Lee-Eee-Eee/everybody-digs-ml/issues) 描述课号、运行环境和复现步骤。
+
+<details>
+<summary><strong>仓库结构与维护</strong></summary>
+
+`lessons/` 按主题保存 Notebook；`interactive/` 是浏览器学习室；`models/` 包含微型 GPT；`tools/chapters/` 是课程内容生成源。
+
+```bash
+# 检查 Notebook、练习和本地链接
 uv run python tools/validate_course.py
-
-# 从已保存的 Notebook 输出更新课程预览图
-uv run python tools/export_readme_previews.py
-
-# 检查浏览器实验中的数值计算（需要 Node.js）
+# 检查交互实验中的数值计算（需要 Node.js）
 node tools/check_interactive.cjs
-
-# 运行指定课程并写回该 Notebook 的输出
-uv run python -B tools/execute_course.py --pattern '01*.ipynb' --jobs 1
-
-# 验证指定课程的参考答案，结果保存在 .build/
+# 从 NumPy 训练脚本重新生成 XOR 动图
+uv run python tools/build_training_demo.py
+# 验证一课的参考答案；输出写入 .build/
 uv run python -B tools/execute_course.py --answers --pattern '01*.ipynb' --jobs 1
 ```
 
-运行 `uv run python tools/build_course.py` 可从 `tools/chapters/` 重建 Notebook。生成器会保留已填写的练习代码，但会重建课程文字和其他代码格；修改课程内容时请编辑生成源。
+`uv run python tools/build_course.py` 从生成源重建 Notebook：已填写的练习代码会保留，课程文字和其他代码格会重建。修改课程内容时请编辑 `tools/chapters/` 中的对应源文件。
 
 </details>
 
-课程如何从参考资料发展出自己的例子与实验，见[课程设计与参考](docs/COURSE_DESIGN.md)。更多原论文、官方文档与阅读任务见[参考地图](references/SOURCES.md)和[教学参考](references/TEACHING_NOTES.md)；仓库内第三方材料及其许可证见[第三方说明](THIRD_PARTY.md)。
-
 ## 致谢
 
-感谢以下项目、教程与研究工作为本课程的组织、实现和延伸阅读提供的启发：
+感谢下列项目和研究工作，为课程的组织、实现和延伸阅读提供参考：
 
-- [Build Your Own X: Machine Learning](https://github.com/amitshekhariitbhu/build-your-own-x-machine-learning)——从零实现的项目索引，为课程项目练习的组织提供参考。
-- [micrograd](https://github.com/karpathy/micrograd) 与 [minGPT](https://github.com/karpathy/minGPT)——分别以紧凑的自动求导和 GPT 实现，帮助读者理解计算图与生成模型；第 15 课使用了仓库内保留许可证的 minGPT 源码快照。
-- [动手学深度学习](https://github.com/d2l-ai/d2l-zh)与 [Machine Learning with PyTorch and Scikit-Learn](https://github.com/rasbt/machine-learning-book)——为公式、代码、数据处理和模型评价相结合的学习方式提供参考。
-- [Happy-LLM](https://github.com/datawhalechina/happy-llm) 与 [DDPM](https://arxiv.org/abs/2006.11239)——为语言模型的延伸阅读和扩散模型的推导提供参考。
-- [PyTorch 官方教程](https://docs.pytorch.org/tutorials/)与 [scikit-learn 文档](https://scikit-learn.org/stable/)——为框架接口、训练流程和评价方法提供可靠资料。
-- [Attention Is All You Need](https://arxiv.org/abs/1706.03762)、[GCN](https://arxiv.org/abs/1609.02907)、[ResNet](https://arxiv.org/abs/1512.03385)、[Liquid Time-constant Networks](https://arxiv.org/abs/2006.04439) 等论文的作者，以及 [MathJax](https://www.mathjax.org/) 的开发者——让课程中的模型阅读和数学展示成为可能。
+- [Build Your Own X: Machine Learning](https://github.com/amitshekhariitbhu/build-your-own-x-machine-learning)：从零实现的项目索引。
+- [micrograd](https://github.com/karpathy/micrograd) 与 [minGPT](https://github.com/karpathy/minGPT)：理解计算图和阅读生成模型。第 15 课使用本仓库中保留许可证的 minGPT 源码快照。
+- [动手学深度学习](https://github.com/d2l-ai/d2l-zh)、[Machine Learning with PyTorch and Scikit-Learn](https://github.com/rasbt/machine-learning-book) 与 [Happy-LLM](https://github.com/datawhalechina/happy-llm)：公式、代码和实验的学习参考。
+- [ML for Beginners](https://github.com/microsoft/ML-For-Beginners) 与 [LLMs from Scratch](https://github.com/rasbt/LLMs-from-scratch)：课程导航、上手方式和前置知识说明的参考。
+- [PyTorch 教程](https://docs.pytorch.org/tutorials/)、[scikit-learn 文档](https://scikit-learn.org/stable/)、[Attention Is All You Need](https://arxiv.org/abs/1706.03762)、[ResNet](https://arxiv.org/abs/1512.03385)、[GCN](https://arxiv.org/abs/1609.02907)、[LTC](https://arxiv.org/abs/2006.04439) 与 [DDPM](https://arxiv.org/abs/2006.11239)：框架与原始研究资料。
+- [MathJax](https://www.mathjax.org/)：交互学习室中的数学排版。
 
-也感谢每一位分享知识、开源代码和教学材料的作者，以及使用这套课程、提出建议的学习者。
+课程如何发展自己的例子与实验，见[课程设计与参考](docs/COURSE_DESIGN.md)；仓库内第三方材料及许可证见[第三方说明](THIRD_PARTY.md)。

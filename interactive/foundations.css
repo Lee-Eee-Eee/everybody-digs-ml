@@ -2,3 +2,35 @@
 .foundation-mode main{padding-top:24px}.foundation-mode .lesson-header h1{font-size:29px;margin-bottom:9px}.foundation-mode #lesson-kicker{margin-bottom:7px}.foundation-mode #lesson-intro{font-size:15px;max-width:900px}.foundation-mode #lesson-map{display:none}.foundation-mode .lesson-header{margin-bottom:15px}.foundation-mode .lab-head{padding:13px 20px}.foundation-mode #experiment:has(>#fc-network){display:flex;flex-direction:column}.foundation-mode #experiment>#fc-network{order:-4}.foundation-mode #experiment>.fc-step-controls:first-of-type{order:-3}.foundation-mode #experiment>#fc-explain{order:-2}.foundation-mode #experiment>.fc-step-note{order:-1;margin-top:14px}
 body.foundation-mode .lesson-header{margin-bottom:12px}body.foundation-mode #lab-pane>.lab-head{display:none}body.foundation-mode #experiment>.fc-step-controls:not(#fc-update-actions){order:-6;margin-top:0}body.foundation-mode #experiment>#fc-live-step{order:-5}body.foundation-mode #experiment>#fc-network{order:-4}body.foundation-mode #experiment>#fc-explain{order:-3}.fc-live-step{font-size:16px;font-weight:600;line-height:1.7;margin:2px 0 10px;color:#2c647d}
 .fc-live-equation{font-family:"Cambria Math",Consolas,"Microsoft YaHei",serif;font-size:17px;font-weight:400;line-height:1.8;margin-top:4px;overflow-wrap:anywhere;color:#26383f}
+
+/* First experiment: keep controls and the computed pathway together. */
+.fi-discovery{color:#203b48}
+.fi-discovery-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.fi-discovery-head h2{font-size:23px;line-height:1.35;margin:3px 0 8px;color:#17384b}
+.fi-discovery-head p{margin:0;color:#506b75;font-size:15px;line-height:1.7}
+.fi-kicker{font-size:11px;letter-spacing:.08em;color:#287a77;font-weight:700}
+.fi-status{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:#4a756b;font-size:12px;padding:5px 10px;background:#eef7f2;border:1px solid #d7e9df;border-radius:30px}
+.fi-status span{width:7px;height:7px;border-radius:50%;background:#37a27b}
+.fi-discovery-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0 13px}
+.fi-discovery-controls .control{min-width:0;border:1px solid #dce9e8;background:#f7fbfa;border-radius:10px;padding:14px 16px}
+.fi-discovery-controls .control-top{font-size:15px;font-weight:650;color:#23495b}
+.fi-discovery-controls output{font-size:19px!important;color:#166c70;font-variant-numeric:tabular-nums}
+.fi-discovery-controls input[type=range]{width:100%;margin-top:14px;accent-color:#287e7a}
+.fi-preset{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.fi-preset>span{font-size:13px;color:#5d737b;margin-right:3px}
+.fi-discovery .fi-preset button{border:1px solid #c4dbd6;border-radius:6px;color:#25625f;background:#fff;font-size:13px;padding:6px 11px}
+.fi-discovery .fi-preset button:hover{background:#e8f5f0}
+.fi-discovery button:focus-visible,.fi-map-details summary:focus-visible,.fi-next-link a:focus-visible{outline:3px solid #287e7a;outline-offset:3px}
+.fi-observation{padding:13px 16px;border-left:3px solid #d49055;border-radius:4px;background:#fff7ed;color:#624832;font-size:14px;line-height:1.75}
+.fi-observation strong{color:#8a4b28}
+.fi-chain{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 8px}
+.fi-chain-step{min-width:0;border:1px solid #dbe8e8;border-radius:9px;padding:12px;background:#fff;display:flex;flex-direction:column;gap:5px;line-height:1.45}
+.fi-chain-step span{font-size:12px;font-weight:650;color:#60808a}
+.fi-chain-step strong{font-size:17px;color:#176c6f;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.fi-chain-step small{font-size:12px;color:#697e87;overflow-wrap:anywhere}
+.fi-caption{font-size:12px;color:#647a80;margin:12px 0 18px;line-height:1.7}
+.fi-map-details{border:1px solid #dce8e7;background:#fbfdfc;border-radius:9px;padding:14px;margin:18px 0}
+.fi-map-details summary{font-size:14px;color:#245e6a;font-weight:650;cursor:pointer}
+.fi-next-link{margin:14px 0 0;font-size:14px;color:#5b7079}
+.fi-next-link a{font-weight:650;color:#176b71;text-underline-offset:3px}
+@media(max-width:750px){.fi-discovery-head{display:block}.fi-status{margin-top:12px}.fi-discovery-controls{grid-template-columns:1fr;gap:10px}.fi-chain{grid-template-columns:repeat(2,minmax(0,1fr))}.fi-chain-step strong{font-size:15px}}

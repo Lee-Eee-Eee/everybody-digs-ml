@@ -9,7 +9,9 @@ import nbformat
 ROOT=Path(__file__).resolve().parents[1]
 
 def local_links(text,base):
-    for target in re.findall(r'\]\(([^\s)]+)\)',text):
+    targets = re.findall(r'\]\(([^\s)]+)\)', text)
+    targets += re.findall(r'''(?:src|href)=["']([^"']+)["']''', text)
+    for target in targets:
         parsed=urlsplit(target)
         if parsed.scheme or not parsed.path:
             continue
