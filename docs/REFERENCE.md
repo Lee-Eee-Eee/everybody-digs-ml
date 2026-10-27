@@ -44,12 +44,12 @@ PyTorch 默认累加梯度；每次更新前通常需要清零。评价时可使
 
 | 中文 / English | 核心问题 / Key question | 课程 / Lesson |
 | --- | --- | --- |
-| 链式法则 / Chain rule | 输出变化如何沿依赖关系传回？How does sensitivity flow through dependencies? | [04](../lessons/04_derivatives_numpy_mlp.ipynb), [05](../lessons/05_torch_tensors_autograd.ipynb) |
-| 过拟合 / Overfitting | 训练表现好时，未见样本表现如何？How well does the model perform on unseen data? | [07](../lessons/07_mlp_regression_classification.ipynb), [18](../lessons/18_research_experiments.ipynb) |
-| 权重共享 / Weight sharing | 同一个参数在多个位置或时间使用时，梯度如何累加？How do gradients accumulate when a parameter is reused? | [08](../lessons/08_convolution_from_windows.ipynb), [10](../lessons/10_rnn_time_and_bptt.ipynb) |
-| 因果遮罩 / Causal mask | 每个位置能读取哪些过去和当前位置？Which past and current positions can each position read? | [12](../lessons/12_attention_qkv.ipynb) |
-| 残差连接 / Residual connection | 加法两条路径如何影响前向与反向？How do two addition paths affect forward and backward passes? | [09](../lessons/09_cnn_training_and_residuals.ipynb), [13](../lessons/13_transformer_block.ipynb) |
-| 数据泄漏 / Data leakage | 哪些统计量或选择利用了不该使用的数据？Which statistics or choices used information they should not have used? | [19](../lessons/19_evaluation_and_decisions.ipynb) |
+| 链式法则 / Chain rule | 输出变化如何沿依赖关系传回？How does sensitivity flow through dependencies? | [04](../lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb), [05](../lessons/neural_network_basics/05_torch_tensors_autograd.ipynb) |
+| 过拟合 / Overfitting | 训练表现好时，未见样本表现如何？How well does the model perform on unseen data? | [07](../lessons/neural_network_basics/07_mlp_regression_classification.ipynb), [18](../lessons/experiments/18_research_experiments.ipynb) |
+| 权重共享 / Weight sharing | 同一个参数在多个位置或时间使用时，梯度如何累加？How do gradients accumulate when a parameter is reused? | [08](../lessons/computer_vision/08_convolution_from_windows.ipynb), [10](../lessons/sequence_models/10_rnn_time_and_bptt.ipynb) |
+| 因果遮罩 / Causal mask | 每个位置能读取哪些过去和当前位置？Which past and current positions can each position read? | [12](../lessons/llm/12_attention_qkv.ipynb) |
+| 残差连接 / Residual connection | 加法两条路径如何影响前向与反向？How do two addition paths affect forward and backward passes? | [09](../lessons/computer_vision/09_cnn_training_and_residuals.ipynb), [13](../lessons/llm/13_transformer_block.ipynb) |
+| 数据泄漏 / Data leakage | 哪些统计量或选择利用了不该使用的数据？Which statistics or choices used information they should not have used? | [19](../lessons/experiments/19_evaluation_and_decisions.ipynb) |
 
 ## 排查 / Troubleshooting
 

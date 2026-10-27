@@ -9,7 +9,7 @@ window.FOUNDATIONLESSONS = [
 <h3>连线上的数决定影响有多大</h3>
 <p>\(w_{ij}\) 连接输入 i 与隐藏节点 j，\(v_{jk}\) 连接隐藏节点 j 与输出 k。下标先写来源，再写去向。比如 \(w_{21}=0.4\) 将第二个输入送到第一个隐藏节点。每条边有自己的权重，一份输入可以沿多条边参与计算。</p>
 <p>层号 l 也能帮助定位：输入层为0，隐藏层为1，输出层为2。\(x_j^{(1)}\) 表示第1层的第 j 个值，上标记录位置。这个实验简写成 \(h_j\)。</p>
-<p>下一节只展开一个隐藏节点。等它的计算清楚了，整张网络就是同样的动作重复几次。也可以回到 <a href="../lessons/04_derivatives_numpy_mlp.ipynb">第04课</a>，把网络写成 NumPy 代码。</p>`,
+<p>下一节只展开一个隐藏节点。等它的计算清楚了，整张网络就是同样的动作重复几次。也可以回到 <a href="../lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb">第04课</a>，把网络写成 NumPy 代码。</p>`,
  task:'点击 x₂、h₁ 与连接 w₂₁，沿着来源与去向找出它们的关系。到下一节展开神经元后，再改变这条连接的权重。',
  quiz:{question:'改变 w₂₁ 后，它最先影响哪一步？',options:['第一个隐藏节点的加权和','目标 d₁','输入 x₂ 本身'],correct:0,explanation:'w₂₁ 与 x₂ 相乘，乘积进入第一个隐藏节点的加权和，再继续影响后续输出。'}
 },
@@ -88,7 +88,7 @@ window.FOUNDATIONLESSONS = [
 <p>将输入按行排成 \(X\in\mathbb R^{B\times I}\)，隐藏输出为 \(H\in\mathbb R^{B\times J}\)。把各样本自己损失的输出激活前导数排成 \(\Delta_y\in\mathbb R^{B\times K}\)。I、J、K 分别是三层的节点数。</p>
 \[\nabla_VL=\frac1B H^\top\Delta_y,\quad \Delta_h=(\Delta_yV^\top)\odot H\odot(1-H),\quad\nabla_WL=\frac1B X^\top\Delta_h.\]
 <p>例如 \((X^\top\Delta_h)_{ij}=\sum_n X_{ni}\Delta_{h,nj}\)：每个样本 n 给同一条边贡献一个乘积。最后除以B，得到平均损失对这条权重的梯度。</p>
-<p>点选矩阵格，看被乘的那一列与那一行；再切换到逐样本视图。两个视图展示同一份计算。写代码的练习在 <a href="../lessons/06_modules_data_training.ipynb">第06课</a>。</p>`,
+<p>点选矩阵格，看被乘的那一列与那一行；再切换到逐样本视图。两个视图展示同一份计算。写代码的练习在 <a href="../lessons/neural_network_basics/06_modules_data_training.ipynb">第06课</a>。</p>`,
  task:'选择一条权重，逐样本看它的梯度；随后点选对应的矩阵结果格，将每份乘积与前面的样本一一对应。',
  quiz:{question:'当批损失取样本平均时，共享权重收到什么梯度？',options:['各样本对它的梯度取平均','只用最后一个样本的梯度','各样本梯度相乘'],correct:0,explanation:'求导作用在损失的平均上，得到各份导数的平均。'}
 },

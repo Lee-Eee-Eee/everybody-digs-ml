@@ -7,7 +7,7 @@
 
 [中文](README.md) · **English** · [Interactive lab](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/) · [Project briefs](docs/PROJECTS.md) · [Reference](docs/REFERENCE.md)
 
-**20 notebooks** · **117 exercises** · **18 interactive lessons** · **CPU-friendly examples**
+**24 notebooks** · **139 exercises** · **18 interactive lessons** · **CPU-friendly examples**
 
 </div>
 
@@ -29,6 +29,7 @@ Each notebook connects a concrete problem to **worked calculations, executable c
 | --- | --- |
 | **Read and write the computation** | Use Python, NumPy, and PyTorch; label tensor axes; trace individual values through a model. |
 | **Understand learning** | Apply the chain rule, write a small network's backward pass, and compare gradients with numerical checks and autograd. |
+| **Explore classical ML** | Compare kNN, logistic regression, SVM and clustering; use MSE, Ridge and LASSO on a continuous regression task. |
 | **Build models** | Work from sliding windows to CNNs, from recurrent states to LSTMs, and from Q/K/V to a small character GPT; explore GCNs and liquid time-constant networks. |
 | **Evaluate and investigate** | Compare against baselines, separate training, validation, and test data, inspect errors, and repeat experiments with different seeds. |
 | **Read original work** | Connect an implementation to selected papers, official documentation, and a local minGPT source snapshot. |
@@ -37,59 +38,81 @@ The opening lessons introduce Python as they go. Curiosity and a willingness to 
 
 ## Learning paths
 
-```text
-00–03  Python, functions, arrays and linear algebra
-   │
-04–07  Derivatives → backpropagation → PyTorch training
-   ├── 08–09  Images, convolution and residual connections
-   ├── 10–11  Sequences, RNNs and LSTMs
-   ├── 12–15  Attention, Transformers and character GPT
-   └── 16–17  Graphs and continuous-time networks
+![Course roadmap from Python and neural-network foundations to classical ML, model branches and experiments](docs/assets/course-roadmap.svg)
 
-18  Research experiments     19  Classification evaluation
-```
+The diagram is a conceptual learning map. Lessons 20–23 are numbered after the original sequence but can be taken after the foundations.
 
-- **New to Python?** Start at [00](lessons/00_start_and_environment.ipynb) and follow 01–07 in order.
+- **New to Python?** Start at [00](lessons/python_math/00_start_and_environment.ipynb) and follow 01–07 in order.
+- **Interested in classical ML?** After 03 and 06–07, continue with 20–21.
 - **Interested in language models?** Complete the foundations, then follow 12–15.
-- **Interested in images?** Continue with 08–09 and the digit-recognition project.
+- **Interested in images?** Continue with 08–09, then 23 and the digit-recognition project.
 - **Ready to investigate?** Use 18 for experiment design and 19 for classification metrics; each can be revisited alongside a model project.
 
 ## Course map
 
-### Foundations · 00–07
+### Python and mathematics · `python_math/`
 
-| Lesson | Topic | You will be able to |
-| --- | --- | --- |
-| [00 · Start here](lessons/00_start_and_environment.ipynb) | Running a notebook | Run and modify a first program, find the project interpreter, and use an exercise check. |
-| [01 · Python values and control flow](lessons/01_python_values_control.ipynb) | Variables, collections, conditions, loops | Process a small table of measurements. |
-| [02 · Functions, files and classes](lessons/02_python_functions_files_classes.ipynb) | Reusable code and data | Read and write data, build functions, and define a small model class. |
-| [03 · NumPy and linear algebra](lessons/03_numpy_shapes_linear_algebra.ipynb) | Shapes, broadcasting, matrix multiplication | Move from element-by-element loops to batch calculations. |
-| [04 · Derivatives and a NumPy MLP](lessons/04_derivatives_numpy_mlp.ipynb) | Chain rule and backpropagation | Calculate gradients, check them numerically, and train a small XOR network. |
-| [05 · Tensors and autograd](lessons/05_torch_tensors_autograd.ipynb) | Differentiable computation graphs | Trace gradients through branches and compare against manual calculations. |
-| [06 · Modules, data and training](lessons/06_modules_data_training.ipynb) | Model and training loop | Connect batches, loss, gradient clearing, backpropagation, and updates. |
-| [07 · Regression and classification](lessons/07_mlp_regression_classification.ipynb) | MLPs and baselines | Compare models with train/validation/test splits and training-set scaling. |
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [00](lessons/python_math/00_start_and_environment.ipynb) | Getting started | Run a first program and use exercise checks |
+| [01](lessons/python_math/01_python_values_control.ipynb) | Python values and control flow | Process measurements with variables, lists and loops |
+| [02](lessons/python_math/02_python_functions_files_classes.ipynb) | Functions, files and classes | Organize reusable computations and data input/output |
+| [03](lessons/python_math/03_numpy_shapes_linear_algebra.ipynb) | NumPy and linear algebra | Use shapes, broadcasting and matrix multiplication |
 
-### Model branches · 08–17
+### Neural-network foundations · `neural_network_basics/`
 
-| Lesson | Topic | You will be able to |
-| --- | --- | --- |
-| [08 · Convolution from windows](lessons/08_convolution_from_windows.ipynb) | Sliding windows and shared weights | Compute a convolution and follow the contributions to its gradients. |
-| [09 · CNNs and residuals](lessons/09_cnn_training_and_residuals.ipynb) | Images and residual paths | Train digit classifiers and trace layer shapes and residual gradients. |
-| [10 · RNNs and time](lessons/10_rnn_time_and_bptt.ipynb) | Recurrence and backpropagation through time | Unroll a state update and accumulate gradients for shared parameters. |
-| [11 · LSTM gates and memory](lessons/11_lstm_gates_and_memory.ipynb) | Gated recurrent cells | Implement gate and state updates and compare with PyTorch. |
-| [12 · Attention and Q/K/V](lessons/12_attention_qkv.ipynb) | Weighted reading and causal masking | Calculate attention weights and test the effect of changing future inputs. |
-| [13 · Transformer block](lessons/13_transformer_block.ipynb) | Multi-head attention, normalization and residuals | Assemble the components of a Transformer block. |
-| [14 · Train a tiny GPT](lessons/14_small_gpt_training.ipynb) | Character-level generation | Construct next-character targets, train a decoder, generate, and save it. |
-| [15 · Read minGPT](lessons/15_mingpt_reading_and_generation.ipynb) | Reading an existing implementation | Follow tensors, model components, and training through source code. |
-| [16 · Graph neural networks](lessons/16_gnn_message_passing.ipynb) | Message passing and GCNs | Aggregate neighbors, test permutation equivariance, and train a GCN. |
-| [17 · Liquid neural networks](lessons/17_liquid_neural_networks.ipynb) | Continuous-time dynamics | Connect time steps and time constants to a trainable LTC cell. |
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [04](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb) | Derivatives and a NumPy MLP | Derive backpropagation and train XOR |
+| [05](lessons/neural_network_basics/05_torch_tensors_autograd.ipynb) | Tensors and autograd | Trace computation graphs and check gradients |
+| [06](lessons/neural_network_basics/06_modules_data_training.ipynb) | Modules, data and training | Connect batches, loss, gradients and updates |
+| [07](lessons/neural_network_basics/07_mlp_regression_classification.ipynb) | Regression and classification | Compare baselines and an MLP using validation |
 
-### Experiments and evaluation · 18–19
+### Classical machine learning · `classical_ml/`
 
-| Lesson | Topic | You will be able to |
-| --- | --- | --- |
-| [18 · Research experiments](lessons/18_research_experiments.ipynb) | Controls, seeds and extrapolation | Compare configurations, select using validation data, and record results. |
-| [19 · Classification evaluation](lessons/19_evaluation_and_decisions.ipynb) | Imbalance, metrics and decisions | Read a confusion matrix, choose a threshold on validation data, and recognize leakage. |
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [20](lessons/classical_ml/20_classical_classification.ipynb) | Classical classification and clustering | Compare kNN, logistic regression, linear SVM and k-means |
+| [21](lessons/classical_ml/21_regression_regularization.ipynb) | MSE, Ridge and LASSO | Study regression and regularization with continuous targets |
+
+### Computer vision · `computer_vision/`
+
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [08](lessons/computer_vision/08_convolution_from_windows.ipynb) | Convolution from windows | Calculate convolution and explain shared weights |
+| [09](lessons/computer_vision/09_cnn_training_and_residuals.ipynb) | CNNs and residuals | Train digit classifiers and track residual gradients |
+| [23](lessons/computer_vision/23_resnet_from_blocks.ipynb) | A small ResNet | Train a residual classifier and compare it with a plain CNN |
+
+### Sequence models · `sequence_models/`
+
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [10](lessons/sequence_models/10_rnn_time_and_bptt.ipynb) | RNNs and backpropagation through time | Unroll state updates and shared-parameter gradients |
+| [11](lessons/sequence_models/11_lstm_gates_and_memory.ipynb) | LSTM gates and memory | Implement gates and compare with PyTorch |
+
+### Language models · `llm/`
+
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [12](lessons/llm/12_attention_qkv.ipynb) | Q, K, V and causal attention | Calculate attention and test the causal mask |
+| [13](lessons/llm/13_transformer_block.ipynb) | Transformer block | Assemble attention, normalization and residuals |
+| [14](lessons/llm/14_small_gpt_training.ipynb) | Tiny character GPT | Train, generate and save a decoder |
+| [15](lessons/llm/15_mingpt_reading_and_generation.ipynb) | Reading minGPT | Trace tensors and training through source code |
+
+### Graphs, continuous time and generation · `other_networks/`
+
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [16](lessons/other_networks/16_gnn_message_passing.ipynb) | Graph neural networks | Aggregate neighbors and train a GCN |
+| [17](lessons/other_networks/17_liquid_neural_networks.ipynb) | Liquid neural networks | Build a trainable LTC from continuous dynamics |
+| [22](lessons/other_networks/22_diffusion_from_noise.ipynb) | Introduction to diffusion | Visualize image noise; train and sample a 1D model |
+
+### Experiments and evaluation · `experiments/`
+
+| Lesson | Topic | Practice |
+| :---: | :--- | :--- |
+| [18](lessons/experiments/18_research_experiments.ipynb) | Research experiments | Compare controls and seeds; analyze extrapolation |
+| [19](lessons/experiments/19_evaluation_and_decisions.ipynb) | Classification evaluation | Select a threshold on validation data |
 
 ## Interactive lab
 
@@ -126,13 +149,13 @@ uv run jupyter lab
 
 The project specifies **Python 3.12** and CPU PyTorch. `uv sync --locked` installs the dependencies recorded in `uv.lock` into the project environment; `uv run` runs commands using that environment. The first setup may take time while packages are downloaded.
 
-Open `lessons/00_start_and_environment.ipynb` in JupyterLab. If prompted for a kernel, select the Python environment associated with this project. To check the interpreter from a terminal:
+Open `lessons/python_math/00_start_and_environment.ipynb` in JupyterLab. If prompted for a kernel, select the Python environment associated with this project. To check the interpreter from a terminal:
 
 ```bash
 uv run python -c "import sys; print(sys.executable)"
 ```
 
-The path should point into the project's `.venv`: typically `.venv\Scripts\python.exe` on Windows or `.venv/bin/python` on macOS/Linux. The introductory experiments use generated data, scikit-learn's bundled digits dataset, and a small course corpus.
+The path should point into the project's `.venv`: typically `.venv\Scripts\python.exe` on Windows or `.venv/bin/python` on macOS/Linux. The introductory experiments use generated data, scikit-learn's bundled digits dataset, and a small course corpus. Lesson 20 also includes an optional MNIST download; the built-in 8×8 digits dataset and 28×28 MNIST are distinct.
 
 ## How to work through a lesson
 
@@ -145,6 +168,10 @@ The path should point into the project's `.venv`: typically `.venv\Scripts\pytho
 The notebooks include saved example outputs. Your own changes are saved in your local notebook. Restart the kernel and run from the beginning when earlier state may have become inconsistent.
 
 ## Project work
+
+![Roles of training, validation and held-out test data](docs/assets/evaluation-workflow.svg)
+
+The diagram shows the roles of data in one experiment: fit on training data, select on validation, then evaluate the locked choice on test data.
 
 After the foundation lessons, choose a [bilingual project brief](docs/PROJECTS.md). Each brief specifies prerequisites, a question, a first experiment, and an extension:
 
@@ -183,7 +210,14 @@ Print the `.shape` of each operand, label the sample, sequence, channel, or feat
 ## Repository and maintenance
 
 ```text
-lessons/             Course notebooks and exercises
+lessons/python_math/             Python and mathematics
+lessons/neural_network_basics/   Derivatives, MLP and training
+lessons/classical_ml/            Classical algorithms and regularization
+lessons/computer_vision/         CNNs and small residual networks
+lessons/sequence_models/         RNNs and LSTMs
+lessons/llm/                     Attention, Transformers and GPT
+lessons/other_networks/          GNN, LTC and diffusion
+lessons/experiments/             Experimental design and evaluation
 interactive/         Browser lab, standalone page and local MathJax assets
 models/              Reusable tiny GPT model
 ```
@@ -219,7 +253,8 @@ Thank you to the authors and maintainers of these open resources for the ideas, 
 - [Build Your Own X: Machine Learning](https://github.com/amitshekhariitbhu/build-your-own-x-machine-learning) for its collection of hands-on machine-learning projects and tutorials.
 - [Andrej Karpathy's micrograd](https://github.com/karpathy/micrograd) and [minGPT](https://github.com/karpathy/minGPT) for approachable computation-graph and language-model implementations; lesson 15 reads a local minGPT snapshot.
 - [Dive into Deep Learning](https://github.com/d2l-ai/d2l-en), [Machine Learning with PyTorch and Scikit-Learn](https://github.com/rasbt/machine-learning-book), and [ML From Scratch](https://github.com/eriklindernoren/ML-From-Scratch) for accessible ways to connect explanation, code, and experiments.
+- [Happy-LLM](https://github.com/datawhalechina/happy-llm) and the [DDPM paper](https://arxiv.org/abs/2006.11239) for further language-model reading and diffusion principles.
 - The developers of [MathJax](https://www.mathjax.org/) for the mathematics display in the interactive lab.
 - The authors of [PyTorch's tutorials](https://docs.pytorch.org/tutorials/beginner/basics/intro.html), [Attention Is All You Need](https://arxiv.org/abs/1706.03762), [GCN](https://arxiv.org/abs/1609.02907), and [Liquid Time-constant Networks](https://arxiv.org/abs/2006.04439), whose work provides further reading throughout the course.
 
-See the [source map](references/SOURCES.md) and [teaching notes](references/TEACHING_NOTES.md) for reading questions and teaching references, and [third-party notices](THIRD_PARTY.md) for included materials and their licenses.
+See [course design and references](docs/COURSE_DESIGN.md) for how external ideas are adapted into the course’s own examples. See the [source map](references/SOURCES.md) and [teaching notes](references/TEACHING_NOTES.md) for reading questions and teaching references, and [third-party notices](THIRD_PARTY.md) for included materials and their licenses.

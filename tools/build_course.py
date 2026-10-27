@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     records=[]
-    for name in ['orientation_research','foundations','torch_vision','attention','time_graphs','evaluation']:
+    for name in ['orientation_research','foundations','torch_vision','attention','time_graphs','evaluation','classical_ml','diffusion','resnet']:
         module=importlib.import_module('chapters.'+name)
         for lesson in module.build():
             path=lesson.write()

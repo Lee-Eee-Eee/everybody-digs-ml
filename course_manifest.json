@@ -2,141 +2,169 @@
   {
     "slug": "00_start_and_environment",
     "title": "00 从这里开始：运行、预测、修改、解释",
-    "path": "lessons/00_start_and_environment.ipynb",
+    "path": "lessons/python_math/00_start_and_environment.ipynb",
     "cells": 25,
     "exercises": 3
   },
   {
     "slug": "01_python_values_control",
     "title": "01 从变量到一张数字表",
-    "path": "lessons/01_python_values_control.ipynb",
+    "path": "lessons/python_math/01_python_values_control.ipynb",
     "cells": 53,
     "exercises": 7
   },
   {
     "slug": "02_python_functions_files_classes",
     "title": "02 函数、文件与最小模型类",
-    "path": "lessons/02_python_functions_files_classes.ipynb",
+    "path": "lessons/python_math/02_python_functions_files_classes.ipynb",
     "cells": 52,
     "exercises": 6
   },
   {
     "slug": "03_numpy_shapes_linear_algebra",
     "title": "03 从循环到 NumPy 与线性代数",
-    "path": "lessons/03_numpy_shapes_linear_algebra.ipynb",
+    "path": "lessons/python_math/03_numpy_shapes_linear_algebra.ipynb",
     "cells": 66,
     "exercises": 7
   },
   {
     "slug": "04_derivatives_numpy_mlp",
     "title": "04 从一个导数到手写神经网络训练",
-    "path": "lessons/04_derivatives_numpy_mlp.ipynb",
+    "path": "lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb",
     "cells": 71,
     "exercises": 6
   },
   {
     "slug": "05_torch_tensors_autograd",
     "title": "05｜从数组到可求导的计算图",
-    "path": "lessons/05_torch_tensors_autograd.ipynb",
+    "path": "lessons/neural_network_basics/05_torch_tensors_autograd.ipynb",
     "cells": 53,
     "exercises": 6
   },
   {
     "slug": "06_modules_data_training",
     "title": "06｜把参数、数据和训练循环接起来",
-    "path": "lessons/06_modules_data_training.ipynb",
+    "path": "lessons/neural_network_basics/06_modules_data_training.ipynb",
     "cells": 51,
     "exercises": 6
   },
   {
     "slug": "07_mlp_regression_classification",
     "title": "07｜从一条直线到非线性回归与分类",
-    "path": "lessons/07_mlp_regression_classification.ipynb",
+    "path": "lessons/neural_network_basics/07_mlp_regression_classification.ipynb",
     "cells": 54,
     "exercises": 6
   },
   {
     "slug": "08_convolution_from_windows",
     "title": "08｜从一个滑动窗口写出卷积",
-    "path": "lessons/08_convolution_from_windows.ipynb",
+    "path": "lessons/computer_vision/08_convolution_from_windows.ipynb",
     "cells": 50,
     "exercises": 6
   },
   {
     "slug": "09_cnn_training_and_residuals",
     "title": "09｜真实数字分类、卷积归纳偏置与残差连接",
-    "path": "lessons/09_cnn_training_and_residuals.ipynb",
+    "path": "lessons/computer_vision/09_cnn_training_and_residuals.ipynb",
     "cells": 61,
     "exercises": 6
   },
   {
     "slug": "10_rnn_time_and_bptt",
     "title": "10 时间展开：自己写 RNN 与 BPTT",
-    "path": "lessons/10_rnn_time_and_bptt.ipynb",
+    "path": "lessons/sequence_models/10_rnn_time_and_bptt.ipynb",
     "cells": 53,
     "exercises": 6
   },
   {
     "slug": "11_lstm_gates_and_memory",
     "title": "11 LSTM：把门、记忆和导数逐项拆开",
-    "path": "lessons/11_lstm_gates_and_memory.ipynb",
+    "path": "lessons/sequence_models/11_lstm_gates_and_memory.ipynb",
     "cells": 53,
     "exercises": 6
   },
   {
     "slug": "12_attention_qkv",
     "title": "12 从一次加权平均理解 Q、K、V",
-    "path": "lessons/12_attention_qkv.ipynb",
+    "path": "lessons/llm/12_attention_qkv.ipynb",
     "cells": 64,
     "exercises": 6
   },
   {
     "slug": "13_transformer_block",
     "title": "13 把注意力、残差与归一化接成 Transformer",
-    "path": "lessons/13_transformer_block.ipynb",
+    "path": "lessons/llm/13_transformer_block.ipynb",
     "cells": 52,
     "exercises": 6
   },
   {
     "slug": "14_small_gpt_training",
     "title": "14 自己训练一个微型字符 GPT",
-    "path": "lessons/14_small_gpt_training.ipynb",
+    "path": "lessons/llm/14_small_gpt_training.ipynb",
     "cells": 50,
     "exercises": 6
   },
   {
     "slug": "15_mingpt_reading_and_generation",
     "title": "15 打开 minGPT，把每个组件认出来",
-    "path": "lessons/15_mingpt_reading_and_generation.ipynb",
+    "path": "lessons/llm/15_mingpt_reading_and_generation.ipynb",
     "cells": 43,
     "exercises": 6
   },
   {
     "slug": "16_gnn_message_passing",
     "title": "16 图神经网络：从邻居求和写到 GCN",
-    "path": "lessons/16_gnn_message_passing.ipynb",
+    "path": "lessons/other_networks/16_gnn_message_passing.ipynb",
     "cells": 55,
     "exercises": 6
   },
   {
     "slug": "17_liquid_neural_networks",
     "title": "17 液体神经网络：从松弛方程到可训练 LTC",
-    "path": "lessons/17_liquid_neural_networks.ipynb",
+    "path": "lessons/other_networks/17_liquid_neural_networks.ipynb",
     "cells": 61,
     "exercises": 6
   },
   {
     "slug": "18_research_experiments",
     "title": "18 从会训练模型，到做一项能解释的小研究",
-    "path": "lessons/18_research_experiments.ipynb",
+    "path": "lessons/experiments/18_research_experiments.ipynb",
     "cells": 46,
     "exercises": 6
   },
   {
     "slug": "19_evaluation_and_decisions",
     "title": "19｜分类评价：从准确率到可解释的决策",
-    "path": "lessons/19_evaluation_and_decisions.ipynb",
+    "path": "lessons/experiments/19_evaluation_and_decisions.ipynb",
     "cells": 29,
     "exercises": 4
+  },
+  {
+    "slug": "20_classical_classification",
+    "title": "20｜从手写数字出发：kNN、逻辑回归、SVM 与聚类",
+    "path": "lessons/classical_ml/20_classical_classification.ipynb",
+    "cells": 47,
+    "exercises": 6
+  },
+  {
+    "slug": "21_regression_regularization",
+    "title": "21｜从 MSE 到 Ridge 与 LASSO：回归与正则化",
+    "path": "lessons/classical_ml/21_regression_regularization.ipynb",
+    "cells": 34,
+    "exercises": 5
+  },
+  {
+    "slug": "22_diffusion_from_noise",
+    "title": "22｜扩散模型：从加噪到逐步生成",
+    "path": "lessons/other_networks/22_diffusion_from_noise.ipynb",
+    "cells": 42,
+    "exercises": 6
+  },
+  {
+    "slug": "23_resnet_from_blocks",
+    "title": "23｜从残差块搭建小型 ResNet",
+    "path": "lessons/computer_vision/23_resnet_from_blocks.ipynb",
+    "cells": 38,
+    "exercises": 5
   }
 ]

@@ -70,7 +70,7 @@ def main():
     parser.add_argument('--pattern',default='*.ipynb')
     parser.add_argument('--jobs',type=int,default=1)
     args=parser.parse_args()
-    sources=sorted((ROOT/'lessons').glob(args.pattern))
+    sources=sorted((ROOT/'lessons').rglob(args.pattern))
     if not sources:parser.error('No matching lesson notebooks.')
     results=[];failures=[]
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:

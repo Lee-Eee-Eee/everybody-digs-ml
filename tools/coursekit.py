@@ -6,6 +6,28 @@ import nbformat
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Keep lesson numbers stable while grouping notebooks by their main learning goal.
+LESSON_DIRECTORIES = {
+    **{n: 'python_math' for n in range(0, 4)},
+    **{n: 'neural_network_basics' for n in range(4, 8)},
+    **{n: 'computer_vision' for n in range(8, 10)},
+    **{n: 'sequence_models' for n in range(10, 12)},
+    **{n: 'llm' for n in range(12, 16)},
+    **{n: 'other_networks' for n in range(16, 18)},
+    **{n: 'experiments' for n in range(18, 20)},
+    **{n: 'classical_ml' for n in range(20, 22)},
+    22: 'other_networks',
+    23: 'computer_vision',
+}
+
+
+def lesson_path(slug):
+    try:
+        group = LESSON_DIRECTORIES[int(slug.split('_', 1)[0])]
+    except (ValueError, KeyError) as error:
+        raise ValueError(f'No course directory registered for {slug!r}') from error
+    return ROOT / 'lessons' / group / (slug + '.ipynb')
+
 
 class Lesson:
     def __init__(self, slug, title, goals=None, prereq=''):
@@ -53,7 +75,7 @@ class Lesson:
         return notebook
 
     def write(self):
-        path = ROOT / 'lessons' / (self.slug + '.ipynb')
+        path = lesson_path(self.slug)
         notebook = self.notebook()
         if path.exists():
             old = nbformat.read(path, 4)
@@ -77,6 +99,6 @@ class Lesson:
                 for previous,current in zip(previous_code,current_code):
                     current.outputs = previous.outputs
                     current.execution_count = previous.execution_count
-        path.parent.mkdir(exist_ok=True)
+        path.parent.mkdir(parents=True, exist_ok=True)
         nbformat.write(notebook, path)
         return path

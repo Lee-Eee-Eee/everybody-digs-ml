@@ -17,7 +17,7 @@ These projects connect several lessons into reproducible experiments. Pick a tra
 
 ## 项目 A：识别数字 / Recognize digits
 
-**先修 / Prerequisites:** [03](../lessons/03_numpy_shapes_linear_algebra.ipynb), [06](../lessons/06_modules_data_training.ipynb), [07](../lessons/07_mlp_regression_classification.ipynb), [08–09](../lessons/09_cnn_training_and_residuals.ipynb)。
+**先修 / Prerequisites:** [03](../lessons/python_math/03_numpy_shapes_linear_algebra.ipynb), [06](../lessons/neural_network_basics/06_modules_data_training.ipynb), [07](../lessons/neural_network_basics/07_mlp_regression_classification.ipynb), [08–09](../lessons/computer_vision/09_cnn_training_and_residuals.ipynb)。
 
 **问题 / Question:** 在相同训练与验证划分、相同评价指标下，MLP 和 CNN 的错例有何不同？How do MLP and CNN errors differ on the same split?
 
@@ -27,7 +27,7 @@ These projects connect several lessons into reproducible experiments. Pick a tra
 
 ## 项目 B：稀有事件筛选 / Screen rare events
 
-**先修 / Prerequisites:** [07](../lessons/07_mlp_regression_classification.ipynb), [18](../lessons/18_research_experiments.ipynb), [19](../lessons/19_evaluation_and_decisions.ipynb)。
+**先修 / Prerequisites:** [07](../lessons/neural_network_basics/07_mlp_regression_classification.ipynb), [18](../lessons/experiments/18_research_experiments.ipynb), [19](../lessons/experiments/19_evaluation_and_decisions.ipynb)。
 
 **问题 / Question:** 高准确率是否意味着模型能找到少见正例？Does high accuracy imply that rare positives are found?
 
@@ -37,7 +37,7 @@ These projects connect several lessons into reproducible experiments. Pick a tra
 
 ## 项目 C：字符预测 / Predict characters
 
-**先修 / Prerequisites:** [12](../lessons/12_attention_qkv.ipynb), [13](../lessons/13_transformer_block.ipynb), [14](../lessons/14_small_gpt_training.ipynb)。
+**先修 / Prerequisites:** [12](../lessons/llm/12_attention_qkv.ipynb), [13](../lessons/llm/13_transformer_block.ipynb), [14](../lessons/llm/14_small_gpt_training.ipynb)。
 
 **问题 / Question:** 上下文长度改变时，字符预测与生成会有什么变化？How does context length affect next-character prediction and generation?
 
@@ -47,7 +47,7 @@ These projects connect several lessons into reproducible experiments. Pick a tra
 
 ## 项目 D：图上的邻居 / Neighbors on a graph
 
-**先修 / Prerequisites:** [03](../lessons/03_numpy_shapes_linear_algebra.ipynb), [16](../lessons/16_gnn_message_passing.ipynb), [18](../lessons/18_research_experiments.ipynb)。
+**先修 / Prerequisites:** [03](../lessons/python_math/03_numpy_shapes_linear_algebra.ipynb), [16](../lessons/other_networks/16_gnn_message_passing.ipynb), [18](../lessons/experiments/18_research_experiments.ipynb)。
 
 **问题 / Question:** 当节点重编号或边发生变化时，GCN 的输出会怎样变化？What changes when nodes are relabeled or edges are altered?
 

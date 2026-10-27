@@ -281,7 +281,7 @@ def tensors():
     ax.legend(); show(fig)
     ''')
     L.md(r'''
-    [打开交互反向传播实验](../interactive/index.html#backprop)：用步进按钮展开反向计算，
+    [打开交互反向传播实验](../../interactive/index.html#backprop)：用步进按钮展开反向计算，
     观察一个节点收到第二条路径时，梯度怎样在旧值上累加。把同一个节点的各路贡献加起来，
     与显示的总梯度核对；随后只改一个权重，看受影响的前向数值和反向贡献怎样一起变化。
     ''')
@@ -871,7 +871,7 @@ def mlps():
     fig.tight_layout(); show(fig)
     ''')
     L.md(r'''
-    [打开实时训练实验](../interactive/index.html#training)：保留 XOR 数据，把隐藏层数设为0，
+    [打开实时训练实验](../../interactive/index.html#training)：保留 XOR 数据，把隐藏层数设为0，
     训练并观察边界；随后改为带 Tanh 的隐藏层，重新初始化并训练。
     比较验证点、边界形状和损失曲线。固定结构后，只改变学习率，观察同样20步内损失怎样移动。
     ''')
@@ -1514,7 +1514,7 @@ def vision():
     print('相加后:', tuple((projected + branch_features).shape))
     ''')
     L.md(r'''
-    [打开残差交互实验](../interactive/index.html#residual)：选择“F=0，保留输入”，
+    [打开残差交互实验](../../interactive/index.html#residual)：选择“F=0，保留输入”，
     逐步观察输出与输入梯度；再选择“两路导数抵消”，把两份带符号的贡献亲手相加。
     最后切到相加后接 ReLU，观察加和为负时，后激活怎样同时改变两条反向路径。
     ''')

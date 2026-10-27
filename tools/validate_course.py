@@ -46,7 +46,14 @@ def main():
     for path in [*ROOT.glob('*.md'), *(ROOT/'docs').glob('*.md'), ROOT/'references/SOURCES.md', ROOT/'references/TEACHING_NOTES.md']:
         local_links(path.read_text(encoding='utf-8'),path.parent)
     assert exercises == sum(row['exercises'] for row in manifest), 'manifest exercise total'
-    assert (ROOT/'interactive/neural-network-lab.html').is_file()
+    # The interactive lessons contain HTML links inside JavaScript strings.
+    # Check both their source files and the generated standalone page.
+    for path in [ROOT/'interactive/lessons.js', ROOT/'interactive/foundations-lessons.js',
+                 ROOT/'interactive/neural-network-lab.html']:
+        assert path.is_file(), path
+        for target in re.findall(r'href=[\"\'](\.\./lessons/[^\"\']+\.ipynb)[\"\']',
+                                 path.read_text(encoding='utf-8')):
+            assert (path.parent/target).resolve().is_file(), (path, target)
     print(f'{len(manifest)} lessons, {exercises} exercises, {figures} saved figures; local links passed.')
 
 if __name__=='__main__':

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="691.2pt" height="235.044pt" viewBox="0 0 691.2 235.044" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 235.044
+L 691.2 235.044
+L 691.2 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 21.8484 133.98768
+L 133.6716 133.98768
+Q 137.0196 133.98768 137.0196 130.66128
+L 137.0196 84.42432
+Q 137.0196 81.09792 133.6716 81.09792
+L 21.8484 81.09792
+Q 18.5004 81.09792 18.5004 84.42432
+L 18.5004 130.66128
+Q 18.5004 133.98768 21.8484 133.98768
+z
+" clip-path="url(#p21ab488a93)" style="fill: #f0f8f6; stroke: #9abcb8; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 183.6684 133.98768
+L 295.4916 133.98768
+Q 298.8396 133.98768 298.8396 130.66128
+L 298.8396 84.42432
+Q 298.8396 81.09792 295.4916 81.09792
+L 183.6684 81.09792
+Q 180.3204 81.09792 180.3204 84.42432
+L 180.3204 130.66128
+Q 180.3204 133.98768 183.6684 133.98768
+z
+" clip-path="url(#p21ab488a93)" style="fill: #f5f8fb; stroke: #9abcb8; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 345.4884 133.98768
+L 457.3116 133.98768
+Q 460.6596 133.98768 460.6596 130.66128
+L 460.6596 84.42432
+Q 460.6596 81.09792 457.3116 81.09792
+L 345.4884 81.09792
+Q 342.1404 81.09792 342.1404 84.42432
+L 342.1404 130.66128
+Q 342.1404 133.98768 345.4884 133.98768
+z
+" clip-path="url(#p21ab488a93)" style="fill: #f5f8fb; stroke: #9abcb8; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 507.3084 133.98768
+L 658.1916 133.98768
+Q 661.5396 133.98768 661.5396 130.66128
+L 661.5396 84.42432
+Q 661.5396 81.09792 658.1916 81.09792
+L 507.3084 81.09792
+Q 503.9604 81.09792 503.9604 84.42432
+L 503.9604 130.66128
+Q 503.9604 133.98768 507.3084 133.98768
+z
+" clip-path="url(#p21ab488a93)" style="fill: #fbf6ef; stroke: #9abcb8; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 136.35 107.5428
+Q 158.67 107.5428 179.480654 107.5428
+" clip-path="url(#p21ab488a93)" style="fill: none; stroke: #1b7c78; stroke-width: 1.35; stroke-linecap: round"/>
+    <path d="M 175.080654 105.3428
+L 179.480654 107.5428
+L 175.080654 109.7428
+z
+" clip-path="url(#p21ab488a93)" style="fill: #1b7c78; stroke: #1b7c78; stroke-width: 1.35; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 298.17 107.5428
+Q 320.49 107.5428 341.300654 107.5428
+" clip-path="url(#p21ab488a93)" style="fill: none; stroke: #1b7c78; stroke-width: 1.35; stroke-linecap: round"/>
+    <path d="M 336.900654 105.3428
+L 341.300654 107.5428
+L 336.900654 109.7428
+z
+" clip-path="url(#p21ab488a93)" style="fill: #1b7c78; stroke: #1b7c78; stroke-width: 1.35; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 459.99 107.5428
+Q 482.31 107.5428 503.120654 107.5428
+" clip-path="url(#p21ab488a93)" style="fill: none; stroke: #1b7c78; stroke-width: 1.35; stroke-linecap: round"/>
+    <path d="M 498.720654 105.3428
+L 503.120654 107.5428
+L 498.720654 109.7428
+z
+" clip-path="url(#p21ab488a93)" style="fill: #1b7c78; stroke: #1b7c78; stroke-width: 1.35; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'Arial'; text-anchor: start; fill: #172c3c" x="19.17" y="27.432" transform="rotate(-0 19.17 27.432)">One experiment, three data roles</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10px; font-family: 'Arial'; text-anchor: start; fill: #536b78" x="19.17" y="45.1728" transform="rotate(-0 19.17 45.1728)">Fit on training data; make choices on validation; evaluate the locked choice on test.</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Arial'; text-anchor: middle; fill: #172c3c" x="77.76" y="103.429864" transform="rotate(-0 77.76 103.429864)">Training</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="77.76" y="121.214838" transform="rotate(-0 77.76 121.214838)">fit scaling + model</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Arial'; text-anchor: middle; fill: #172c3c" x="239.58" y="103.429981" transform="rotate(-0 239.58 103.429981)">Validation</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 9px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="239.58" y="121.214926" transform="rotate(-0 239.58 121.214926)">compare and select</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Arial'; text-anchor: middle; fill: #172c3c" x="401.4" y="103.429981" transform="rotate(-0 401.4 103.429981)">Locked choice</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 9px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="401.4" y="121.214926" transform="rotate(-0 401.4 121.214926)">model + rule</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Arial'; text-anchor: middle; fill: #172c3c" x="582.75" y="103.429981" transform="rotate(-0 582.75 103.429981)">Held-out test</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 9px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="582.75" y="121.214926" transform="rotate(-0 582.75 121.214926)">report final performance</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 10px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="77.76" y="180.4464" transform="rotate(-0 77.76 180.4464)">Fit parameters</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 10px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="239.58" y="180.4464" transform="rotate(-0 239.58 180.4464)">Tune choices</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="401.4" y="180.4464" transform="rotate(-0 401.4 180.4464)">Freeze</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 10px; font-family: 'Arial'; text-anchor: middle; fill: #536b78" x="582.75" y="180.4464" transform="rotate(-0 582.75 180.4464)">Evaluate</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p21ab488a93">
+   <rect x="10.8" y="10.8" width="669.6" height="213.444"/>
+  </clipPath>
+ </defs>
+</svg>
