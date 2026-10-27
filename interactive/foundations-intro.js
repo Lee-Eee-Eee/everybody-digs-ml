@@ -112,7 +112,7 @@
     var settings='<div class="fc-controls fi-controls">'+ctx.select('放大哪个隐藏单元','fi-neuron-choice',[['0','h₁：接收 w₁₁、w₂₁'],['1','h₂：接收 w₁₂、w₂₂']],'0')+ctx.range('给定输入 x₁','fi-neuron-x1',-2,2,'any',s.x[0])+ctx.range('给定输入 x₂','fi-neuron-x2',-2,2,'any',s.x[1])+ctx.range('从 x₁ 进入本单元的权重','fi-neuron-w1',-3,3,'any',s.W0[0][0])+ctx.range('从 x₂ 进入本单元的权重','fi-neuron-w2',-3,3,'any',s.W0[1][0])+'</div>';
     var steps='<div class="fi-steps" id="fi-neuron-steps"><button type="button" data-fi-step="0">0 · 给定量</button><button type="button" data-fi-step="1">1 · 两个乘积</button><button type="button" data-fi-step="2">2 · 求和</button><button type="button" data-fi-step="3">3 · Sigmoid</button></div>';
     var navigation='<div class="fi-nav"><button type="button" id="fi-neuron-prev">← 上一步</button><span id="fi-neuron-counter"></span><button type="button" id="fi-neuron-next">下一步 →</button><button type="button" id="fi-neuron-reset">恢复全部初始数值</button></div>';
-    root.innerHTML=css()+'<section class="fi-lab"><div id="fi-neuron-zoom"></div>'+steps+navigation+'<div class="fc-card fi-card fi-stage-copy" id="fi-neuron-copy" aria-live="polite"></div>'+settings+'<div class="fc-step-note fi-note">偏置在本例中固定为 0。输入或权重一改，本节回到第 0 步，重新计算。当前修改会保留到后面的课程；h₁、h₂ 的后继输出 y₁、y₂ 暂时不计算，留到下一节继续。</div><details class="fi-card"><summary>查看这个单元在完整网络中的位置</summary><div id="fi-neuron-network"></div></details></section>';
+    root.innerHTML=css()+'<section class="fi-lab"><div id="fi-neuron-zoom"></div>'+steps+navigation+'<div class="fc-card fi-card fi-stage-copy" id="fi-neuron-copy" aria-live="polite"></div>'+settings+'<div class="fc-step-note fi-note">偏置在本例中固定为 0。拖动输入或权重时，当前步骤立即重新计算，便于比较；选择另一个隐藏单元也保留当前步骤。当前修改会保留到后面的课程；h₁、h₂ 的后继输出 y₁、y₂ 暂时不计算，留到下一节继续。</div><details class="fi-card"><summary>查看这个单元在完整网络中的位置</summary><div id="fi-neuron-network"></div></details></section>';
     function sync(){root.querySelector('#fi-neuron-x1').value=s.x[0];root.querySelector('#fi-neuron-x2').value=s.x[1];root.querySelector('#fi-neuron-w1').value=s.W0[0][j];root.querySelector('#fi-neuron-w2').value=s.W0[1][j];if(ctx.outputs)ctx.outputs();}
     function draw(){var g=shared.graph(),which=j+1,known=new Set(g.nodes.filter(function(n){return n.role==='input'||n.role==='weight'||n.role==='target'||n.role==='constant';}).map(function(n){return n.id;}));
       if(step>=1){known.add('p0_1'+which);known.add('p0_2'+which);}if(step>=2)known.add('a1_'+which);if(step>=3)known.add('h'+which);
@@ -127,13 +127,13 @@
       root.querySelector('#fi-neuron-copy').innerHTML=copy;
       root.querySelector('#fi-neuron-counter').textContent=step+' / 3';root.querySelector('#fi-neuron-prev').disabled=step===0;root.querySelector('#fi-neuron-next').disabled=step===3;
       root.querySelectorAll('[data-fi-step]').forEach(function(b){b.setAttribute('aria-current',+b.getAttribute('data-fi-step')===step?'step':'false');});
-      bindItems(root.querySelector('#fi-neuron-network'),function(id){if(id==='h1'||id==='h2'){j=+id[1]-1;step=0;root.querySelector('#fi-neuron-choice').value=String(j);sync();draw();}});
+      bindItems(root.querySelector('#fi-neuron-network'),function(id){if(id==='h1'||id==='h2'){j=+id[1]-1;root.querySelector('#fi-neuron-choice').value=String(j);sync();draw();}});
     }
     root.querySelectorAll('[data-fi-step]').forEach(function(b){b.addEventListener('click',function(){step=+b.getAttribute('data-fi-step');draw();});});
     root.querySelector('#fi-neuron-prev').addEventListener('click',function(){step=Math.max(0,step-1);draw();});root.querySelector('#fi-neuron-next').addEventListener('click',function(){step=Math.min(3,step+1);draw();});
     root.querySelector('#fi-neuron-reset').addEventListener('click',function(){shared.reset();step=0;sync();draw();});
-    ctx.controls(function(el){if(el&&el.id==='fi-neuron-choice'){j=+el.value;step=0;sync();draw();return;}
-      if(el){if(el.id==='fi-neuron-x1')s.x[0]=+el.value;if(el.id==='fi-neuron-x2')s.x[1]=+el.value;if(el.id==='fi-neuron-w1')s.W0[0][j]=+el.value;if(el.id==='fi-neuron-w2')s.W0[1][j]=+el.value;}step=0;draw();});sync();draw();
+    ctx.controls(function(el){if(el&&el.id==='fi-neuron-choice'){j=+el.value;sync();draw();return;}
+      if(el){if(el.id==='fi-neuron-x1')s.x[0]=+el.value;if(el.id==='fi-neuron-x2')s.x[1]=+el.value;if(el.id==='fi-neuron-w1')s.W0[0][j]=+el.value;if(el.id==='fi-neuron-w2')s.W0[1][j]=+el.value;}draw();});sync();draw();
   }
 
   window.FoundationIntroLabs=Object.assign(window.FoundationIntroLabs||{},

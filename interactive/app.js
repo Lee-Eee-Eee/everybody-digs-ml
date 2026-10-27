@@ -56,7 +56,7 @@ function renderLesson(index){
   $('#lesson-kicker').textContent=`第 ${lessonIndex+1} 节 / ${lessons.length} · ${lessonIndex<6?'看清局部计算':lessonIndex<13?'让网络学起来':'理解结构与训练'}`;
   $('#lesson-title').textContent=l.title;$('#lesson-intro').textContent=l.intro;
   $('#lesson-body').innerHTML=l.body;$('#task-text').innerHTML=l.task;
-  if(location.hostname.endsWith('.github.io')) {
+  if(location.hostname.endsWith('.github.io') || window.EDML_STANDALONE) {
     document.querySelectorAll('a[href^="../lessons/"],a[href="../README.md"]').forEach(link=>{
       link.href='https://github.com/Lee-Eee-Eee/everybody-digs-ml/blob/main/'+link.getAttribute('href').slice(3);
     });
@@ -198,34 +198,64 @@ function residualLab(){
 }
 function deepLab(lesson){
  let plain,res,history=[],iteration=0,frame,running=false,disposed=false;
- root.innerHTML=`<p class="lab-description">同一目标：f(x)=x+0.25sin(3x)。普通网络与等宽残差网络真实反向训练。残差模型含输入嵌入、L 个 h←h+0.3s(hW+b) 块及线性输出。</p><div class="control-grid">${range('普通隐藏层 / 残差块数 L','d-depth',1,12,1,6)}${range('隐藏宽度','d-width',3,12,1,6)}${select('激活函数','d-act',[['tanh','Tanh'],['sigmoid','Sigmoid'],['relu','ReLU']],'tanh')}${range('学习率','d-lr',.001,.05,.001,.01)}</div><div class="buttons"><button class="primary" id="d-play">开始对照训练</button><button class="quiet" id="d-step">各训练 20 步</button><button class="quiet" id="d-reset">重新初始化</button></div><div id="d-status" class="train-status" aria-live="polite"></div><div id="d-view"></div><div id="d-metrics"></div><div id="d-grad"></div><p class="lab-note">相同数据、更新步数和优化器；残差模型额外有输入嵌入，参数数并不相等。0.3 是此教学实验的残差缩放。两者共享任务，不把“每层梯度倍率”当作公平训练结论。</p>`;
- const xs=Array.from({length:45},(_,i)=>[-1.2+i*2.4/44]),ys=xs.map(([x])=>x+.25*Math.sin(3*x)),vx=Array.from({length:81},(_,i)=>[-1.2+i*2.4/80]),vy=vx.map(([x])=>x+.25*Math.sin(3*x));
- function draw(){let a=plain.lossGrad(xs,ys),b=res.lossGrad(xs,ys);if(!history.length||history.at(-1).step!==iteration)history.push({step:iteration,a:a.loss,b:b.loss});
-  $('#d-view').innerHTML=legend([['目标函数','#26343c'],['普通网络',C.blue],['残差网络',C.orange]])+plot([{points:vx.map((x,i)=>[x[0],vy[i]]),color:'#26343c',dash:true},{points:vx.map(x=>[x[0],plain.predict(x)]),color:C.blue},{points:vx.map(x=>[x[0],res.predict(x)]),color:C.orange}],{height:245,xLabel:'输入 x',yLabel:'预测函数值'})+plot([{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.a))]),color:C.blue},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.b))]),color:C.orange}],{height:190,xLabel:'参数更新步',yLabel:'log₁₀ 训练平方误差'});
-  $('#d-metrics').innerHTML=stats([['更新步',iteration],['普通损失',fmt(a.loss,6)],['残差损失',fmt(b.loss,6)]]);
+ root.innerHTML=`<p class="lab-description">同一目标：f(x)=x+0.25sin(3x)。普通网络与等宽残差网络真实反向训练。残差模型含输入嵌入、L 个 h←h+0.3s(hW+b) 块及线性输出。</p><div class="control-grid">${range('普通隐藏层 / 残差块数 L','d-depth',1,12,1,6)}${range('隐藏宽度','d-width',3,12,1,6)}${range('训练样本数','d-count',5,45,1,45)}${select('激活函数','d-act',[['tanh','Tanh'],['sigmoid','Sigmoid'],['relu','ReLU']],'tanh')}${range('学习率','d-lr',.001,.05,.001,.01)}</div><div class="buttons"><button class="primary" id="d-play">开始对照训练</button><button class="quiet" id="d-step">各训练 20 步</button><button class="quiet" id="d-reset">重新初始化</button></div><div id="d-status" class="train-status" aria-live="polite"></div><div id="d-view"></div><div id="d-metrics"></div><div id="d-grad"></div><p class="lab-note">相同训练样本、更新步数和优化器；虚线使用 44 个未训练的区间中点。样本数改变会重新初始化两种模型，比较时一次只改变一个设置。残差模型额外有输入嵌入，参数量并不相等；0.3 是本实验的残差缩放。</p>`;
+ const target=x=>x+.25*Math.sin(3*x),vx=Array.from({length:81},(_,i)=>[-1.2+i*2.4/80]),vy=vx.map(([x])=>target(x));
+ const validX=Array.from({length:44},(_,i)=>[-1.2+(i+.5)*2.4/44]),validY=validX.map(([x])=>target(x));
+ let xs=[],ys=[];
+ function validationMSE(net){return sum(validX.map((x,i)=>(net.predict(x)-validY[i])**2))/validX.length;}
+ function draw(){let a=plain.lossGrad(xs,ys),b=res.lossGrad(xs,ys),av=validationMSE(plain),bv=validationMSE(res);if(!history.length||history.at(-1).step!==iteration)history.push({step:iteration,a:2*a.loss,b:2*b.loss,av,bv});
+  $('#d-view').innerHTML=legend([['目标函数','#26343c'],['普通网络',C.blue],['残差网络',C.orange]])+plot([{points:vx.map((x,i)=>[x[0],vy[i]]),color:'#26343c',dash:true},{points:vx.map(x=>[x[0],plain.predict(x)]),color:C.blue},{points:vx.map(x=>[x[0],res.predict(x)]),color:C.orange}],{height:245,xLabel:'输入 x',yLabel:'预测函数值'})+plot([{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.a))]),color:C.blue},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.b))]),color:C.orange},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.av))]),color:C.blue,dash:true},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.bv))]),color:C.orange,dash:true}],{height:190,xLabel:'参数更新步',yLabel:'log₁₀ 均方误差'})+'<p class="lab-note">曲线颜色区分模型：实线为训练误差，虚线为区间内未参与训练的中点验证误差。</p>';
+  $('#d-metrics').innerHTML=stats([['更新步',iteration],['普通训练 MSE',fmt(2*a.loss,6)],['残差训练 MSE',fmt(2*b.loss,6)],['普通验证 MSE',fmt(av,6)],['残差验证 MSE',fmt(bv,6)]]);
   let ag=a.layerGradRms||a.gradRms,bg=b.layerGradRms||b.gradRms;
   $('#d-grad').innerHTML=`<div class="numeric-block">普通参数 ${plain.parameterCount()}；残差参数 ${res.parameterCount()}\n层输出反传信号 RMS（含线性输出层；输入 → 输出）：\n普通 [${ag.map(x=>fmt(x,3)).join(', ')}]\n残差 [${bg.map(x=>fmt(x,3)).join(', ')}]</div>`;
  }
  function stop(msg){running=false;cancelAnimationFrame(frame);$('#d-play').textContent='继续对照训练';$('#d-status').textContent=msg||`已暂停在第 ${iteration} 步。`;}
  function step(n){try{for(let i=0;i<n;i++){let a=plain.lossGrad(xs,ys),b=res.lossGrad(xs,ys);plain.step(a.grads,value('d-lr'),'adam');res.step(b.grads,value('d-lr'),'adam');iteration++;if(!Number.isFinite(a.loss+b.loss)||a.loss+b.loss>1e7)throw new Error('unstable');}draw();}catch(e){stop('数值不稳定，请降低学习率或重新初始化。');}}
  function loop(){if(!running||disposed)return;step(3);if(iteration>=600){stop('已完成 600 步，可修改结构再比较。');return;}frame=requestAnimationFrame(loop);}
- function reset(){stop();let config={input:1,width:value('d-width'),depth:value('d-depth'),output:1,activation:$('#d-act').value,seed:12,task:'regression'};plain=new M.DenseNet(config);res=new M.DenseNet({...config,residual:true});iteration=0;history=[];$('#d-play').textContent='开始对照训练';$('#d-status').textContent='已初始化。先看两个网络初始输出与梯度尺度。';draw();}
+ function reset(){stop();let count=value('d-count');xs=Array.from({length:count},(_,i)=>[-1.2+Math.round(i*44/(count-1))*2.4/44]);ys=xs.map(([x])=>target(x));let config={input:1,width:value('d-width'),depth:value('d-depth'),output:1,activation:$('#d-act').value,seed:12,task:'regression'};plain=new M.DenseNet(config);res=new M.DenseNet({...config,residual:true});iteration=0;history=[];$('#d-play').textContent='开始对照训练';$('#d-status').textContent='已初始化。先看两个网络初始输出与梯度尺度。';draw();}
  controls(e=>{if(e.id==='d-lr')stop('学习率已改变。');else reset();});$('#d-play').onclick=()=>{if(running)stop();else{running=true;$('#d-play').textContent='暂停';$('#d-status').textContent='两个网络正在使用相同样本与更新次数训练。';loop();}};$('#d-step').onclick=()=>{stop();step(20);$('#d-status').textContent=`两个模型均已更新 ${iteration} 步。`;};$('#d-reset').onclick=reset;cleanup=()=>{disposed=true;cancelAnimationFrame(frame);};reset();
 }
 function convLab(){
- let kernel=[[0,-1,0],[-1,4,-1],[0,-1,0]];const image=Array.from({length:7},(_,y)=>Array.from({length:7},(_,x)=>x===3||y===3?1:0));
- root.innerHTML=`<p class="lab-description">7×7 输入中有一条十字笔画。选择输出位置，查看核覆盖的输入和逐元素乘积。这里采用深度学习常用的互相关约定，核不翻转。</p><div class="control-grid">${select('卷积核预设','c-kind',[['edge','边缘'],['blur','均值平滑'],['identity','中心取值']],'edge')}${range('步长 stride','c-stride',1,2,1,1)}${range('零填充 padding','c-pad',0,1,1,0)}${range('输出行','c-row',0,4,1,0)}${range('输出列','c-col',0,4,1,0)}</div><div id="c-view"></div><div id="c-result" class="numeric-block"></div>`;
- function draw(){let stride=value('c-stride'),pad=value('c-pad'),r=M.convolution(image,kernel,stride,pad);for(const id of ['c-row','c-col']){$('#'+id).max=r.length-1;if(value(id)>=r.length)$('#'+id).value=r.length-1;}outputs();let row=value('c-row'),col=value('c-col'),patch=kernel.map((ks,y)=>ks.map((_,x)=>image[row*stride+y-pad]?.[col*stride+x-pad]??0)),products=patch.map((p,y)=>p.map((v,x)=>v*kernel[y][x]));
- $('#c-view').innerHTML=`<div class="matrix-row">${matrix(image,'输入 7×7')}${matrix(kernel,'核 3×3')}</div><div class="matrix-row">${matrix(patch,'当前局部窗口')}<span>⊙</span>${matrix(kernel,'共享卷积核')}<span>→</span>${matrix([[r[row][col]]],'求和输出')}</div><div class="matrix-row">${matrix(r,`完整输出 ${r.length}×${r[0].length}`)}</div>`;
- $('#c-result').textContent=`输出大小 = floor((7 + 2×${pad} − 3)/${stride}) + 1 = ${r.length}\n当前位置的逐元素乘积：\n${products.map(p=>p.map(x=>fmt(x,3)).join('  ')).join('\n')}\n求和 = ${fmt(sum(products.flat()),5)}\n同一个 3×3 核在所有位置复用：9 个权重，而非为每个位置另建一套。`;
- }controls(e=>{if(e.id==='c-kind')kernel=e.value==='edge'?[[0,-1,0],[-1,4,-1],[0,-1,0]]:e.value==='blur'?Array.from({length:3},()=>[1/9,1/9,1/9]):[[0,0,0],[0,1,0],[0,0,0]];draw();});draw();
+ let kernel=[[0,-1,0],[-1,4,-1],[0,-1,0]];
+ const initialImage=()=>Array.from({length:7},(_,y)=>Array.from({length:7},(_,x)=>x===3||y===3?1:0));
+ let image=initialImage();
+ const cells=Array.from({length:9},(_,i)=>[String(i),`第 ${Math.floor(i/3)+1} 行，第 ${i%3+1} 列`]);
+ root.innerHTML=`<p class="lab-description">选中输出位置，查看它实际读取的输入窗口；点击输入像素可画出自己的图形。修改一个核权重，观察共享核如何同时改变整张输出。这里采用深度学习常用的互相关约定，核不翻转。</p>
+ <div class="control-grid">${select('卷积核预设','c-kind',[['edge','边缘'],['blur','均值平滑'],['identity','中心取值']],'edge')}${select('调整哪个核权重','c-k-index',cells,'4')}${range('所选核权重','c-k-value',-5,5,.01,4)}${range('步长 stride','c-stride',1,2,1,1)}${range('零填充 padding','c-pad',0,1,1,0)}${range('输出行（从 0 开始）','c-row',0,4,1,0)}${range('输出列（从 0 开始）','c-col',0,4,1,0)}</div>
+ <div class="buttons"><button type="button" class="quiet" id="c-reset-image">恢复十字输入</button><button type="button" class="quiet" id="c-clear-image">清空输入</button></div>
+ <p class="lab-note">点击或用键盘激活像素，切换 0 / 1；蓝框表示当前窗口读取到的有效输入，边界外用零填充。均值核使用精确的 1/9；移动权重滑块后该权重按 0.01 步长改变。</p><div id="c-view"></div><div id="c-result" class="numeric-block" aria-live="polite"></div>`;
+ function pixelTable(row,col,stride,pad){
+  const y0=row*stride-pad,x0=col*stride-pad;
+  return `<table class="matrix"><caption>可编辑输入 7×7；蓝框为当前窗口</caption><tbody>${image.map((line,y)=>'<tr>'+line.map((v,x)=>{
+   let active=y>=y0&&y<y0+3&&x>=x0&&x<x0+3;
+   return `<td class="${active?'selected':''}" style="padding:2px"><button type="button" data-c-pixel="${y},${x}" aria-label="输入第 ${y+1} 行第 ${x+1} 列，当前 ${v}，点击切换" aria-pressed="${v===1}" style="min-width:28px;min-height:28px;padding:2px 4px;border:0;border-radius:3px;background:${v?'#2c647d':'transparent'};color:${v?'white':'#405b67'}">${v}</button></td>`;
+  }).join('')+'</tr>').join('')}</tbody></table>`;
+ }
+ function syncKernelControl(){let i=+$('#c-k-index').value;$('#c-k-value').value=kernel[Math.floor(i/3)][i%3];outputs();}
+ function draw(){let stride=value('c-stride'),pad=value('c-pad'),r=M.convolution(image,kernel,stride,pad);
+  for(const id of ['c-row','c-col']){$('#'+id).max=r.length-1;if(value(id)>=r.length)$('#'+id).value=r.length-1;}outputs();
+  let row=value('c-row'),col=value('c-col'),ky=Math.floor(+$('#c-k-index').value/3),kx=(+$('#c-k-index').value)%3;
+  $('#c-k-value-out').textContent=fmt(kernel[ky][kx],5);
+  let patch=kernel.map((ks,y)=>ks.map((_,x)=>image[row*stride+y-pad]?.[col*stride+x-pad]??0)),products=patch.map((p,y)=>p.map((v,x)=>v*kernel[y][x]));
+  let iy=row*stride+ky-pad,ix=col*stride+kx-pad,inside=iy>=0&&iy<7&&ix>=0&&ix<7;
+  $('#c-view').innerHTML=`<div class="matrix-row">${pixelTable(row,col,stride,pad)}${matrix(kernel,'共享核 3×3')}</div><div class="matrix-row">${matrix(patch,'当前局部窗口')}<span>⊙</span>${matrix(kernel,'共享卷积核')}<span>→</span>${matrix([[r[row][col]]],'求和输出')}</div><div class="matrix-row">${matrix(r,`完整输出 ${r.length}×${r[0].length}`)}</div>`;
+  $('#c-result').textContent=`输出大小 = floor((7 + 2×${pad} − 3)/${stride}) + 1 = ${r.length}\n当前位置的逐元素乘积：\n${products.map(p=>p.map(x=>fmt(x,3)).join('  ')).join('\n')}\n求和 = ${fmt(sum(products.flat()),5)}\n所选核格 (${ky+1}, ${kx+1}) 读取 ${inside?`输入 (${iy+1}, ${ix+1})`:'边界外的补零'}，其当前乘积 ${fmt(patch[ky][kx],3)} × ${fmt(kernel[ky][kx],3)} = ${fmt(products[ky][kx],5)}。\n仅对当前输出求导：∂Y/∂K = 对应输入 = ${fmt(patch[ky][kx],3)}。完整损失对共享 K 的梯度还要累加所有输出位置的贡献。`;
+  $$('[data-c-pixel]',root).forEach(button=>button.onclick=()=>{let [y,x]=button.dataset.cPixel.split(',').map(Number);image[y][x]=1-image[y][x];draw();root.querySelector(`[data-c-pixel="${y},${x}"]`).focus();});
+ }
+ controls(e=>{if(e.id==='c-kind'){
+   kernel=e.value==='edge'?[[0,-1,0],[-1,4,-1],[0,-1,0]]:e.value==='blur'?Array.from({length:3},()=>[1/9,1/9,1/9]):[[0,0,0],[0,1,0],[0,0,0]];syncKernelControl();
+  }else if(e.id==='c-k-index')syncKernelControl();
+  else if(e.id==='c-k-value'){let i=+$('#c-k-index').value;kernel[Math.floor(i/3)][i%3]=+e.value;}
+  draw();});
+ $('#c-reset-image').onclick=()=>{image=initialImage();draw();};$('#c-clear-image').onclick=()=>{image=Array.from({length:7},()=>Array(7).fill(0));draw();};draw();
 }
 function regularizeLab(){
  let seed=1;const data=[[1,3,2],[2,5,4],[3,7,6],[4,9,8]],features=[.2,.5,.8,1.1,.9,.4,.7,1.3];
- root.innerHTML=`<p class="lab-description">分开观察批归一化与倒置 Dropout。BN 示例固定 γ=1、β=0；预测使用固定的累计统计量，不再用当前批次。</p><div class="control-grid">${range('Dropout 丢弃概率 p','z-drop',0,.8,.1,.5)}${select('运行阶段','z-mode',[['train','训练'],['eval','预测']],'train')}${range('当前 batch 整体平移','z-shift',-3,3,.5,0)}${range('仅第一样本的第一特征变化','z-first',-3,3,.5,0)}</div><div class="buttons"><button class="quiet" id="z-mask">换一次随机掩码</button><button class="quiet" id="z-average">计算 200 次掩码平均</button></div><div id="z-view"></div><div id="z-result" class="numeric-block"></div><div id="z-mean" class="lab-note" aria-live="polite"></div>`;
- function draw(){let q=value('z-drop'),isTrain=$('#z-mode').value==='train',shift=value('z-shift'),first=value('z-first'),batch=data.map((row,n)=>row.map((v,j)=>v+shift+(n===0&&j===0?first:0))),base=M.batchNorm(data),current=M.batchNorm(batch),mean=isTrain?current.mean:base.mean,variance=isTrain?current.variance:base.variance,normalized=batch.map(row=>row.map((v,j)=>(v-mean[j])/Math.sqrt(variance[j]+1e-5))),drop=isTrain?M.dropout(features,q,seed):{values:features.slice(),mask:features.map(()=>1)};
- $('#z-view').innerHTML=`<div class="matrix-row">${matrix(batch,'输入 batch：4样本×3特征')}<span>→</span>${matrix(normalized,isTrain?'训练 BN：按列归一化':'预测 BN：使用固定统计')}</div><div class="numeric-block">均值 μ=[${mean.map(x=>fmt(x,3)).join(', ')}]\n方差 σ²=[${variance.map(x=>fmt(x,3)).join(', ')}]</div><p class="canvas-caption">Dropout 前后，同一组 8 个特征</p>`+plot([{points:features.map((v,i)=>[i+1,v]),color:C.blue,dots:true},{points:drop.values.map((v,i)=>[i+1,v]),color:C.orange,dots:true}],{height:200,xLabel:'特征编号',yLabel:'特征数值'})+legend([['原始特征',C.blue],['Dropout 输出',C.orange]]);
- $('#z-result').textContent=`${isTrain?'训练时保留特征乘以 1/(1−p)，在随机掩码的期望上保持原值。':'预测时关闭 Dropout，所有特征按原值传递。'}\n掩码=[${drop.mask.map(x=>fmt(x,2)).join(', ')}]\n当前保留 ${drop.mask.filter(x=>x>0).length}/8 个。单次掩码均值不必等于原均值。\n${isTrain?'整体平移时BN输出基本不变；只改变一个样本，会影响同批其他样本。':'累计统计固定，当前batch不会重新估计均值方差。'}`;
+ root.innerHTML=`<p class="lab-description">先观察批归一化如何按特征计算均值与方差，再用 γ 和 β 调整输出；下方独立实验倒置 Dropout。预测阶段使用示例中预先固定的统计量。</p><div class="control-grid">${range('Dropout 丢弃概率 p','z-drop',0,.8,.1,.5)}${select('运行阶段','z-mode',[['train','训练'],['eval','预测']],'train')}${range('BN 缩放 γ','z-gamma',-2,2,.1,1)}${range('BN 平移 β','z-beta',-2,2,.1,0)}${range('当前 batch 整体平移','z-shift',-3,3,.5,0)}${range('仅第一样本的第一特征变化','z-first',-3,3,.5,0)}</div><div class="buttons"><button class="quiet" id="z-mask">换一次随机掩码</button><button class="quiet" id="z-average">计算 200 次掩码平均</button></div><div id="z-view"></div><div id="z-result" class="numeric-block" aria-live="polite"></div><div id="z-mean" class="lab-note" aria-live="polite"></div>`;
+ function draw(){let q=value('z-drop'),isTrain=$('#z-mode').value==='train',shift=value('z-shift'),first=value('z-first'),gamma=value('z-gamma'),beta=value('z-beta'),batch=data.map((row,n)=>row.map((v,j)=>v+shift+(n===0&&j===0?first:0))),base=M.batchNorm(data),current=M.batchNorm(batch),mean=isTrain?current.mean:base.mean,variance=isTrain?current.variance:base.variance,normalized=batch.map(row=>row.map((v,j)=>gamma*(v-mean[j])/Math.sqrt(variance[j]+1e-5)+beta)),drop=isTrain?M.dropout(features,q,seed):{values:features.slice(),mask:features.map(()=>1)};
+ $('#z-mask').disabled=!isTrain;$('#z-average').disabled=!isTrain;
+ $('#z-view').innerHTML=`<div class="matrix-row">${matrix(batch,'输入 batch：4样本×3特征')}<span>→</span>${matrix(normalized,isTrain?'训练 BN：按列归一化并缩放平移':'预测 BN：使用固定统计')}</div><div class="numeric-block">均值 μ=[${mean.map(x=>fmt(x,3)).join(', ')}]\n方差 σ²=[${variance.map(x=>fmt(x,3)).join(', ')}]</div><p class="canvas-caption">Dropout 前后，同一组 8 个特征</p>`+plot([{points:features.map((v,i)=>[i+1,v]),color:C.blue,dots:true},{points:drop.values.map((v,i)=>[i+1,v]),color:C.orange,dots:true}],{height:200,xLabel:'特征编号',yLabel:'特征数值'})+legend([['原始特征',C.blue],['Dropout 输出',C.orange]]);
+ $('#z-result').textContent=`第一样本的第一特征：\nŷ = γ × (x − μ) / √(σ² + ε) + β\n  = ${fmt(gamma,2)} × (${fmt(batch[0][0],3)} − ${fmt(mean[0],3)}) / √(${fmt(variance[0],3)} + 0.00001) + (${fmt(beta,2)}) = ${fmt(normalized[0][0],4)}\n每列各自计算 μ 和 σ²，ε 防止除以零。γ、β 是同一特征内共享的可学习参数。\n${isTrain?'训练时使用当前 batch 的统计量；单独修改一个样本也会改变其他样本的归一化结果。':'预测时使用固定统计量；当前 batch 不再重新估计均值方差。'}\n\n${isTrain?'训练时保留特征乘以 1/(1−p)，在随机掩码的期望上保持原值。':'预测时关闭 Dropout，所有特征按原值传递。'}\n${isTrain?'缩放掩码 m/(1−p)':'预测阶段的乘数'}=[${drop.mask.map(x=>fmt(x,2)).join(', ')}]\n当前保留 ${drop.mask.filter(x=>x>0).length}/8 个。单次掩码平均不必等于原值。`;
  $('#z-mean').textContent='';
  }controls(draw);$('#z-mask').onclick=()=>{seed++;draw();};$('#z-average').onclick=()=>{let means=features.map(()=>0),p=value('z-drop');for(let i=0;i<200;i++){let r=M.dropout(features,p,500+i);r.values.forEach((v,j)=>means[j]+=v/200);}$('#z-mean').textContent=`固定输入，训练掩码独立采样 200 次：平均输出 [${means.map(v=>fmt(v,3)).join(', ')}]；原值 [${features.join(', ')}]。有限次平均通常接近原值，不要求逐项完全相等。`;};draw();
 }

@@ -186,7 +186,12 @@
         conclusion = '后置 ReLU 在这次前向处导数为零，两路都收到零。恒等捷径也会被加和后的激活截断。';
       else if (s.k !== 1)
         conclusion = 'κ≠1 时，捷径是缩放映射；回传要乘 κ，不能把它当作导数恒为 1 的恒等捷径。';
-      $('#r-parameters').innerHTML = `<div class="fc-residual-parameters"><h3>同一个 F，还要把梯度分给参数 a 与 b</h3><p>F=ax+b：对 a 的局部偏导是 x，对 b 的局部偏导是 1。</p><div class="fc-residual-equation">∂L/∂a = (∂L/∂F) × x\n       = ${signed(s.gq)} × (${fmt(s.x)}) = ${signed(s.ga)}\n∂L/∂b = (∂L/∂F) × 1 = ${signed(s.gb)}</div><p>这两项才是 a、b 的学习信号。若随后执行梯度下降，参数变化量是 −学习率 × 对应梯度。</p>${conclusion ? `<p><strong>${conclusion}</strong></p>` : ''}</div>`;
+      const eps = 1e-5, qPlus = s.q + eps * (s.k + s.a), qMinus = s.q - eps * (s.k + s.a);
+      const crossesKink = s.relu && (s.q === 0 || qPlus * qMinus < 0);
+      const localY = q => s.relu ? Math.max(0, q) : q;
+      const numeric = s.g * (localY(qPlus) - localY(qMinus)) / (2 * eps);
+      const check = crossesKink ? '这次差分跨过 ReLU 的零点，跳过核对；零点的导数约定不能用中心差分验证。' : `固定上游 g，用中心差分核对 ∂L/∂x ≈ ${signed(numeric)}；解析值 ${signed(s.gx)}（步长 ${eps}）。`;
+      $('#r-parameters').innerHTML = `<div class="fc-residual-parameters"><h3>同一个 F，还要把梯度分给参数 a 与 b</h3><p>F=ax+b：对 a 的局部偏导是 x，对 b 的局部偏导是 1。</p><div class="fc-residual-equation">∂L/∂a = (∂L/∂F) × x\n       = ${signed(s.gq)} × (${fmt(s.x)}) = ${signed(s.ga)}\n∂L/∂b = (∂L/∂F) × 1 = ${signed(s.gb)}</div><p>这两项才是 a、b 的学习信号。若随后执行梯度下降，参数变化量是 −学习率 × 对应梯度。</p><p>${check}</p>${conclusion ? `<p><strong>${conclusion}</strong></p>` : ''}</div>`;
     }
 
     controls(() => { presetMessage = ''; draw(); });

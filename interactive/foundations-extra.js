@@ -16,6 +16,7 @@
     if (!base.d) base.d = base.target || [1, 0];
     var currentTab = 'matrix'; // 'matrix', 'samples', 'shapes'
     var selectedWeight = 'w11';
+    var initial = clone(base);
 
     var weights = [
       ['w11', 'w₁₁：输入 x₁ → 隐藏 h₁'],
@@ -66,23 +67,30 @@
         </div>
         <div class="fe-toolbar">
           ${ctx.select('选择追踪的权重', 'fe-b-weight', weights, 'w11')}
-          ${ctx.range('样本 2 输入 x₁', 'fe-b-x1', -1, 1, 0.05, 0.2)}
-          ${ctx.range('样本 2 输入 x₂', 'fe-b-x2', -1, 1, 0.05, 0.8)}
+          ${ctx.range('所选共享权重的数值', 'fe-b-value', -3, 3, .05, base.W0[0][0])}
+          ${ctx.range('样本 2 输入 x₁', 'fe-b-x1', -2, 2, 0.05, 0.2)}
+          ${ctx.range('样本 2 输入 x₂', 'fe-b-x2', -2, 2, 0.05, 0.8)}
           ${ctx.select('样本 2 目标 d', 'fe-b-target', [['01', 'd = [0, 1]'], ['10', 'd = [1, 0]']], '01')}
         </div>
-        <div id="fe-b-content"></div>
+        <div class="fe-toolbar" role="group" aria-label="批量实验预设">
+          <button type="button" class="fe-tab-btn" id="fe-b-same">样本 2 与样本 1 相同</button>
+          <button type="button" class="fe-tab-btn" id="fe-b-reset">恢复初始设置</button>
+        </div>
+        <p class="fe-card">先选一条权重，再拖动权重数值：两个样本都会使用这同一个参数。也可以让样本 2 与样本 1 相同，观察两份梯度为何一致。</p>
+        <div id="fe-b-content" aria-live="polite"></div>
       </div>
     `;
 
     function render() {
       // Update tab buttons
-      root.querySelectorAll('.fe-tab-btn').forEach(function(b) {
+      root.querySelectorAll('.fe-tab-btn[data-tab]').forEach(function(b) {
         b.classList.toggle('active', b.dataset.tab === currentTab);
       });
 
       selectedWeight = root.querySelector('#fe-b-weight').value;
       var chosen = weightKey(selectedWeight);
       var i = chosen.i, j = chosen.j, layer = chosen.layer;
+      var chosenValue = (layer === 0 ? base.W0 : base.W1)[i][j];
 
       // Sample 1 (base from shared state) and Sample 2
       var s2_x1 = +root.querySelector('#fe-b-x1').value;
@@ -156,18 +164,18 @@
                 <div class="mat-title">∇${gradName} (参数梯度矩阵 2×2)</div>
                 <table class="fe-table-matrix" id="mat-g">
                   <tr>
-                    <td class="${i===0&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}11">${F(Gmat[0][0], 5)}</td>
-                    <td class="${i===0&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}12">${F(Gmat[0][1], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 1 行第 1 列的权重梯度" class="${i===0&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}11">${F(Gmat[0][0], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 1 行第 2 列的权重梯度" class="${i===0&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}12">${F(Gmat[0][1], 5)}</td>
                   </tr>
                   <tr>
-                    <td class="${i===1&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}21">${F(Gmat[1][0], 5)}</td>
-                    <td class="${i===1&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}22">${F(Gmat[1][1], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 2 行第 1 列的权重梯度" class="${i===1&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}21">${F(Gmat[1][0], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 2 行第 2 列的权重梯度" class="${i===1&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}22">${F(Gmat[1][1], 5)}</td>
                   </tr>
                 </table>
               </div>
             </div>
             <div class="fe-math-banner">
-              <strong>当前选中：${chosen.name}</strong> 位于第 ${i+1} 行、第 ${j+1} 列：<br>
+              <strong>当前选中：${chosen.name} = ${F(chosenValue, 3)}</strong> 位于第 ${i+1} 行、第 ${j+1} 列：<br>
               ∇${chosen.name} = (${matName}ᵀ[第 ${i+1} 行] · Δ[第 ${j+1} 列]) / 2<br>
               = ( ${F(XTmat[i][0], 4)} × ${F(Dmat[0][j], 4)} + ${F(XTmat[i][1], 4)} × ${F(Dmat[1][j], 4)} ) / 2<br>
               = ( ${F(grad1, 5)} [样本1] + ${F(grad2, 5)} [样本2] ) / 2 = <strong>${F(avgGrad, 5)}</strong>
@@ -180,12 +188,17 @@
 
         // Bind clicks on matrix G cells
         container.querySelectorAll('#mat-g td').forEach(function(td) {
-          td.addEventListener('click', function() {
+          function chooseWeight() {
             var w = td.dataset.weight;
             if (w) {
               root.querySelector('#fe-b-weight').value = w;
+              syncWeight();
               render();
             }
+          }
+          td.addEventListener('click', chooseWeight);
+          td.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chooseWeight(); }
           });
         });
       } else if (currentTab === 'samples') {
@@ -298,15 +311,48 @@
     }
 
     // Tab buttons click handler
-    root.querySelectorAll('.fe-tab-btn').forEach(function(btn) {
+    root.querySelectorAll('.fe-tab-btn[data-tab]').forEach(function(btn) {
       btn.addEventListener('click', function() {
         currentTab = btn.dataset.tab;
         render();
       });
     });
 
-    ctx.controls(render);
-    render();
+    function syncWeight() {
+      var key = weightKey(root.querySelector('#fe-b-weight').value);
+      var slider = root.querySelector('#fe-b-value');
+      var value = (key.layer === 0 ? base.W0 : base.W1)[key.i][key.j];
+      // A weight brought from training may lie outside the original slider
+      // range or between its tick marks. Preserve its actual value on selection.
+      slider.min = Math.min(-3, value);
+      slider.max = Math.max(3, value);
+      slider.step = 'any';
+      slider.value = value;
+      ctx.outputs();
+    }
+    root.querySelector('#fe-b-same').addEventListener('click', function() {
+      root.querySelector('#fe-b-x1').value = base.x[0];
+      root.querySelector('#fe-b-x2').value = base.x[1];
+      root.querySelector('#fe-b-target').value = base.d[0] === 1 ? '10' : '01';
+      ctx.outputs(); render();
+    });
+    root.querySelector('#fe-b-reset').addEventListener('click', function() {
+      base = clone(initial);
+      root.querySelector('#fe-b-weight').value = 'w11';
+      root.querySelector('#fe-b-x1').value = .2;
+      root.querySelector('#fe-b-x2').value = .8;
+      root.querySelector('#fe-b-target').value = '01';
+      syncWeight(); render();
+    });
+    ctx.controls(function(el) {
+      if (el.id === 'fe-b-weight') syncWeight();
+      if (el.id === 'fe-b-value') {
+        var key = weightKey(root.querySelector('#fe-b-weight').value);
+        (key.layer === 0 ? base.W0 : base.W1)[key.i][key.j] = +el.value;
+      }
+      render();
+    });
+    syncWeight(); render();
   }
 
   /* =========================================================================
@@ -348,14 +394,18 @@
         <div class="fe-toolbar">
           ${ctx.range('输出原始分数 z₁ (logit)', 'fe-sm-z1', -4, 4, 0.1, 1.2)}
           ${ctx.range('输出原始分数 z₂ (logit)', 'fe-sm-z2', -4, 4, 0.1, -0.3)}
+          ${ctx.range('同时给两个分数加上 c', 'fe-sm-shift', -3, 3, 0.1, 0)}
           ${ctx.range('温度参数 T (仅 Softmax)', 'fe-sm-temp', 0.2, 3, 0.1, 1.0)}
           ${ctx.select('真实标签类别', 'fe-sm-target', [['0', '类别 1 (d = [1, 0])'], ['1', '类别 2 (d = [0, 1])']], '0')}
         </div>
         <div class="fe-btn-row">
           <button type="button" class="fe-pill-btn" id="btn-demo-error">设置错误预测：z₁ = −3.8，z₂ = 3.5</button>
           <button type="button" class="fe-pill-btn" id="btn-demo-balanced">设置相同分数：z₁ = z₂ = 0</button>
+          <button type="button" class="fe-pill-btn" id="btn-demo-shift">共同平移 +2</button>
+          <button type="button" class="fe-pill-btn" id="btn-demo-reset">恢复初始设置</button>
         </div>
-        <div id="fe-sm-content"></div>
+        <p class="fe-card">先预测：给两个分数同时加 2，类别概率会变吗？拖动 c 或点击“共同平移 +2”，再切换两种输出方式对照。</p>
+        <div id="fe-sm-content" aria-live="polite"></div>
       </div>
     `;
 
@@ -367,6 +417,9 @@
 
       var z1 = +root.querySelector('#fe-sm-z1').value;
       var z2 = +root.querySelector('#fe-sm-z2').value;
+      var shift = +root.querySelector('#fe-sm-shift').value;
+      var originalZ = [z1, z2];
+      z1 += shift; z2 += shift;
       var T = +root.querySelector('#fe-sm-temp').value;
       var targetIdx = +root.querySelector('#fe-sm-target').value;
       var d = targetIdx === 0 ? [1, 0] : [0, 1];
@@ -393,12 +446,15 @@
       }
 
       var container = root.querySelector('#fe-sm-content');
-      var correctP = p[targetIdx];
-      var correctGrad = grad[targetIdx];
+      var unshifted = isSoftmax ? M.softmaxLossGrad(originalZ, d, T).p : originalZ.map(function(z) { return 1 / (1 + Math.exp(-z)); });
+      var maxZ = Math.max(z1 / T, z2 / T);
+      var numerators = [Math.exp(z1 / T - maxZ), Math.exp(z2 / T - maxZ)];
 
       container.innerHTML = `
         <div class="fe-card">
           <h3>当前输出与分数梯度</h3>
+          <p>原始分数 [${F(originalZ[0], 2)}, ${F(originalZ[1], 2)}] 同时加 c = ${F(shift, 2)}，得到 [${F(z1, 2)}, ${F(z2, 2)}]。未平移时的输出为 [${F(unshifted[0], 5)}, ${F(unshifted[1], 5)}]。</p>
+          ${isSoftmax ? `<p>为稳定计算，先将 z/T 减去其中最大值 ${F(maxZ, 4)}，再取指数 [${F(numerators[0], 5)}, ${F(numerators[1], 5)}]；用它们各自除以总和 ${F(numerators[0] + numerators[1], 5)} 得到概率。共同平移不会改变这些概率。</p>` : `<p>Sigmoid 分别处理每个分数；共同平移一般会改变各输出。与 Softmax 对照时只把 c 改变，其余设置保持不变。</p>`}
           <div class="fe-bars-wrap">
             <div class="fe-bar-row">
               <div class="fe-bar-label">类别 1 ${targetIdx===0?'(真实标签✓)':''}</div>
@@ -475,6 +531,8 @@
     // Preset buttons
     root.querySelector('#btn-demo-error').addEventListener('click', function() {
       root.querySelector('#fe-sm-target').value = '0'; // want class 1
+      root.querySelector('#fe-sm-shift').value = '0';
+      root.querySelector('#fe-sm-temp').value = '1';
       root.querySelector('#fe-sm-z1').value = '-3.8'; // but predicted very negative
       root.querySelector('#fe-sm-z2').value = '3.5';
       ctx.outputs();
@@ -484,10 +542,20 @@
     root.querySelector('#btn-demo-balanced').addEventListener('click', function() {
       root.querySelector('#fe-sm-z1').value = '0';
       root.querySelector('#fe-sm-z2').value = '0';
+      root.querySelector('#fe-sm-shift').value = '0';
       ctx.outputs();
       render();
     });
 
+    root.querySelector('#btn-demo-shift').addEventListener('click', function() {
+      root.querySelector('#fe-sm-shift').value = '2'; ctx.outputs(); render();
+    });
+    root.querySelector('#btn-demo-reset').addEventListener('click', function() {
+      currentMode = 'softmax';
+      root.querySelector('#fe-sm-z1').value = '1.2'; root.querySelector('#fe-sm-z2').value = '-0.3';
+      root.querySelector('#fe-sm-shift').value = '0'; root.querySelector('#fe-sm-temp').value = '1';
+      root.querySelector('#fe-sm-target').value = '0'; ctx.outputs(); render();
+    });
     ctx.controls(render);
     render();
   }

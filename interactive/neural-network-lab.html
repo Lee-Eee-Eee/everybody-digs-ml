@@ -510,7 +510,7 @@ window.NNLESSONS = [
  intro:'一层的局部导数已经明白。把同样的层接十几次，输入的一点变化还剩多少？',
  body:String.raw`<h3>把深网络缩成一条可手算的链</h3><p>右边每层只有一个数：\(h_{l+1}=s(gh_l+b)\)。g 是这一层的权重，b 是偏置。对输入的导数为各层局部导数的乘积：</p>\[\frac{\partial h_L}{\partial h_0}=\prod_{l=0}^{L-1}g\,s'(gh_l+b).\]
 <p>Sigmoid 的局部导数至多0.25。g=1 时，接入越来越多层，连乘会迅速变小。ReLU 在正区间的导数为1，在负区间为0；它保留了正区间的信号，也可能让某条路径完全停止回传。</p><p>图里分开显示前向值与反向尺度。输出数值看起来正常时，输入梯度仍可能已经很小。继续写张量计算可回到 <a href="../lessons/neural_network_basics/05_torch_tensors_autograd.ipynb">第05课</a>。</p>`,
- task:'保持权重g=1，逐渐增加层数；再将Sigmoid换成ReLU，分别观察正、负输入的回传。',
+ task:'先设 g=1、b=0、输入 h₀=0.6，把层数从1调到12，记录回传至输入的导数；然后只把 Sigmoid 改成 ReLU，比较导数。再把 h₀ 调为负数，观察 ReLU 哪一层开始截断。',
  quiz:{question:'沿一条很深的路径，局部导数怎样组成总导数？',options:['逐层相乘','逐层平均','只取最后一层'],correct:0,explanation:'链式法则将各层局部变化率相乘；分支汇合时才将多条贡献相加。'}
 },
 {
@@ -518,28 +518,28 @@ window.NNLESSONS = [
  intro:'权重太大与太小，都可能让信号在层间发生明显变化。随机数的分布也因此成为模型设计的一部分。',
  body:String.raw`<h3>先观察一个倍率的影响</h3><p>把右侧标量权重 g 调小，前向信号和回传导数会一起受到影响；调大后，乘积可能增长。这个实验帮助我们看见尺度怎样逐层积累。</p><h3>多输入时，缩放还要考虑求和项数</h3><p>若 \(a=\sum_{i=1}^{n}w_ix_i\)，输入与零均值权重独立、各项贡献不相关，且输入也为零均值，则 \(\operatorname{Var}(a)\approx n\operatorname{Var}(w)\operatorname{Var}(x)\)。增加输入数 n，会增加加权和的方差。</p>
 <p>Xavier 正态初始化取 \(\operatorname{Var}(w)=2/(n_{in}+n_{out})\)；He 初始化针对ReLU的传播分析，取 \(2/n_{in}\)。这些是随机矩阵的方差选择。右侧g是单个确定权重，可以用它理解逐层倍率。以后构造不同宽度的模型时，可以打印每层激活的均值、方差，实际检验初始化后的信号尺度。</p>`,
- task:'固定层数，比较g小于1、等于1、大于1的回传曲线。将标量的连乘现象与正文中多项求和的方差计算分别解释。',
+ task:'选线性激活并设 b=0、层数12，依次令 g=0.8、1、1.2；记录回传至输入的导数，并对照 g 的12次方。再换回 Sigmoid，观察激活导数怎样改变连乘。这里 g 是确定值，不是随机权重的方差。',
  quiz:{question:'He初始化的2/nᵢₙ指什么？',options:['随机权重的方差','每一个权重都固定为这个数','输出梯度的总和'],correct:0,explanation:'权重从给定方差的分布中采样，具体权重各不相同。'}
 },
 {
  id:'training',title:'让四个象限分成两类',short:'真实训练与分类边界',mode:'train',
  intro:'单步更新现在连成训练循环。看着边界随权重变化，观察一个网络怎样学会XOR。',
  body:String.raw`<h3>同号与异号，无法用一条直线分开</h3><p>XOR数据的两类交错落在四个象限。没有隐藏层时，模型只能画出线性分界；有了非线性隐藏层，就能组合出弯曲或分段的边界。</p><p>背景色是当前模型的类别概率。实心点参与梯度更新，空心点来自另一批验证样本。每次取样、前向、求损失、反传、更新之后，颜色都会重新计算。</p><h3>曲线与边界要一起看</h3><p>损失告诉我们概率预测离目标有多远，边界显示这些判断落在输入空间的哪里。局部边界移动不一定立刻改变分类正确率，概率却可能已经改善。</p><p>将隐藏激活换成线性后，多层线性映射仍可合成一层线性映射。非线性究竟增加了什么，可以在这个任务上直接观察。手写训练循环在 <a href="../lessons/neural_network_basics/07_mlp_regression_classification.ipynb">第07课</a>。</p>`,
- task:'先用0个隐藏层训练，再用2个Tanh隐藏层训练。比较边界形状、训练损失与验证损失。',
+ task:'选择 XOR，先设隐藏层数为0，点击“训练20步”十次，记录训练与验证错率和边界；再设2层、Tanh，按同样更新次数比较。结构变化会重新初始化，实心点用于训练，空心点只用于验证。',
  quiz:{question:'堆叠多层线性映射，能否获得任意非线性边界？',options:['不能，复合后仍是线性映射','只要层数足够就能','取决于使用Adam还是SGD'],correct:0,explanation:'矩阵乘法的复合仍对应一个矩阵，加偏置后仍是仿射映射。'}
 },
 {
  id:'optimizers',title:'在狭长的谷底里怎样迈步',short:'SGD、动量与Adam',mode:'optimizer',
  intro:'同一个损失曲面，不同的更新方式会走出不同轨迹。先用二维问题看清每一步，再回到网络参数。',
  body:String.raw`<p>右侧目标为 \(L=(0.1x^2+cy^2)/2\)，梯度是 \((0.1x,cy)\)。当c较大，沿y方向的坡更陡，统一步长可能让它来回越过谷底，而x方向仍走得很慢。</p><h3>梯度怎样变成更新</h3><p>SGD直接沿负梯度移动。动量保存平滑的历史方向：\(m_t=\mu m_{t-1}+g_t\)，再用m更新。Adam分别追踪梯度的一阶、二阶滑动平均，经偏差修正后使用 \(\hat m_t/(\sqrt{\hat v_t}+\epsilon)\) 调整每个坐标的更新尺度。</p><p>轨迹依赖曲率、步长与历史状态。某条曲线在这个谷底里更快，只回答这个具体优化问题。网络实验中还要一起观察最终预测与验证误差。</p>`,
- task:'从较小的y方向曲率开始逐渐调大c。比较三条轨迹的横向推进与纵向震荡，再调学习率。',
+ task:'设共同学习率0.12、曲率 c=2，先将显示步数设为1：对 SGD 手算从 (3,2) 出发的梯度 (0.3,4) 和下一位置 (2.964,1.52)。再增加步数，比较三条轨迹；保持学习率不变调大 c，观察纵向震荡。',
  quiz:{question:'动量额外保存了什么？',options:['由历史梯度积累的方向','完整训练集的副本','下一批样本的标签'],correct:0,explanation:'历史方向帮助当前更新平滑地延续；它仍由梯度逐步计算。'}
 },
 {
  id:'capacity',title:'更宽的网络，画出的边界会怎样',short:'表示能力与泛化',mode:'train',
  intro:'当一个网络分不开内外圆，加一些隐藏节点可能有帮助。能拟合更多形状，也让模型选择成为新的问题。',
  body:String.raw`<p>右侧可以改变隐藏层数、宽度与数据形状。内外圆需要弯曲边界，XOR需要将不相连的区域归到同类。更多节点为模型提供更多可组合的中间特征。</p><p>表示能力增加后，训练还需要找到有用的参数。初始化、激活与优化器都会影响它找到什么。比较两个宽度时，观察完整训练过程，再看空心验证点的判断。</p><p>训练点拟合得好，描述的是已见样本。未见位置甚至输入区域之外的行为，还受数据覆盖与结构影响。<a href="../lessons/experiments/18_research_experiments.ipynb">第18课</a>会画出同一组训练点之外，几条网络预测怎样分开。</p>`,
- task:'选择内外圆，从较窄网络开始逐渐加宽。观察边界何时能围住内圆，再比较验证点周围是否仍有明显错误。',
+ task:'选择内外圆，固定2个隐藏层和 Tanh，先用宽度2训练200步，记录训练与验证错率；再将宽度设为8并重新训练同样步数。切换宽度会重新初始化；同时记录参数量，观察边界和空心验证点。',
  quiz:{question:'训练误差较小，能够直接说明什么？',options:['模型更好地拟合了当前训练样本','区域外预测一定更准','任何初始化都会得到同一函数'],correct:0,explanation:'泛化和外推需要新的输入来评价，不能仅由训练误差推出。'}
 },
 {
@@ -861,7 +861,7 @@ window.FOUNDATIONLESSONS = [
 \[s(a)=\frac1{1+e^{-a}},\qquad h_1=s(0.14)\approx0.534943.\]
 <p>Sigmoid 把加权和映到0与1之间。它在中间较陡，两端较平；同样大小的输入变化，经过不同位置时会引起不同大小的输出变化。</p>
 <p>其导数可以从已经算出的输出获得：\(s'(a)=s(a)[1-s(a)]\)。当输出为0.5时导数为0.25，靠近两端时导数趋小。反向传播稍后正要用到这个局部变化率。</p>`,
- task:'逐步显示两个乘积、加权和与激活。随后调大一个权重，观察 h₁ 接近1时，局部导数怎样变化。',
+ task:'显示到加权和后，把 x₁ 设为 0，再改变 w₁₁；把 x₁ 调回正数后重复。观察当前步骤如何实时重算，再比较激活输出和局部导数。',
  quiz:{question:'a₁=0时，Sigmoid 的输出和局部导数分别为多少？',options:['0.5 与 0.25','0 与 1','1 与 0.5'],correct:0,explanation:'s(0)=1/2，因此 s′(0)=s(0)[1−s(0)]=1/4。'}
 },
 {
@@ -874,7 +874,7 @@ window.FOUNDATIONLESSONS = [
 \[L=\tfrac12(y_1-d_1)^2+\tfrac12(y_2-d_2)^2\approx0.247514.\]
 <p>平方让正负偏差都贡献非负误差。前面的二分之一使稍后的导数写成 y−d。现在还没有改变任何权重，只是用当前参数算出了一次结果。</p>
 <p>接下来要知道怎样改。一个权重通过哪些中间值影响 L，已经画在这张图上；反向传播会沿这些依赖逐段计算变化率。</p>`,
- task:'从输入开始逐步前向，手算一个输出的加权和与平方误差。改变目标，观察哪些前向节点保持原值、哪些误差节点改变。',
+ task:'逐步算到损失，记录预测与损失；切换目标，观察预测保持不变而误差改变。再选一条权重，先预测方向，再拖动滑块验证。',
  quiz:{question:'保持输入与权重不变，只改变目标 d，会先改变什么？',options:['损失以及随后计算的梯度','隐藏值 h','预测值 y'],correct:0,explanation:'预测由输入与权重决定。目标进入损失，因此会改变损失，也会改变损失回传的梯度。'}
 },
 {
@@ -888,7 +888,7 @@ window.FOUNDATIONLESSONS = [
 <p>乘积是 \(h_1v_{11}\)。改变权重时，乘数是当前 h₁；改变隐藏值时，乘数是当前 v₁₁：</p>
 \[g_{v_{11}}=g_{z_1}h_1,\qquad g_{h_1\leftarrow y_1}=g_{z_1}v_{11}.\]
 <p>前者告诉我们怎样更新这条边，后者将影响继续送向更早的计算。橙色箭头传递的是这些变化率，蓝色前向值仍保存着原来的数。</p>`,
- task:'逐步回传到 z₁，再分向 v₁₁ 与 h₁。分别指出这两条回传里使用的局部乘数。',
+ task:'逐步回传到 z₁，再分向 v₁₁ 与 h₁，指出各自的局部乘数。保持当前步骤，改变输入、目标或选中的权重，观察梯度如何重算；最后用微扰 ε 比较真实损失变化与线性近似。',
  quiz:{question:'对乘积 h₁v₁₁ 求导，传回权重 v₁₁ 时乘什么？',options:['当前隐藏值 h₁','当前权重 v₁₁','目标 d₁'],correct:0,explanation:'将 h₁ 视为当前固定输入，∂(h₁v₁₁)/∂v₁₁=h₁。'}
 },
 {
@@ -901,7 +901,7 @@ window.FOUNDATIONLESSONS = [
 \[g_{a_j}=g_{h_j}h_j(1-h_j),\qquad g_{w_{ij}}=g_{a_j}x_i.\]
 <p>到达 aⱼ 之前，输出层的两条影响已经汇合。再穿过一条输入边时，与输出层一样：对权重求导乘当前输入，对输入求导乘当前权重。</p>
 <p>整张网络因此只需要两种动作：沿一条依赖乘局部导数，在同一个变量收到多份贡献时相加。矩阵反传和后面的残差块也沿用它们。</p>`,
- task:'逐条显示回到 h₁ 的两份贡献，比较它们的符号，再穿过隐藏层激活。切换到 h₂，重复同样的判断。',
+ task:'逐条显示回到 h₁ 的两份贡献，比较符号和总和。将 v₁₁ 调为 0，观察来自输出 1 的路径贡献；再切换 h₂，重复判断。',
  quiz:{question:'hⱼ 同时影响两个输出，损失对 hⱼ 的导数怎样组成？',options:['两条输出路径的贡献相加','只保留较大的一项','两条贡献相乘'],correct:0,explanation:'同一次 hⱼ 的微小变化通过两条路径改变损失，总变化是一阶贡献之和。'}
 },
 {
@@ -914,7 +914,7 @@ window.FOUNDATIONLESSONS = [
 \[w_{ij}^{\rm new}=w_{ij}-\eta g_{w_{ij}},\qquad v_{jk}^{\rm new}=v_{jk}-\eta g_{v_{jk}}.\]
 <p>η 是学习率。正梯度表示局部增大权重会增大损失，因此减去它。八条边都用刚才同一次前向得到的梯度，更新之后重新前向，才得到新的预测和损失。</p>
 <p>微扰实验还提供了直接的检查：只临时改变一条权重，比较真实损失变化与 \(g_w\Delta w\) 的近似。变化量足够小时，两者应接近。</p>`,
- task:'显示输入梯度，再选一条权重做微扰。记录更新前后的损失，尝试把学习率逐渐调大，观察局部下降方向何时不再带来一步下降。',
+ task:'显示输入梯度，选一条权重做微扰。先比较不同学习率下的候选更新，再提交一次更新并记录前后损失；重置后改变输入或权重，重新试一次。',
  quiz:{question:'梯度已经算好后，更新权重的正确动作是什么？',options:['用同一次旧梯度更新全部权重，再重新前向','每更新一条边就用新旧混合参数继续原反传','把梯度写进输入 x'],correct:0,explanation:'一次梯度对应一次固定参数下的前向计算。更新后重新前向，才能计算新参数对应的梯度。'}
 },
 {
@@ -1064,7 +1064,7 @@ window.FOUNDATIONLESSONS = [
     var settings='<div class="fc-controls fi-controls">'+ctx.select('放大哪个隐藏单元','fi-neuron-choice',[['0','h₁：接收 w₁₁、w₂₁'],['1','h₂：接收 w₁₂、w₂₂']],'0')+ctx.range('给定输入 x₁','fi-neuron-x1',-2,2,'any',s.x[0])+ctx.range('给定输入 x₂','fi-neuron-x2',-2,2,'any',s.x[1])+ctx.range('从 x₁ 进入本单元的权重','fi-neuron-w1',-3,3,'any',s.W0[0][0])+ctx.range('从 x₂ 进入本单元的权重','fi-neuron-w2',-3,3,'any',s.W0[1][0])+'</div>';
     var steps='<div class="fi-steps" id="fi-neuron-steps"><button type="button" data-fi-step="0">0 · 给定量</button><button type="button" data-fi-step="1">1 · 两个乘积</button><button type="button" data-fi-step="2">2 · 求和</button><button type="button" data-fi-step="3">3 · Sigmoid</button></div>';
     var navigation='<div class="fi-nav"><button type="button" id="fi-neuron-prev">← 上一步</button><span id="fi-neuron-counter"></span><button type="button" id="fi-neuron-next">下一步 →</button><button type="button" id="fi-neuron-reset">恢复全部初始数值</button></div>';
-    root.innerHTML=css()+'<section class="fi-lab"><div id="fi-neuron-zoom"></div>'+steps+navigation+'<div class="fc-card fi-card fi-stage-copy" id="fi-neuron-copy" aria-live="polite"></div>'+settings+'<div class="fc-step-note fi-note">偏置在本例中固定为 0。输入或权重一改，本节回到第 0 步，重新计算。当前修改会保留到后面的课程；h₁、h₂ 的后继输出 y₁、y₂ 暂时不计算，留到下一节继续。</div><details class="fi-card"><summary>查看这个单元在完整网络中的位置</summary><div id="fi-neuron-network"></div></details></section>';
+    root.innerHTML=css()+'<section class="fi-lab"><div id="fi-neuron-zoom"></div>'+steps+navigation+'<div class="fc-card fi-card fi-stage-copy" id="fi-neuron-copy" aria-live="polite"></div>'+settings+'<div class="fc-step-note fi-note">偏置在本例中固定为 0。拖动输入或权重时，当前步骤立即重新计算，便于比较；选择另一个隐藏单元也保留当前步骤。当前修改会保留到后面的课程；h₁、h₂ 的后继输出 y₁、y₂ 暂时不计算，留到下一节继续。</div><details class="fi-card"><summary>查看这个单元在完整网络中的位置</summary><div id="fi-neuron-network"></div></details></section>';
     function sync(){root.querySelector('#fi-neuron-x1').value=s.x[0];root.querySelector('#fi-neuron-x2').value=s.x[1];root.querySelector('#fi-neuron-w1').value=s.W0[0][j];root.querySelector('#fi-neuron-w2').value=s.W0[1][j];if(ctx.outputs)ctx.outputs();}
     function draw(){var g=shared.graph(),which=j+1,known=new Set(g.nodes.filter(function(n){return n.role==='input'||n.role==='weight'||n.role==='target'||n.role==='constant';}).map(function(n){return n.id;}));
       if(step>=1){known.add('p0_1'+which);known.add('p0_2'+which);}if(step>=2)known.add('a1_'+which);if(step>=3)known.add('h'+which);
@@ -1079,13 +1079,13 @@ window.FOUNDATIONLESSONS = [
       root.querySelector('#fi-neuron-copy').innerHTML=copy;
       root.querySelector('#fi-neuron-counter').textContent=step+' / 3';root.querySelector('#fi-neuron-prev').disabled=step===0;root.querySelector('#fi-neuron-next').disabled=step===3;
       root.querySelectorAll('[data-fi-step]').forEach(function(b){b.setAttribute('aria-current',+b.getAttribute('data-fi-step')===step?'step':'false');});
-      bindItems(root.querySelector('#fi-neuron-network'),function(id){if(id==='h1'||id==='h2'){j=+id[1]-1;step=0;root.querySelector('#fi-neuron-choice').value=String(j);sync();draw();}});
+      bindItems(root.querySelector('#fi-neuron-network'),function(id){if(id==='h1'||id==='h2'){j=+id[1]-1;root.querySelector('#fi-neuron-choice').value=String(j);sync();draw();}});
     }
     root.querySelectorAll('[data-fi-step]').forEach(function(b){b.addEventListener('click',function(){step=+b.getAttribute('data-fi-step');draw();});});
     root.querySelector('#fi-neuron-prev').addEventListener('click',function(){step=Math.max(0,step-1);draw();});root.querySelector('#fi-neuron-next').addEventListener('click',function(){step=Math.min(3,step+1);draw();});
     root.querySelector('#fi-neuron-reset').addEventListener('click',function(){shared.reset();step=0;sync();draw();});
-    ctx.controls(function(el){if(el&&el.id==='fi-neuron-choice'){j=+el.value;step=0;sync();draw();return;}
-      if(el){if(el.id==='fi-neuron-x1')s.x[0]=+el.value;if(el.id==='fi-neuron-x2')s.x[1]=+el.value;if(el.id==='fi-neuron-w1')s.W0[0][j]=+el.value;if(el.id==='fi-neuron-w2')s.W0[1][j]=+el.value;}step=0;draw();});sync();draw();
+    ctx.controls(function(el){if(el&&el.id==='fi-neuron-choice'){j=+el.value;sync();draw();return;}
+      if(el){if(el.id==='fi-neuron-x1')s.x[0]=+el.value;if(el.id==='fi-neuron-x2')s.x[1]=+el.value;if(el.id==='fi-neuron-w1')s.W0[0][j]=+el.value;if(el.id==='fi-neuron-w2')s.W0[1][j]=+el.value;}draw();});sync();draw();
   }
 
   window.FoundationIntroLabs=Object.assign(window.FoundationIntroLabs||{},
@@ -1112,6 +1112,7 @@ window.FOUNDATIONLESSONS = [
     if (!base.d) base.d = base.target || [1, 0];
     var currentTab = 'matrix'; // 'matrix', 'samples', 'shapes'
     var selectedWeight = 'w11';
+    var initial = clone(base);
 
     var weights = [
       ['w11', 'w₁₁：输入 x₁ → 隐藏 h₁'],
@@ -1162,23 +1163,30 @@ window.FOUNDATIONLESSONS = [
         </div>
         <div class="fe-toolbar">
           ${ctx.select('选择追踪的权重', 'fe-b-weight', weights, 'w11')}
-          ${ctx.range('样本 2 输入 x₁', 'fe-b-x1', -1, 1, 0.05, 0.2)}
-          ${ctx.range('样本 2 输入 x₂', 'fe-b-x2', -1, 1, 0.05, 0.8)}
+          ${ctx.range('所选共享权重的数值', 'fe-b-value', -3, 3, .05, base.W0[0][0])}
+          ${ctx.range('样本 2 输入 x₁', 'fe-b-x1', -2, 2, 0.05, 0.2)}
+          ${ctx.range('样本 2 输入 x₂', 'fe-b-x2', -2, 2, 0.05, 0.8)}
           ${ctx.select('样本 2 目标 d', 'fe-b-target', [['01', 'd = [0, 1]'], ['10', 'd = [1, 0]']], '01')}
         </div>
-        <div id="fe-b-content"></div>
+        <div class="fe-toolbar" role="group" aria-label="批量实验预设">
+          <button type="button" class="fe-tab-btn" id="fe-b-same">样本 2 与样本 1 相同</button>
+          <button type="button" class="fe-tab-btn" id="fe-b-reset">恢复初始设置</button>
+        </div>
+        <p class="fe-card">先选一条权重，再拖动权重数值：两个样本都会使用这同一个参数。也可以让样本 2 与样本 1 相同，观察两份梯度为何一致。</p>
+        <div id="fe-b-content" aria-live="polite"></div>
       </div>
     `;
 
     function render() {
       // Update tab buttons
-      root.querySelectorAll('.fe-tab-btn').forEach(function(b) {
+      root.querySelectorAll('.fe-tab-btn[data-tab]').forEach(function(b) {
         b.classList.toggle('active', b.dataset.tab === currentTab);
       });
 
       selectedWeight = root.querySelector('#fe-b-weight').value;
       var chosen = weightKey(selectedWeight);
       var i = chosen.i, j = chosen.j, layer = chosen.layer;
+      var chosenValue = (layer === 0 ? base.W0 : base.W1)[i][j];
 
       // Sample 1 (base from shared state) and Sample 2
       var s2_x1 = +root.querySelector('#fe-b-x1').value;
@@ -1252,18 +1260,18 @@ window.FOUNDATIONLESSONS = [
                 <div class="mat-title">∇${gradName} (参数梯度矩阵 2×2)</div>
                 <table class="fe-table-matrix" id="mat-g">
                   <tr>
-                    <td class="${i===0&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}11">${F(Gmat[0][0], 5)}</td>
-                    <td class="${i===0&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}12">${F(Gmat[0][1], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 1 行第 1 列的权重梯度" class="${i===0&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}11">${F(Gmat[0][0], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 1 行第 2 列的权重梯度" class="${i===0&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}12">${F(Gmat[0][1], 5)}</td>
                   </tr>
                   <tr>
-                    <td class="${i===1&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}21">${F(Gmat[1][0], 5)}</td>
-                    <td class="${i===1&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}22">${F(Gmat[1][1], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 2 行第 1 列的权重梯度" class="${i===1&&j===0?'cell-active':''}" data-weight="${layer===0?'w':'v'}21">${F(Gmat[1][0], 5)}</td>
+                    <td role="button" tabindex="0" aria-label="选择第 2 行第 2 列的权重梯度" class="${i===1&&j===1?'cell-active':''}" data-weight="${layer===0?'w':'v'}22">${F(Gmat[1][1], 5)}</td>
                   </tr>
                 </table>
               </div>
             </div>
             <div class="fe-math-banner">
-              <strong>当前选中：${chosen.name}</strong> 位于第 ${i+1} 行、第 ${j+1} 列：<br>
+              <strong>当前选中：${chosen.name} = ${F(chosenValue, 3)}</strong> 位于第 ${i+1} 行、第 ${j+1} 列：<br>
               ∇${chosen.name} = (${matName}ᵀ[第 ${i+1} 行] · Δ[第 ${j+1} 列]) / 2<br>
               = ( ${F(XTmat[i][0], 4)} × ${F(Dmat[0][j], 4)} + ${F(XTmat[i][1], 4)} × ${F(Dmat[1][j], 4)} ) / 2<br>
               = ( ${F(grad1, 5)} [样本1] + ${F(grad2, 5)} [样本2] ) / 2 = <strong>${F(avgGrad, 5)}</strong>
@@ -1276,12 +1284,17 @@ window.FOUNDATIONLESSONS = [
 
         // Bind clicks on matrix G cells
         container.querySelectorAll('#mat-g td').forEach(function(td) {
-          td.addEventListener('click', function() {
+          function chooseWeight() {
             var w = td.dataset.weight;
             if (w) {
               root.querySelector('#fe-b-weight').value = w;
+              syncWeight();
               render();
             }
+          }
+          td.addEventListener('click', chooseWeight);
+          td.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chooseWeight(); }
           });
         });
       } else if (currentTab === 'samples') {
@@ -1394,15 +1407,48 @@ window.FOUNDATIONLESSONS = [
     }
 
     // Tab buttons click handler
-    root.querySelectorAll('.fe-tab-btn').forEach(function(btn) {
+    root.querySelectorAll('.fe-tab-btn[data-tab]').forEach(function(btn) {
       btn.addEventListener('click', function() {
         currentTab = btn.dataset.tab;
         render();
       });
     });
 
-    ctx.controls(render);
-    render();
+    function syncWeight() {
+      var key = weightKey(root.querySelector('#fe-b-weight').value);
+      var slider = root.querySelector('#fe-b-value');
+      var value = (key.layer === 0 ? base.W0 : base.W1)[key.i][key.j];
+      // A weight brought from training may lie outside the original slider
+      // range or between its tick marks. Preserve its actual value on selection.
+      slider.min = Math.min(-3, value);
+      slider.max = Math.max(3, value);
+      slider.step = 'any';
+      slider.value = value;
+      ctx.outputs();
+    }
+    root.querySelector('#fe-b-same').addEventListener('click', function() {
+      root.querySelector('#fe-b-x1').value = base.x[0];
+      root.querySelector('#fe-b-x2').value = base.x[1];
+      root.querySelector('#fe-b-target').value = base.d[0] === 1 ? '10' : '01';
+      ctx.outputs(); render();
+    });
+    root.querySelector('#fe-b-reset').addEventListener('click', function() {
+      base = clone(initial);
+      root.querySelector('#fe-b-weight').value = 'w11';
+      root.querySelector('#fe-b-x1').value = .2;
+      root.querySelector('#fe-b-x2').value = .8;
+      root.querySelector('#fe-b-target').value = '01';
+      syncWeight(); render();
+    });
+    ctx.controls(function(el) {
+      if (el.id === 'fe-b-weight') syncWeight();
+      if (el.id === 'fe-b-value') {
+        var key = weightKey(root.querySelector('#fe-b-weight').value);
+        (key.layer === 0 ? base.W0 : base.W1)[key.i][key.j] = +el.value;
+      }
+      render();
+    });
+    syncWeight(); render();
   }
 
   /* =========================================================================
@@ -1444,14 +1490,18 @@ window.FOUNDATIONLESSONS = [
         <div class="fe-toolbar">
           ${ctx.range('输出原始分数 z₁ (logit)', 'fe-sm-z1', -4, 4, 0.1, 1.2)}
           ${ctx.range('输出原始分数 z₂ (logit)', 'fe-sm-z2', -4, 4, 0.1, -0.3)}
+          ${ctx.range('同时给两个分数加上 c', 'fe-sm-shift', -3, 3, 0.1, 0)}
           ${ctx.range('温度参数 T (仅 Softmax)', 'fe-sm-temp', 0.2, 3, 0.1, 1.0)}
           ${ctx.select('真实标签类别', 'fe-sm-target', [['0', '类别 1 (d = [1, 0])'], ['1', '类别 2 (d = [0, 1])']], '0')}
         </div>
         <div class="fe-btn-row">
           <button type="button" class="fe-pill-btn" id="btn-demo-error">设置错误预测：z₁ = −3.8，z₂ = 3.5</button>
           <button type="button" class="fe-pill-btn" id="btn-demo-balanced">设置相同分数：z₁ = z₂ = 0</button>
+          <button type="button" class="fe-pill-btn" id="btn-demo-shift">共同平移 +2</button>
+          <button type="button" class="fe-pill-btn" id="btn-demo-reset">恢复初始设置</button>
         </div>
-        <div id="fe-sm-content"></div>
+        <p class="fe-card">先预测：给两个分数同时加 2，类别概率会变吗？拖动 c 或点击“共同平移 +2”，再切换两种输出方式对照。</p>
+        <div id="fe-sm-content" aria-live="polite"></div>
       </div>
     `;
 
@@ -1463,6 +1513,9 @@ window.FOUNDATIONLESSONS = [
 
       var z1 = +root.querySelector('#fe-sm-z1').value;
       var z2 = +root.querySelector('#fe-sm-z2').value;
+      var shift = +root.querySelector('#fe-sm-shift').value;
+      var originalZ = [z1, z2];
+      z1 += shift; z2 += shift;
       var T = +root.querySelector('#fe-sm-temp').value;
       var targetIdx = +root.querySelector('#fe-sm-target').value;
       var d = targetIdx === 0 ? [1, 0] : [0, 1];
@@ -1489,12 +1542,15 @@ window.FOUNDATIONLESSONS = [
       }
 
       var container = root.querySelector('#fe-sm-content');
-      var correctP = p[targetIdx];
-      var correctGrad = grad[targetIdx];
+      var unshifted = isSoftmax ? M.softmaxLossGrad(originalZ, d, T).p : originalZ.map(function(z) { return 1 / (1 + Math.exp(-z)); });
+      var maxZ = Math.max(z1 / T, z2 / T);
+      var numerators = [Math.exp(z1 / T - maxZ), Math.exp(z2 / T - maxZ)];
 
       container.innerHTML = `
         <div class="fe-card">
           <h3>当前输出与分数梯度</h3>
+          <p>原始分数 [${F(originalZ[0], 2)}, ${F(originalZ[1], 2)}] 同时加 c = ${F(shift, 2)}，得到 [${F(z1, 2)}, ${F(z2, 2)}]。未平移时的输出为 [${F(unshifted[0], 5)}, ${F(unshifted[1], 5)}]。</p>
+          ${isSoftmax ? `<p>为稳定计算，先将 z/T 减去其中最大值 ${F(maxZ, 4)}，再取指数 [${F(numerators[0], 5)}, ${F(numerators[1], 5)}]；用它们各自除以总和 ${F(numerators[0] + numerators[1], 5)} 得到概率。共同平移不会改变这些概率。</p>` : `<p>Sigmoid 分别处理每个分数；共同平移一般会改变各输出。与 Softmax 对照时只把 c 改变，其余设置保持不变。</p>`}
           <div class="fe-bars-wrap">
             <div class="fe-bar-row">
               <div class="fe-bar-label">类别 1 ${targetIdx===0?'(真实标签✓)':''}</div>
@@ -1571,6 +1627,8 @@ window.FOUNDATIONLESSONS = [
     // Preset buttons
     root.querySelector('#btn-demo-error').addEventListener('click', function() {
       root.querySelector('#fe-sm-target').value = '0'; // want class 1
+      root.querySelector('#fe-sm-shift').value = '0';
+      root.querySelector('#fe-sm-temp').value = '1';
       root.querySelector('#fe-sm-z1').value = '-3.8'; // but predicted very negative
       root.querySelector('#fe-sm-z2').value = '3.5';
       ctx.outputs();
@@ -1580,10 +1638,20 @@ window.FOUNDATIONLESSONS = [
     root.querySelector('#btn-demo-balanced').addEventListener('click', function() {
       root.querySelector('#fe-sm-z1').value = '0';
       root.querySelector('#fe-sm-z2').value = '0';
+      root.querySelector('#fe-sm-shift').value = '0';
       ctx.outputs();
       render();
     });
 
+    root.querySelector('#btn-demo-shift').addEventListener('click', function() {
+      root.querySelector('#fe-sm-shift').value = '2'; ctx.outputs(); render();
+    });
+    root.querySelector('#btn-demo-reset').addEventListener('click', function() {
+      currentMode = 'softmax';
+      root.querySelector('#fe-sm-z1').value = '1.2'; root.querySelector('#fe-sm-z2').value = '-0.3';
+      root.querySelector('#fe-sm-shift').value = '0'; root.querySelector('#fe-sm-temp').value = '1';
+      root.querySelector('#fe-sm-target').value = '0'; ctx.outputs(); render();
+    });
     ctx.controls(render);
     render();
   }
@@ -1784,7 +1852,12 @@ window.FOUNDATIONLESSONS = [
         conclusion = '后置 ReLU 在这次前向处导数为零，两路都收到零。恒等捷径也会被加和后的激活截断。';
       else if (s.k !== 1)
         conclusion = 'κ≠1 时，捷径是缩放映射；回传要乘 κ，不能把它当作导数恒为 1 的恒等捷径。';
-      $('#r-parameters').innerHTML = `<div class="fc-residual-parameters"><h3>同一个 F，还要把梯度分给参数 a 与 b</h3><p>F=ax+b：对 a 的局部偏导是 x，对 b 的局部偏导是 1。</p><div class="fc-residual-equation">∂L/∂a = (∂L/∂F) × x\n       = ${signed(s.gq)} × (${fmt(s.x)}) = ${signed(s.ga)}\n∂L/∂b = (∂L/∂F) × 1 = ${signed(s.gb)}</div><p>这两项才是 a、b 的学习信号。若随后执行梯度下降，参数变化量是 −学习率 × 对应梯度。</p>${conclusion ? `<p><strong>${conclusion}</strong></p>` : ''}</div>`;
+      const eps = 1e-5, qPlus = s.q + eps * (s.k + s.a), qMinus = s.q - eps * (s.k + s.a);
+      const crossesKink = s.relu && (s.q === 0 || qPlus * qMinus < 0);
+      const localY = q => s.relu ? Math.max(0, q) : q;
+      const numeric = s.g * (localY(qPlus) - localY(qMinus)) / (2 * eps);
+      const check = crossesKink ? '这次差分跨过 ReLU 的零点，跳过核对；零点的导数约定不能用中心差分验证。' : `固定上游 g，用中心差分核对 ∂L/∂x ≈ ${signed(numeric)}；解析值 ${signed(s.gx)}（步长 ${eps}）。`;
+      $('#r-parameters').innerHTML = `<div class="fc-residual-parameters"><h3>同一个 F，还要把梯度分给参数 a 与 b</h3><p>F=ax+b：对 a 的局部偏导是 x，对 b 的局部偏导是 1。</p><div class="fc-residual-equation">∂L/∂a = (∂L/∂F) × x\n       = ${signed(s.gq)} × (${fmt(s.x)}) = ${signed(s.ga)}\n∂L/∂b = (∂L/∂F) × 1 = ${signed(s.gb)}</div><p>这两项才是 a、b 的学习信号。若随后执行梯度下降，参数变化量是 −学习率 × 对应梯度。</p><p>${check}</p>${conclusion ? `<p><strong>${conclusion}</strong></p>` : ''}</div>`;
     }
 
     controls(() => { presetMessage = ''; draw(); });
@@ -1863,6 +1936,38 @@ function networkHTML(g,opts={}){
 }
 const shared={state,graph:()=>G.networkGraph(state),reset:()=>Object.assign(state,clone(initial)),networkHTML};
 function weightOptions(){let a=[];for(let l=0;l<2;l++)for(let i=1;i<=2;i++)for(let j=1;j<=2;j++){let id='w'+l+'_'+i+j;a.push([id,weightName(id)+'：'+(l?'隐藏 ':'输入 ')+i+' → '+(l?'输出 ':'隐藏 ')+j]);}return a;}
+// Shared controls expose the same sample and selected parameter in lessons 03–06.
+// Changing a value recomputes the currently visible step from the same graph.
+function networkControls(c){
+ return `<details class="fc-card" open><summary><strong>动手改一改：输入、目标与连接权重</strong></summary>
+ <p>选择一条连接并拖动权重；保留当前计算步骤，观察数值和梯度如何变化。修改会带到后续章节。</p>
+ <div class="fc-controls">${c.range('输入 x₁','fc-net-x1',-2,2,.05,state.x[0])}${c.range('输入 x₂','fc-net-x2',-2,2,.05,state.x[1])}
+ ${c.select('选择连接','fc-net-weight',weightOptions(),'w0_11')}${c.range('所选连接的权重','fc-net-weight-value',-3,3,.05,state.W0[0][0])}
+ ${c.select('目标向量','fc-net-target',[['10','d = [1, 0]'],['01','d = [0, 1]']],state.d[0]?'10':'01')}</div></details>`;
+}
+function selectedNetworkWeight(c){
+ const id=c.$('#fc-net-weight').value;
+ return {id,layer:Number(id[1]),i:Number(id[3])-1,j:Number(id[4])-1};
+}
+function syncNetworkControls(c){
+ const {layer,i,j}=selectedNetworkWeight(c);
+ c.$('#fc-net-x1').value=state.x[0]; c.$('#fc-net-x2').value=state.x[1];
+ c.$('#fc-net-weight-value').value=state['W'+layer][i][j];
+ c.$('#fc-net-target').value=state.d[0]?'10':'01'; c.outputs();
+}
+function networkControlEvent(c,e){
+ if(e.id==='fc-net-x1')state.x[0]=Number(e.value);
+ else if(e.id==='fc-net-x2')state.x[1]=Number(e.value);
+ else if(e.id==='fc-net-weight'){syncNetworkControls(c);return true;}
+ else if(e.id==='fc-net-weight-value'){
+  const {layer,i,j}=selectedNetworkWeight(c);state['W'+layer][i][j]=Number(e.value);
+ }else if(e.id==='fc-net-target')state.d=e.value==='10'?[1,0]:[0,1];
+ else return false;
+ return true;
+}
+function lockNetworkControls(c,locked){
+ ['fc-net-x1','fc-net-x2','fc-net-weight','fc-net-weight-value','fc-net-target'].forEach(id=>{c.$('#'+id).disabled=locked;});
+}
 function nav(max){return `<div class="fc-step-controls"><button class="quiet" id="fc-prev">← 上一步</button><span id="fc-count"></span><button class="primary" id="fc-next">计算下一步 →</button><button class="quiet" id="fc-reset">恢复初始样例</button></div>`;}
 function setNav(c,step,max){c.$('#fc-count').textContent=step+' / '+max;c.$('#fc-prev').disabled=step===0;c.$('#fc-next').disabled=step===max;let strip=c.$('#fc-live-step');if(!strip){strip=document.createElement('div');strip.id='fc-live-step';strip.className='fc-live-step';c.root.insertBefore(strip,c.$('#fc-network'));}let title=c.$('#fc-explain h3')?.textContent||'',equations=c.$$('#fc-explain>.fc-card>.fc-equation');strip.innerHTML='<strong>'+esc(title)+'</strong>'+(equations.length?'<div class="fc-live-equation">'+esc(equations.at(-1).textContent)+'</div>':'');}
 function card(title,html,kind=''){return `<section class="fc-card ${kind}"><h3>${title}</h3>${html}</section>`;}
@@ -1871,7 +1976,7 @@ function bindItems(c,fn){c.$$('[data-fc-item]',c.root).forEach(e=>{e.onclick=()=
 
 function forward(c){
  const{root,$,select,controls}=c;let step=0;
- root.innerHTML=`<div class="fc-step-note">每按一次，只完成图中一项计算。尚未算到的节点保留“待计算”；目标只在最后与预测比较。</div><div class="fc-controls">${select('这次样本的目标','fc-target',[['10','d = [1, 0]'],['01','d = [0, 1]']],state.d[0]?'10':'01')}</div>${nav(8)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
+ root.innerHTML=`<div class="fc-step-note">每按一次，只完成图中一项计算。尚未算到的节点保留“待计算”；目标只在最后与预测比较。</div>${networkControls(c)}${nav(8)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
  function draw(){let g=shared.graph(),r=g.result,known=new Set(['x1','x2']),fw=[],selected='',title='',html='';
   if(step>=1)known.add('a1_1');if(step>=2)known.add('h1');if(step>=3)['a1_2','h2'].forEach(x=>known.add(x));if(step>=4)known.add('a2_1');if(step>=5)known.add('y1');if(step>=6)['a2_2','y2'].forEach(x=>known.add(x));if(step>=7)['loss1','loss2'].forEach(x=>known.add(x));if(step>=8)known.add('L');
   const weighted=(source,W,j)=>`${f(source[0])} × (${f(W[0][j])}) + ${f(source[1])} × (${f(W[1][j])})`;
@@ -1888,12 +1993,12 @@ function forward(c){
   }
   $('#fc-network').innerHTML=networkHTML(g,{known,forwardEdges:fw,selected});$('#fc-explain').innerHTML=card(title,html);setNav(c,step,8);
  }
- controls(()=>{state.d=$('#fc-target').value==='10'?[1,0]:[0,1];step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();$('#fc-target').value='10';step=0;draw();};draw();
+ controls(e=>{networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;syncNetworkControls(c);draw();};draw();
 }
 
 function output(c){
  const{root,$,select,range,controls,value}=c;let step=0;
- root.innerHTML=`<div class="fc-step-note">前向数值已经固定。现在从 L 开始，按相反方向计算偏导。箭头传的是“L 对这个量有多敏感”，不是把预测倒着搬回去。</div><div class="fc-controls">${select('从哪个输出回传','fc-output',[['0','输出 1：y₁'],['1','输出 2：y₂']],'0')}${select('追踪哪个前层输入','fc-source',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}${range('第 5 步：临时微扰 ε','fc-eps',-.05,.05,.001,.01)}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
+ root.innerHTML=`<div class="fc-step-note">每次调整后先重新前向，固定这一组数值，再从 L 开始按相反方向计算偏导。箭头传的是“L 对这个量有多敏感”，不是把预测倒着搬回去。</div>${networkControls(c)}<div class="fc-controls">${select('从哪个输出回传','fc-output',[['0','输出 1：y₁'],['1','输出 2：y₂']],'0')}${select('追踪哪个前层输入','fc-source',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}${range('第 5 步：临时微扰 ε','fc-eps',-.05,.05,.001,.01)}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
  function draw(){let g=shared.graph(),r=g.result,k=value('fc-output'),j=value('fc-source'),y=r.y[k],d=state.d[k],v=state.W1[j][k],h=r.h[j],gy=y-d,local=y*(1-y),delta=r.d2[k],gw=h*delta,gh=v*delta,rev=[],grads={},wgrads={},title='',html='',yi='y'+(k+1),hi='h'+(j+1),wi='w1_'+(j+1)+(k+1),ys='y'+sub[k],hs='h'+sub[j],zs='z'+sub[k],vs=weightName(wi);
   if(step>=1)rev.push('total'+(k+1));if(step>=2){rev.push('loss'+(k+1));grads[yi]=gy;}if(step>=4){rev.push(wi);grads[hi]=gh;wgrads[wi]=gw;}
   switch(step){
@@ -1906,12 +2011,12 @@ function output(c){
   }
   $('#fc-network').innerHTML=networkHTML(g,{selected:step>=4?wi:yi,reverseEdges:rev,gradients:grads,weightGradients:wgrads,gradientLabels:{[hi]:'∂L'+sub[k]+'/∂'+hs},preGradients:step>=3?{['a2_'+(k+1)]:delta}:{}});$('#fc-explain').innerHTML=card(title,html,'fc-reverse-card');setNav(c,step,5);
  }
- controls(e=>{if(e.id!=='fc-eps')step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;draw();};draw();
+ controls(e=>{networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;syncNetworkControls(c);draw();};draw();
 }
 
 function hidden(c){
  const{root,$,select,controls,value}=c;let step=0;
- root.innerHTML=`<div class="fc-step-note">这里已完成两个输出的局部反传。隐藏节点同时影响两个输出，必须先收齐两份带正负号的贡献，再穿过自己的 Sigmoid。</div><div class="fc-controls">${select('追踪哪个隐藏节点','fc-hidden',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
+ root.innerHTML=`<div class="fc-step-note">这里已完成两个输出的局部反传。隐藏节点同时影响两个输出，必须先收齐两份带正负号的贡献，再穿过自己的 Sigmoid。</div>${networkControls(c)}<div class="fc-controls">${select('追踪哪个隐藏节点','fc-hidden',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
  function draw(){let g=shared.graph(),r=g.result,j=value('fc-hidden'),hi='h'+(j+1),hs='h'+sub[j],as='a'+sub[j],v=state.W1[j],p=v.map((w,k)=>w*r.d2[k]),gh=p[0]+p[1],dh=r.d1[j],local=r.h[j]*(1-r.h[j]),rev=[],grads={},wg={},html='',title='';
   if(step>=1)rev.push('w1_'+(j+1)+'1');if(step>=2)rev.push('w1_'+(j+1)+'2');if(step>=3)grads[hi]=gh;
   if(step>=5)for(let i=0;i<2;i++){let id='w0_'+(i+1)+(j+1);rev.push(id);wg[id]=r.g0[i][j];}
@@ -1926,12 +2031,12 @@ function hidden(c){
   }
   $('#fc-network').innerHTML=networkHTML(g,{selected:hi,reverseEdges:rev,gradients:grads,weightGradients:wg,reverseLabels:{['w1_'+(j+1)+'1']:'给'+hs+'：'+f(p[0],5),['w1_'+(j+1)+'2']:'给'+hs+'：'+f(p[1],5)},preGradients:step>=4?{['a1_'+(j+1)]:dh}:{}});$('#fc-explain').innerHTML=card(title,html,'fc-reverse-card');setNav(c,step,5);
  }
- controls(()=>{step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;draw();};draw();
+ controls(e=>{networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;syncNetworkControls(c);draw();};draw();
 }
 
 function update(c){
  const{root,$,select,range,controls,value}=c;let step=0,committed=false,oldGraph=null,nextState=null,lr=.5;
- root.innerHTML=`<div class="fc-step-note">先完成回到原始输入的敏感度，再用同一份旧参数梯度统一更新 8 条权重。输入、标签和中间激活各有不同身份。</div><div class="fc-controls">${select('查看哪个原始输入','fc-input',[['0','输入 1：x₁'],['1','输入 2：x₂']],'0')}${range('学习率 λ','fc-lr',.01,2,.01,.5)}${select('核验哪条权重','fc-check-weight',weightOptions(),'w0_11')}</div>${nav(4)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div><div id="fc-update-actions" class="fc-step-controls"></div><div id="fc-check"></div>`;
+ root.innerHTML=`<div class="fc-step-note">先完成回到原始输入的敏感度，再用同一份旧参数梯度统一更新 8 条权重。输入、标签和中间激活各有不同身份。提交更新后，本次对照固定输入与参数；恢复初始样例后可继续调整。</div>${networkControls(c)}<div class="fc-controls">${select('查看哪个原始输入','fc-input',[['0','输入 1：x₁'],['1','输入 2：x₂']],'0')}${range('学习率 λ','fc-lr',.01,2,.01,.5)}${select('核验哪条权重','fc-check-weight',weightOptions(),'w0_11')}</div>${nav(4)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div><div id="fc-update-actions" class="fc-step-controls"></div><div id="fc-check"></div>`;
  function draw(){let g=oldGraph||shared.graph(),r=g.result,i=value('fc-input'),xs='x'+sub[i],parts=[0,1].map(j=>g.state.W0[i][j]*r.d1[j]),rev=[],grads={},wg={},html='',title='';
   if(step>=1){for(let j=0;j<2;j++)rev.push('w0_'+(i+1)+(j+1));grads['x'+(i+1)]=r.gx[i];}
   if(step>=2){let id=$('#fc-check-weight').value;wg[id]=g.adjoints[id];}
@@ -1943,14 +2048,14 @@ function update(c){
    case 4:{let after=G.networkGraph(nextState).result;title='4 · 输入没变，参数改变使隐藏值与预测重新算出';html=`<div class="fc-grid-two">`+card('更新前：旧参数的前向',eq('h = '+fmtVec(r.h))+eq('y = '+fmtVec(r.y))+eq('L = '+f(r.loss,7)))+card('更新后：新参数的前向',eq('h = '+fmtVec(after.h))+eq('y = '+fmtVec(after.y))+eq('L = '+f(after.loss,7)))+'</div>'+`<p>这一步损失${after.loss<r.loss?'下降':'没有下降'}。单次下降取决于步长与当前位置；这只是这个样本的一步学习。输入 x、目标 d 始终保持原值。</p>`;break;}
   }
   $('#fc-network').innerHTML=networkHTML(step===4?G.networkGraph(nextState):g,{selected:step<2?'x'+(i+1):$('#fc-check-weight').value,reverseEdges:step===4?[]:rev,gradients:step===4?{}:grads,weightGradients:step===4?{}:wg});$('#fc-explain').innerHTML=card(title,html,step<3?'fc-reverse-card':'');setNav(c,step,4);
-  if(step===2){$('#fc-next').disabled=true;$('#fc-update-actions').innerHTML='<button class="primary" id="fc-commit">用这一份梯度，统一更新全部权重</button>';$('#fc-commit').onclick=()=>{lr=value('fc-lr');oldGraph=g;nextState=clone(g.state);for(let l=0;l<2;l++)for(let a=0;a<2;a++)for(let b=0;b<2;b++)nextState['W'+l][a][b]-=lr*(l?r.g1:r.g0)[a][b];Object.assign(state,clone(nextState));committed=true;step=3;draw();};}
+  if(step===2){$('#fc-next').disabled=true;$('#fc-update-actions').innerHTML='<button class="primary" id="fc-commit">用这一份梯度，统一更新全部权重</button>';$('#fc-commit').onclick=()=>{lr=value('fc-lr');oldGraph=g;nextState=clone(g.state);for(let l=0;l<2;l++)for(let a=0;a<2;a++)for(let b=0;b<2;b++)nextState['W'+l][a][b]-=lr*(l?r.g1:r.g0)[a][b];Object.assign(state,clone(nextState));committed=true;syncNetworkControls(c);lockNetworkControls(c,true);step=3;draw();};}
   else $('#fc-update-actions').innerHTML='';
   $('#fc-prev').disabled=step===0||committed;
   $('#fc-lr').disabled=committed;
   if(step>=2){let id=$('#fc-check-weight').value,check=G.finiteDifference('network',g.state,1e-5).rows.find(x=>x.id===id);$('#fc-check').innerHTML=card('用独立中心差分核对 '+weightName(id),eq(`反向传播：${f(check.analytic,9)}；中心差分：${f(check.numeric,9)}`)+`<p>只临时扰动这一条权重 ±10⁻⁵，分别重新前向。两者绝对差 ${check.absoluteError.toExponential(2)}。${committed?'这里核对的是本次更新采用的旧参数梯度。':''}</p>`);}
   else $('#fc-check').innerHTML='';
  }
- controls(e=>{if(e.id==='fc-input'&&!committed)step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();oldGraph=null;nextState=null;committed=false;step=0;lr=.5;$('#fc-lr').disabled=false;$('#fc-lr').value=lr;$('#fc-input').value='0';$('#fc-check-weight').value='w0_11';c.outputs();draw();};draw();
+ controls(e=>{if(!committed)networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();oldGraph=null;nextState=null;committed=false;step=0;lr=.5;$('#fc-lr').disabled=false;$('#fc-lr').value=lr;$('#fc-input').value='0';$('#fc-check-weight').value='w0_11';lockNetworkControls(c,false);syncNetworkControls(c);draw();};draw();
 }
 
 window.FoundationLesson=function(c,l){
@@ -2021,7 +2126,7 @@ function renderLesson(index){
   $('#lesson-kicker').textContent=`第 ${lessonIndex+1} 节 / ${lessons.length} · ${lessonIndex<6?'看清局部计算':lessonIndex<13?'让网络学起来':'理解结构与训练'}`;
   $('#lesson-title').textContent=l.title;$('#lesson-intro').textContent=l.intro;
   $('#lesson-body').innerHTML=l.body;$('#task-text').innerHTML=l.task;
-  if(location.hostname.endsWith('.github.io')) {
+  if(location.hostname.endsWith('.github.io') || window.EDML_STANDALONE) {
     document.querySelectorAll('a[href^="../lessons/"],a[href="../README.md"]').forEach(link=>{
       link.href='https://github.com/Lee-Eee-Eee/everybody-digs-ml/blob/main/'+link.getAttribute('href').slice(3);
     });
@@ -2163,34 +2268,64 @@ function residualLab(){
 }
 function deepLab(lesson){
  let plain,res,history=[],iteration=0,frame,running=false,disposed=false;
- root.innerHTML=`<p class="lab-description">同一目标：f(x)=x+0.25sin(3x)。普通网络与等宽残差网络真实反向训练。残差模型含输入嵌入、L 个 h←h+0.3s(hW+b) 块及线性输出。</p><div class="control-grid">${range('普通隐藏层 / 残差块数 L','d-depth',1,12,1,6)}${range('隐藏宽度','d-width',3,12,1,6)}${select('激活函数','d-act',[['tanh','Tanh'],['sigmoid','Sigmoid'],['relu','ReLU']],'tanh')}${range('学习率','d-lr',.001,.05,.001,.01)}</div><div class="buttons"><button class="primary" id="d-play">开始对照训练</button><button class="quiet" id="d-step">各训练 20 步</button><button class="quiet" id="d-reset">重新初始化</button></div><div id="d-status" class="train-status" aria-live="polite"></div><div id="d-view"></div><div id="d-metrics"></div><div id="d-grad"></div><p class="lab-note">相同数据、更新步数和优化器；残差模型额外有输入嵌入，参数数并不相等。0.3 是此教学实验的残差缩放。两者共享任务，不把“每层梯度倍率”当作公平训练结论。</p>`;
- const xs=Array.from({length:45},(_,i)=>[-1.2+i*2.4/44]),ys=xs.map(([x])=>x+.25*Math.sin(3*x)),vx=Array.from({length:81},(_,i)=>[-1.2+i*2.4/80]),vy=vx.map(([x])=>x+.25*Math.sin(3*x));
- function draw(){let a=plain.lossGrad(xs,ys),b=res.lossGrad(xs,ys);if(!history.length||history.at(-1).step!==iteration)history.push({step:iteration,a:a.loss,b:b.loss});
-  $('#d-view').innerHTML=legend([['目标函数','#26343c'],['普通网络',C.blue],['残差网络',C.orange]])+plot([{points:vx.map((x,i)=>[x[0],vy[i]]),color:'#26343c',dash:true},{points:vx.map(x=>[x[0],plain.predict(x)]),color:C.blue},{points:vx.map(x=>[x[0],res.predict(x)]),color:C.orange}],{height:245,xLabel:'输入 x',yLabel:'预测函数值'})+plot([{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.a))]),color:C.blue},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.b))]),color:C.orange}],{height:190,xLabel:'参数更新步',yLabel:'log₁₀ 训练平方误差'});
-  $('#d-metrics').innerHTML=stats([['更新步',iteration],['普通损失',fmt(a.loss,6)],['残差损失',fmt(b.loss,6)]]);
+ root.innerHTML=`<p class="lab-description">同一目标：f(x)=x+0.25sin(3x)。普通网络与等宽残差网络真实反向训练。残差模型含输入嵌入、L 个 h←h+0.3s(hW+b) 块及线性输出。</p><div class="control-grid">${range('普通隐藏层 / 残差块数 L','d-depth',1,12,1,6)}${range('隐藏宽度','d-width',3,12,1,6)}${range('训练样本数','d-count',5,45,1,45)}${select('激活函数','d-act',[['tanh','Tanh'],['sigmoid','Sigmoid'],['relu','ReLU']],'tanh')}${range('学习率','d-lr',.001,.05,.001,.01)}</div><div class="buttons"><button class="primary" id="d-play">开始对照训练</button><button class="quiet" id="d-step">各训练 20 步</button><button class="quiet" id="d-reset">重新初始化</button></div><div id="d-status" class="train-status" aria-live="polite"></div><div id="d-view"></div><div id="d-metrics"></div><div id="d-grad"></div><p class="lab-note">相同训练样本、更新步数和优化器；虚线使用 44 个未训练的区间中点。样本数改变会重新初始化两种模型，比较时一次只改变一个设置。残差模型额外有输入嵌入，参数量并不相等；0.3 是本实验的残差缩放。</p>`;
+ const target=x=>x+.25*Math.sin(3*x),vx=Array.from({length:81},(_,i)=>[-1.2+i*2.4/80]),vy=vx.map(([x])=>target(x));
+ const validX=Array.from({length:44},(_,i)=>[-1.2+(i+.5)*2.4/44]),validY=validX.map(([x])=>target(x));
+ let xs=[],ys=[];
+ function validationMSE(net){return sum(validX.map((x,i)=>(net.predict(x)-validY[i])**2))/validX.length;}
+ function draw(){let a=plain.lossGrad(xs,ys),b=res.lossGrad(xs,ys),av=validationMSE(plain),bv=validationMSE(res);if(!history.length||history.at(-1).step!==iteration)history.push({step:iteration,a:2*a.loss,b:2*b.loss,av,bv});
+  $('#d-view').innerHTML=legend([['目标函数','#26343c'],['普通网络',C.blue],['残差网络',C.orange]])+plot([{points:vx.map((x,i)=>[x[0],vy[i]]),color:'#26343c',dash:true},{points:vx.map(x=>[x[0],plain.predict(x)]),color:C.blue},{points:vx.map(x=>[x[0],res.predict(x)]),color:C.orange}],{height:245,xLabel:'输入 x',yLabel:'预测函数值'})+plot([{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.a))]),color:C.blue},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.b))]),color:C.orange},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.av))]),color:C.blue,dash:true},{points:history.map(r=>[r.step,Math.log10(Math.max(1e-10,r.bv))]),color:C.orange,dash:true}],{height:190,xLabel:'参数更新步',yLabel:'log₁₀ 均方误差'})+'<p class="lab-note">曲线颜色区分模型：实线为训练误差，虚线为区间内未参与训练的中点验证误差。</p>';
+  $('#d-metrics').innerHTML=stats([['更新步',iteration],['普通训练 MSE',fmt(2*a.loss,6)],['残差训练 MSE',fmt(2*b.loss,6)],['普通验证 MSE',fmt(av,6)],['残差验证 MSE',fmt(bv,6)]]);
   let ag=a.layerGradRms||a.gradRms,bg=b.layerGradRms||b.gradRms;
   $('#d-grad').innerHTML=`<div class="numeric-block">普通参数 ${plain.parameterCount()}；残差参数 ${res.parameterCount()}\n层输出反传信号 RMS（含线性输出层；输入 → 输出）：\n普通 [${ag.map(x=>fmt(x,3)).join(', ')}]\n残差 [${bg.map(x=>fmt(x,3)).join(', ')}]</div>`;
  }
  function stop(msg){running=false;cancelAnimationFrame(frame);$('#d-play').textContent='继续对照训练';$('#d-status').textContent=msg||`已暂停在第 ${iteration} 步。`;}
  function step(n){try{for(let i=0;i<n;i++){let a=plain.lossGrad(xs,ys),b=res.lossGrad(xs,ys);plain.step(a.grads,value('d-lr'),'adam');res.step(b.grads,value('d-lr'),'adam');iteration++;if(!Number.isFinite(a.loss+b.loss)||a.loss+b.loss>1e7)throw new Error('unstable');}draw();}catch(e){stop('数值不稳定，请降低学习率或重新初始化。');}}
  function loop(){if(!running||disposed)return;step(3);if(iteration>=600){stop('已完成 600 步，可修改结构再比较。');return;}frame=requestAnimationFrame(loop);}
- function reset(){stop();let config={input:1,width:value('d-width'),depth:value('d-depth'),output:1,activation:$('#d-act').value,seed:12,task:'regression'};plain=new M.DenseNet(config);res=new M.DenseNet({...config,residual:true});iteration=0;history=[];$('#d-play').textContent='开始对照训练';$('#d-status').textContent='已初始化。先看两个网络初始输出与梯度尺度。';draw();}
+ function reset(){stop();let count=value('d-count');xs=Array.from({length:count},(_,i)=>[-1.2+Math.round(i*44/(count-1))*2.4/44]);ys=xs.map(([x])=>target(x));let config={input:1,width:value('d-width'),depth:value('d-depth'),output:1,activation:$('#d-act').value,seed:12,task:'regression'};plain=new M.DenseNet(config);res=new M.DenseNet({...config,residual:true});iteration=0;history=[];$('#d-play').textContent='开始对照训练';$('#d-status').textContent='已初始化。先看两个网络初始输出与梯度尺度。';draw();}
  controls(e=>{if(e.id==='d-lr')stop('学习率已改变。');else reset();});$('#d-play').onclick=()=>{if(running)stop();else{running=true;$('#d-play').textContent='暂停';$('#d-status').textContent='两个网络正在使用相同样本与更新次数训练。';loop();}};$('#d-step').onclick=()=>{stop();step(20);$('#d-status').textContent=`两个模型均已更新 ${iteration} 步。`;};$('#d-reset').onclick=reset;cleanup=()=>{disposed=true;cancelAnimationFrame(frame);};reset();
 }
 function convLab(){
- let kernel=[[0,-1,0],[-1,4,-1],[0,-1,0]];const image=Array.from({length:7},(_,y)=>Array.from({length:7},(_,x)=>x===3||y===3?1:0));
- root.innerHTML=`<p class="lab-description">7×7 输入中有一条十字笔画。选择输出位置，查看核覆盖的输入和逐元素乘积。这里采用深度学习常用的互相关约定，核不翻转。</p><div class="control-grid">${select('卷积核预设','c-kind',[['edge','边缘'],['blur','均值平滑'],['identity','中心取值']],'edge')}${range('步长 stride','c-stride',1,2,1,1)}${range('零填充 padding','c-pad',0,1,1,0)}${range('输出行','c-row',0,4,1,0)}${range('输出列','c-col',0,4,1,0)}</div><div id="c-view"></div><div id="c-result" class="numeric-block"></div>`;
- function draw(){let stride=value('c-stride'),pad=value('c-pad'),r=M.convolution(image,kernel,stride,pad);for(const id of ['c-row','c-col']){$('#'+id).max=r.length-1;if(value(id)>=r.length)$('#'+id).value=r.length-1;}outputs();let row=value('c-row'),col=value('c-col'),patch=kernel.map((ks,y)=>ks.map((_,x)=>image[row*stride+y-pad]?.[col*stride+x-pad]??0)),products=patch.map((p,y)=>p.map((v,x)=>v*kernel[y][x]));
- $('#c-view').innerHTML=`<div class="matrix-row">${matrix(image,'输入 7×7')}${matrix(kernel,'核 3×3')}</div><div class="matrix-row">${matrix(patch,'当前局部窗口')}<span>⊙</span>${matrix(kernel,'共享卷积核')}<span>→</span>${matrix([[r[row][col]]],'求和输出')}</div><div class="matrix-row">${matrix(r,`完整输出 ${r.length}×${r[0].length}`)}</div>`;
- $('#c-result').textContent=`输出大小 = floor((7 + 2×${pad} − 3)/${stride}) + 1 = ${r.length}\n当前位置的逐元素乘积：\n${products.map(p=>p.map(x=>fmt(x,3)).join('  ')).join('\n')}\n求和 = ${fmt(sum(products.flat()),5)}\n同一个 3×3 核在所有位置复用：9 个权重，而非为每个位置另建一套。`;
- }controls(e=>{if(e.id==='c-kind')kernel=e.value==='edge'?[[0,-1,0],[-1,4,-1],[0,-1,0]]:e.value==='blur'?Array.from({length:3},()=>[1/9,1/9,1/9]):[[0,0,0],[0,1,0],[0,0,0]];draw();});draw();
+ let kernel=[[0,-1,0],[-1,4,-1],[0,-1,0]];
+ const initialImage=()=>Array.from({length:7},(_,y)=>Array.from({length:7},(_,x)=>x===3||y===3?1:0));
+ let image=initialImage();
+ const cells=Array.from({length:9},(_,i)=>[String(i),`第 ${Math.floor(i/3)+1} 行，第 ${i%3+1} 列`]);
+ root.innerHTML=`<p class="lab-description">选中输出位置，查看它实际读取的输入窗口；点击输入像素可画出自己的图形。修改一个核权重，观察共享核如何同时改变整张输出。这里采用深度学习常用的互相关约定，核不翻转。</p>
+ <div class="control-grid">${select('卷积核预设','c-kind',[['edge','边缘'],['blur','均值平滑'],['identity','中心取值']],'edge')}${select('调整哪个核权重','c-k-index',cells,'4')}${range('所选核权重','c-k-value',-5,5,.01,4)}${range('步长 stride','c-stride',1,2,1,1)}${range('零填充 padding','c-pad',0,1,1,0)}${range('输出行（从 0 开始）','c-row',0,4,1,0)}${range('输出列（从 0 开始）','c-col',0,4,1,0)}</div>
+ <div class="buttons"><button type="button" class="quiet" id="c-reset-image">恢复十字输入</button><button type="button" class="quiet" id="c-clear-image">清空输入</button></div>
+ <p class="lab-note">点击或用键盘激活像素，切换 0 / 1；蓝框表示当前窗口读取到的有效输入，边界外用零填充。均值核使用精确的 1/9；移动权重滑块后该权重按 0.01 步长改变。</p><div id="c-view"></div><div id="c-result" class="numeric-block" aria-live="polite"></div>`;
+ function pixelTable(row,col,stride,pad){
+  const y0=row*stride-pad,x0=col*stride-pad;
+  return `<table class="matrix"><caption>可编辑输入 7×7；蓝框为当前窗口</caption><tbody>${image.map((line,y)=>'<tr>'+line.map((v,x)=>{
+   let active=y>=y0&&y<y0+3&&x>=x0&&x<x0+3;
+   return `<td class="${active?'selected':''}" style="padding:2px"><button type="button" data-c-pixel="${y},${x}" aria-label="输入第 ${y+1} 行第 ${x+1} 列，当前 ${v}，点击切换" aria-pressed="${v===1}" style="min-width:28px;min-height:28px;padding:2px 4px;border:0;border-radius:3px;background:${v?'#2c647d':'transparent'};color:${v?'white':'#405b67'}">${v}</button></td>`;
+  }).join('')+'</tr>').join('')}</tbody></table>`;
+ }
+ function syncKernelControl(){let i=+$('#c-k-index').value;$('#c-k-value').value=kernel[Math.floor(i/3)][i%3];outputs();}
+ function draw(){let stride=value('c-stride'),pad=value('c-pad'),r=M.convolution(image,kernel,stride,pad);
+  for(const id of ['c-row','c-col']){$('#'+id).max=r.length-1;if(value(id)>=r.length)$('#'+id).value=r.length-1;}outputs();
+  let row=value('c-row'),col=value('c-col'),ky=Math.floor(+$('#c-k-index').value/3),kx=(+$('#c-k-index').value)%3;
+  $('#c-k-value-out').textContent=fmt(kernel[ky][kx],5);
+  let patch=kernel.map((ks,y)=>ks.map((_,x)=>image[row*stride+y-pad]?.[col*stride+x-pad]??0)),products=patch.map((p,y)=>p.map((v,x)=>v*kernel[y][x]));
+  let iy=row*stride+ky-pad,ix=col*stride+kx-pad,inside=iy>=0&&iy<7&&ix>=0&&ix<7;
+  $('#c-view').innerHTML=`<div class="matrix-row">${pixelTable(row,col,stride,pad)}${matrix(kernel,'共享核 3×3')}</div><div class="matrix-row">${matrix(patch,'当前局部窗口')}<span>⊙</span>${matrix(kernel,'共享卷积核')}<span>→</span>${matrix([[r[row][col]]],'求和输出')}</div><div class="matrix-row">${matrix(r,`完整输出 ${r.length}×${r[0].length}`)}</div>`;
+  $('#c-result').textContent=`输出大小 = floor((7 + 2×${pad} − 3)/${stride}) + 1 = ${r.length}\n当前位置的逐元素乘积：\n${products.map(p=>p.map(x=>fmt(x,3)).join('  ')).join('\n')}\n求和 = ${fmt(sum(products.flat()),5)}\n所选核格 (${ky+1}, ${kx+1}) 读取 ${inside?`输入 (${iy+1}, ${ix+1})`:'边界外的补零'}，其当前乘积 ${fmt(patch[ky][kx],3)} × ${fmt(kernel[ky][kx],3)} = ${fmt(products[ky][kx],5)}。\n仅对当前输出求导：∂Y/∂K = 对应输入 = ${fmt(patch[ky][kx],3)}。完整损失对共享 K 的梯度还要累加所有输出位置的贡献。`;
+  $$('[data-c-pixel]',root).forEach(button=>button.onclick=()=>{let [y,x]=button.dataset.cPixel.split(',').map(Number);image[y][x]=1-image[y][x];draw();root.querySelector(`[data-c-pixel="${y},${x}"]`).focus();});
+ }
+ controls(e=>{if(e.id==='c-kind'){
+   kernel=e.value==='edge'?[[0,-1,0],[-1,4,-1],[0,-1,0]]:e.value==='blur'?Array.from({length:3},()=>[1/9,1/9,1/9]):[[0,0,0],[0,1,0],[0,0,0]];syncKernelControl();
+  }else if(e.id==='c-k-index')syncKernelControl();
+  else if(e.id==='c-k-value'){let i=+$('#c-k-index').value;kernel[Math.floor(i/3)][i%3]=+e.value;}
+  draw();});
+ $('#c-reset-image').onclick=()=>{image=initialImage();draw();};$('#c-clear-image').onclick=()=>{image=Array.from({length:7},()=>Array(7).fill(0));draw();};draw();
 }
 function regularizeLab(){
  let seed=1;const data=[[1,3,2],[2,5,4],[3,7,6],[4,9,8]],features=[.2,.5,.8,1.1,.9,.4,.7,1.3];
- root.innerHTML=`<p class="lab-description">分开观察批归一化与倒置 Dropout。BN 示例固定 γ=1、β=0；预测使用固定的累计统计量，不再用当前批次。</p><div class="control-grid">${range('Dropout 丢弃概率 p','z-drop',0,.8,.1,.5)}${select('运行阶段','z-mode',[['train','训练'],['eval','预测']],'train')}${range('当前 batch 整体平移','z-shift',-3,3,.5,0)}${range('仅第一样本的第一特征变化','z-first',-3,3,.5,0)}</div><div class="buttons"><button class="quiet" id="z-mask">换一次随机掩码</button><button class="quiet" id="z-average">计算 200 次掩码平均</button></div><div id="z-view"></div><div id="z-result" class="numeric-block"></div><div id="z-mean" class="lab-note" aria-live="polite"></div>`;
- function draw(){let q=value('z-drop'),isTrain=$('#z-mode').value==='train',shift=value('z-shift'),first=value('z-first'),batch=data.map((row,n)=>row.map((v,j)=>v+shift+(n===0&&j===0?first:0))),base=M.batchNorm(data),current=M.batchNorm(batch),mean=isTrain?current.mean:base.mean,variance=isTrain?current.variance:base.variance,normalized=batch.map(row=>row.map((v,j)=>(v-mean[j])/Math.sqrt(variance[j]+1e-5))),drop=isTrain?M.dropout(features,q,seed):{values:features.slice(),mask:features.map(()=>1)};
- $('#z-view').innerHTML=`<div class="matrix-row">${matrix(batch,'输入 batch：4样本×3特征')}<span>→</span>${matrix(normalized,isTrain?'训练 BN：按列归一化':'预测 BN：使用固定统计')}</div><div class="numeric-block">均值 μ=[${mean.map(x=>fmt(x,3)).join(', ')}]\n方差 σ²=[${variance.map(x=>fmt(x,3)).join(', ')}]</div><p class="canvas-caption">Dropout 前后，同一组 8 个特征</p>`+plot([{points:features.map((v,i)=>[i+1,v]),color:C.blue,dots:true},{points:drop.values.map((v,i)=>[i+1,v]),color:C.orange,dots:true}],{height:200,xLabel:'特征编号',yLabel:'特征数值'})+legend([['原始特征',C.blue],['Dropout 输出',C.orange]]);
- $('#z-result').textContent=`${isTrain?'训练时保留特征乘以 1/(1−p)，在随机掩码的期望上保持原值。':'预测时关闭 Dropout，所有特征按原值传递。'}\n掩码=[${drop.mask.map(x=>fmt(x,2)).join(', ')}]\n当前保留 ${drop.mask.filter(x=>x>0).length}/8 个。单次掩码均值不必等于原均值。\n${isTrain?'整体平移时BN输出基本不变；只改变一个样本，会影响同批其他样本。':'累计统计固定，当前batch不会重新估计均值方差。'}`;
+ root.innerHTML=`<p class="lab-description">先观察批归一化如何按特征计算均值与方差，再用 γ 和 β 调整输出；下方独立实验倒置 Dropout。预测阶段使用示例中预先固定的统计量。</p><div class="control-grid">${range('Dropout 丢弃概率 p','z-drop',0,.8,.1,.5)}${select('运行阶段','z-mode',[['train','训练'],['eval','预测']],'train')}${range('BN 缩放 γ','z-gamma',-2,2,.1,1)}${range('BN 平移 β','z-beta',-2,2,.1,0)}${range('当前 batch 整体平移','z-shift',-3,3,.5,0)}${range('仅第一样本的第一特征变化','z-first',-3,3,.5,0)}</div><div class="buttons"><button class="quiet" id="z-mask">换一次随机掩码</button><button class="quiet" id="z-average">计算 200 次掩码平均</button></div><div id="z-view"></div><div id="z-result" class="numeric-block" aria-live="polite"></div><div id="z-mean" class="lab-note" aria-live="polite"></div>`;
+ function draw(){let q=value('z-drop'),isTrain=$('#z-mode').value==='train',shift=value('z-shift'),first=value('z-first'),gamma=value('z-gamma'),beta=value('z-beta'),batch=data.map((row,n)=>row.map((v,j)=>v+shift+(n===0&&j===0?first:0))),base=M.batchNorm(data),current=M.batchNorm(batch),mean=isTrain?current.mean:base.mean,variance=isTrain?current.variance:base.variance,normalized=batch.map(row=>row.map((v,j)=>gamma*(v-mean[j])/Math.sqrt(variance[j]+1e-5)+beta)),drop=isTrain?M.dropout(features,q,seed):{values:features.slice(),mask:features.map(()=>1)};
+ $('#z-mask').disabled=!isTrain;$('#z-average').disabled=!isTrain;
+ $('#z-view').innerHTML=`<div class="matrix-row">${matrix(batch,'输入 batch：4样本×3特征')}<span>→</span>${matrix(normalized,isTrain?'训练 BN：按列归一化并缩放平移':'预测 BN：使用固定统计')}</div><div class="numeric-block">均值 μ=[${mean.map(x=>fmt(x,3)).join(', ')}]\n方差 σ²=[${variance.map(x=>fmt(x,3)).join(', ')}]</div><p class="canvas-caption">Dropout 前后，同一组 8 个特征</p>`+plot([{points:features.map((v,i)=>[i+1,v]),color:C.blue,dots:true},{points:drop.values.map((v,i)=>[i+1,v]),color:C.orange,dots:true}],{height:200,xLabel:'特征编号',yLabel:'特征数值'})+legend([['原始特征',C.blue],['Dropout 输出',C.orange]]);
+ $('#z-result').textContent=`第一样本的第一特征：\nŷ = γ × (x − μ) / √(σ² + ε) + β\n  = ${fmt(gamma,2)} × (${fmt(batch[0][0],3)} − ${fmt(mean[0],3)}) / √(${fmt(variance[0],3)} + 0.00001) + (${fmt(beta,2)}) = ${fmt(normalized[0][0],4)}\n每列各自计算 μ 和 σ²，ε 防止除以零。γ、β 是同一特征内共享的可学习参数。\n${isTrain?'训练时使用当前 batch 的统计量；单独修改一个样本也会改变其他样本的归一化结果。':'预测时使用固定统计量；当前 batch 不再重新估计均值方差。'}\n\n${isTrain?'训练时保留特征乘以 1/(1−p)，在随机掩码的期望上保持原值。':'预测时关闭 Dropout，所有特征按原值传递。'}\n${isTrain?'缩放掩码 m/(1−p)':'预测阶段的乘数'}=[${drop.mask.map(x=>fmt(x,2)).join(', ')}]\n当前保留 ${drop.mask.filter(x=>x>0).length}/8 个。单次掩码平均不必等于原值。`;
  $('#z-mean').textContent='';
  }controls(draw);$('#z-mask').onclick=()=>{seed++;draw();};$('#z-average').onclick=()=>{let means=features.map(()=>0),p=value('z-drop');for(let i=0;i<200;i++){let r=M.dropout(features,p,500+i);r.values.forEach((v,j)=>means[j]+=v/200);}$('#z-mean').textContent=`固定输入，训练掩码独立采样 200 次：平均输出 [${means.map(v=>fmt(v,3)).join(', ')}]；原值 [${features.join(', ')}]。有限次平均通常接近原值，不要求逐项完全相等。`;};draw();
 }

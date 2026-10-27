@@ -25,14 +25,14 @@ Notebook explanations and the interactive lab are primarily in Chinese. This gui
 ## Try it first
 
 <p align="center">
-  <a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network"><img src="docs/assets/training-demo.gif" alt="A small network learns XOR: predictions and loss change during training" width="760"></a>
+  <a href="https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#network"><img src="docs/assets/training-demo.gif" alt="A small network learns XOR: predictions and loss change during training" width="760"></a>
 </p>
 
-<p align="center"><sub>The animation shows an independent NumPy network training on synthetic XOR data.<br><a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/">Open the interactive lab →</a></sub></p>
+<p align="center"><sub>The animation shows an independent NumPy network training on synthetic XOR data.<br><a href="https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/">Open the interactive lab →</a></sub></p>
 
 **Does increasing a weight always change the output?**
 
-1. [Open the network experiment](https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network). Set input `x₁` to `0.6`, move `w₁₁`, and watch the hidden node and output.
+1. [Open the network experiment](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#network). Set input `x₁` to `0.6`, move `w₁₁`, and watch the hidden node and output.
 2. Set `x₁` to `0` and move `w₁₁` again, keeping the other settings fixed. What changes now?
 3. Explain the result using `a₁ = x₁w₁₁ + x₂w₂₁`, then follow how weights affect loss in [lesson 04](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb).
 
@@ -186,7 +186,7 @@ The project uses Python 3.12. Initial setup downloads dependencies. Select the P
 
 ## Explore further
 
-- **Interactive lab:** follow [backpropagation](interactive/index.html#backprop), [training](interactive/index.html#training), [convolution](interactive/index.html#convolution), and [residual connections](interactive/index.html#residual). For offline use, open [interactive/index.html](interactive/index.html) or the [standalone file](interactive/neural-network-lab.html). The lab is primarily in Chinese.
+- **Interactive lab:** follow [backpropagation](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#backprop), [training](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#training), [convolution](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#convolution), and [residual connections](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#residual). For offline use, open [interactive/index.html](interactive/index.html) or the [standalone file](interactive/neural-network-lab.html); the source is in the lab’s [own repository](https://github.com/Lee-Eee-Eee/everybody-digs-ml-lab). The lab is primarily in Chinese.
 - **Projects:** pick a [digit, rare-event, character, or graph task](docs/PROJECTS.md), then record the data, baseline, result, and interpretation.
 - **Reference:** [bilingual reference sheet](docs/REFERENCE.md) · [course design and sources](docs/COURSE_DESIGN.md) · [source map](references/SOURCES.md).
 - **Feedback:** report a lesson, explanation, or exercise issue on [GitHub Issues](https://github.com/Lee-Eee-Eee/everybody-digs-ml/issues), including the lesson, environment, and steps to reproduce it.

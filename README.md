@@ -25,14 +25,14 @@ Notebook 正文以中文为主；[English guide](README.en.md)提供英文导航
 ## 先动手，再弄懂
 
 <p align="center">
-  <a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network"><img src="docs/assets/training-demo.gif" alt="小型网络训练 XOR：预测区域与损失随训练变化" width="760"></a>
+  <a href="https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#network"><img src="docs/assets/training-demo.gif" alt="小型网络训练 XOR：预测区域与损失随训练变化" width="760"></a>
 </p>
 
-<p align="center"><sub>动图展示一个独立 NumPy 小网络在合成 XOR 数据上的训练过程。<br><a href="https://lee-eee-eee.github.io/everybody-digs-ml/interactive/">打开浏览器交互学习室 →</a></sub></p>
+<p align="center"><sub>动图展示一个独立 NumPy 小网络在合成 XOR 数据上的训练过程。<br><a href="https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/">打开浏览器交互学习室 →</a></sub></p>
 
 **试一个问题：把一条权重调大，输出一定会变吗？**
 
-1. [打开神经网络实验](https://lee-eee-eee.github.io/everybody-digs-ml/interactive/#network)。把输入 `x₁` 设为 `0.6`，拖动 `w₁₁`，观察隐藏节点和输出。
+1. [打开神经网络实验](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#network)。把输入 `x₁` 设为 `0.6`，拖动 `w₁₁`，观察隐藏节点和输出。
 2. 把 `x₁` 设为 `0`，再次拖动 `w₁₁`。保持其他设置不变，这次发生了什么？
 3. 用加权和 `a₁ = x₁w₁₁ + x₂w₂₁` 解释，再到 [04 手写反向传播](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb)追踪权重如何影响损失。
 
@@ -186,7 +186,7 @@ uv run jupyter lab
 
 ## 继续探索
 
-- **交互学习室：** 在浏览器中观察[反向传播](interactive/index.html#backprop)、[真实训练](interactive/index.html#training)、[卷积](interactive/index.html#convolution)和[残差](interactive/index.html#residual)。离线可打开 [interactive/index.html](interactive/index.html) 或[单文件版](interactive/neural-network-lab.html)。
+- **交互学习室：** 在浏览器中观察[反向传播](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#backprop)、[真实训练](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#training)、[卷积](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#convolution)和[残差](https://lee-eee-eee.github.io/everybody-digs-ml-lab/interactive/#residual)。离线可打开 [interactive/index.html](interactive/index.html) 或[单文件版](interactive/neural-network-lab.html)；源码见[独立仓库](https://github.com/Lee-Eee-Eee/everybody-digs-ml-lab)。
 - **动手项目：** 从[识别数字、稀有事件筛选、字符预测和图网络](docs/PROJECTS.md)中选择一个问题，记录数据、对照、结果和解释。
 - **查阅与延伸：** [双语速查表](docs/REFERENCE.md) · [课程设计与参考](docs/COURSE_DESIGN.md) · [参考地图](references/SOURCES.md)。
 - **反馈：** 如果发现链接、讲解或练习问题，欢迎在 [GitHub Issues](https://github.com/Lee-Eee-Eee/everybody-digs-ml/issues) 描述课号、运行环境和复现步骤。

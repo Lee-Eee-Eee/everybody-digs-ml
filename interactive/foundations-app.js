@@ -53,6 +53,38 @@ function networkHTML(g,opts={}){
 }
 const shared={state,graph:()=>G.networkGraph(state),reset:()=>Object.assign(state,clone(initial)),networkHTML};
 function weightOptions(){let a=[];for(let l=0;l<2;l++)for(let i=1;i<=2;i++)for(let j=1;j<=2;j++){let id='w'+l+'_'+i+j;a.push([id,weightName(id)+'：'+(l?'隐藏 ':'输入 ')+i+' → '+(l?'输出 ':'隐藏 ')+j]);}return a;}
+// Shared controls expose the same sample and selected parameter in lessons 03–06.
+// Changing a value recomputes the currently visible step from the same graph.
+function networkControls(c){
+ return `<details class="fc-card" open><summary><strong>动手改一改：输入、目标与连接权重</strong></summary>
+ <p>选择一条连接并拖动权重；保留当前计算步骤，观察数值和梯度如何变化。修改会带到后续章节。</p>
+ <div class="fc-controls">${c.range('输入 x₁','fc-net-x1',-2,2,.05,state.x[0])}${c.range('输入 x₂','fc-net-x2',-2,2,.05,state.x[1])}
+ ${c.select('选择连接','fc-net-weight',weightOptions(),'w0_11')}${c.range('所选连接的权重','fc-net-weight-value',-3,3,.05,state.W0[0][0])}
+ ${c.select('目标向量','fc-net-target',[['10','d = [1, 0]'],['01','d = [0, 1]']],state.d[0]?'10':'01')}</div></details>`;
+}
+function selectedNetworkWeight(c){
+ const id=c.$('#fc-net-weight').value;
+ return {id,layer:Number(id[1]),i:Number(id[3])-1,j:Number(id[4])-1};
+}
+function syncNetworkControls(c){
+ const {layer,i,j}=selectedNetworkWeight(c);
+ c.$('#fc-net-x1').value=state.x[0]; c.$('#fc-net-x2').value=state.x[1];
+ c.$('#fc-net-weight-value').value=state['W'+layer][i][j];
+ c.$('#fc-net-target').value=state.d[0]?'10':'01'; c.outputs();
+}
+function networkControlEvent(c,e){
+ if(e.id==='fc-net-x1')state.x[0]=Number(e.value);
+ else if(e.id==='fc-net-x2')state.x[1]=Number(e.value);
+ else if(e.id==='fc-net-weight'){syncNetworkControls(c);return true;}
+ else if(e.id==='fc-net-weight-value'){
+  const {layer,i,j}=selectedNetworkWeight(c);state['W'+layer][i][j]=Number(e.value);
+ }else if(e.id==='fc-net-target')state.d=e.value==='10'?[1,0]:[0,1];
+ else return false;
+ return true;
+}
+function lockNetworkControls(c,locked){
+ ['fc-net-x1','fc-net-x2','fc-net-weight','fc-net-weight-value','fc-net-target'].forEach(id=>{c.$('#'+id).disabled=locked;});
+}
 function nav(max){return `<div class="fc-step-controls"><button class="quiet" id="fc-prev">← 上一步</button><span id="fc-count"></span><button class="primary" id="fc-next">计算下一步 →</button><button class="quiet" id="fc-reset">恢复初始样例</button></div>`;}
 function setNav(c,step,max){c.$('#fc-count').textContent=step+' / '+max;c.$('#fc-prev').disabled=step===0;c.$('#fc-next').disabled=step===max;let strip=c.$('#fc-live-step');if(!strip){strip=document.createElement('div');strip.id='fc-live-step';strip.className='fc-live-step';c.root.insertBefore(strip,c.$('#fc-network'));}let title=c.$('#fc-explain h3')?.textContent||'',equations=c.$$('#fc-explain>.fc-card>.fc-equation');strip.innerHTML='<strong>'+esc(title)+'</strong>'+(equations.length?'<div class="fc-live-equation">'+esc(equations.at(-1).textContent)+'</div>':'');}
 function card(title,html,kind=''){return `<section class="fc-card ${kind}"><h3>${title}</h3>${html}</section>`;}
@@ -61,7 +93,7 @@ function bindItems(c,fn){c.$$('[data-fc-item]',c.root).forEach(e=>{e.onclick=()=
 
 function forward(c){
  const{root,$,select,controls}=c;let step=0;
- root.innerHTML=`<div class="fc-step-note">每按一次，只完成图中一项计算。尚未算到的节点保留“待计算”；目标只在最后与预测比较。</div><div class="fc-controls">${select('这次样本的目标','fc-target',[['10','d = [1, 0]'],['01','d = [0, 1]']],state.d[0]?'10':'01')}</div>${nav(8)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
+ root.innerHTML=`<div class="fc-step-note">每按一次，只完成图中一项计算。尚未算到的节点保留“待计算”；目标只在最后与预测比较。</div>${networkControls(c)}${nav(8)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
  function draw(){let g=shared.graph(),r=g.result,known=new Set(['x1','x2']),fw=[],selected='',title='',html='';
   if(step>=1)known.add('a1_1');if(step>=2)known.add('h1');if(step>=3)['a1_2','h2'].forEach(x=>known.add(x));if(step>=4)known.add('a2_1');if(step>=5)known.add('y1');if(step>=6)['a2_2','y2'].forEach(x=>known.add(x));if(step>=7)['loss1','loss2'].forEach(x=>known.add(x));if(step>=8)known.add('L');
   const weighted=(source,W,j)=>`${f(source[0])} × (${f(W[0][j])}) + ${f(source[1])} × (${f(W[1][j])})`;
@@ -78,12 +110,12 @@ function forward(c){
   }
   $('#fc-network').innerHTML=networkHTML(g,{known,forwardEdges:fw,selected});$('#fc-explain').innerHTML=card(title,html);setNav(c,step,8);
  }
- controls(()=>{state.d=$('#fc-target').value==='10'?[1,0]:[0,1];step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();$('#fc-target').value='10';step=0;draw();};draw();
+ controls(e=>{networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;syncNetworkControls(c);draw();};draw();
 }
 
 function output(c){
  const{root,$,select,range,controls,value}=c;let step=0;
- root.innerHTML=`<div class="fc-step-note">前向数值已经固定。现在从 L 开始，按相反方向计算偏导。箭头传的是“L 对这个量有多敏感”，不是把预测倒着搬回去。</div><div class="fc-controls">${select('从哪个输出回传','fc-output',[['0','输出 1：y₁'],['1','输出 2：y₂']],'0')}${select('追踪哪个前层输入','fc-source',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}${range('第 5 步：临时微扰 ε','fc-eps',-.05,.05,.001,.01)}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
+ root.innerHTML=`<div class="fc-step-note">每次调整后先重新前向，固定这一组数值，再从 L 开始按相反方向计算偏导。箭头传的是“L 对这个量有多敏感”，不是把预测倒着搬回去。</div>${networkControls(c)}<div class="fc-controls">${select('从哪个输出回传','fc-output',[['0','输出 1：y₁'],['1','输出 2：y₂']],'0')}${select('追踪哪个前层输入','fc-source',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}${range('第 5 步：临时微扰 ε','fc-eps',-.05,.05,.001,.01)}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
  function draw(){let g=shared.graph(),r=g.result,k=value('fc-output'),j=value('fc-source'),y=r.y[k],d=state.d[k],v=state.W1[j][k],h=r.h[j],gy=y-d,local=y*(1-y),delta=r.d2[k],gw=h*delta,gh=v*delta,rev=[],grads={},wgrads={},title='',html='',yi='y'+(k+1),hi='h'+(j+1),wi='w1_'+(j+1)+(k+1),ys='y'+sub[k],hs='h'+sub[j],zs='z'+sub[k],vs=weightName(wi);
   if(step>=1)rev.push('total'+(k+1));if(step>=2){rev.push('loss'+(k+1));grads[yi]=gy;}if(step>=4){rev.push(wi);grads[hi]=gh;wgrads[wi]=gw;}
   switch(step){
@@ -96,12 +128,12 @@ function output(c){
   }
   $('#fc-network').innerHTML=networkHTML(g,{selected:step>=4?wi:yi,reverseEdges:rev,gradients:grads,weightGradients:wgrads,gradientLabels:{[hi]:'∂L'+sub[k]+'/∂'+hs},preGradients:step>=3?{['a2_'+(k+1)]:delta}:{}});$('#fc-explain').innerHTML=card(title,html,'fc-reverse-card');setNav(c,step,5);
  }
- controls(e=>{if(e.id!=='fc-eps')step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;draw();};draw();
+ controls(e=>{networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;syncNetworkControls(c);draw();};draw();
 }
 
 function hidden(c){
  const{root,$,select,controls,value}=c;let step=0;
- root.innerHTML=`<div class="fc-step-note">这里已完成两个输出的局部反传。隐藏节点同时影响两个输出，必须先收齐两份带正负号的贡献，再穿过自己的 Sigmoid。</div><div class="fc-controls">${select('追踪哪个隐藏节点','fc-hidden',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
+ root.innerHTML=`<div class="fc-step-note">这里已完成两个输出的局部反传。隐藏节点同时影响两个输出，必须先收齐两份带正负号的贡献，再穿过自己的 Sigmoid。</div>${networkControls(c)}<div class="fc-controls">${select('追踪哪个隐藏节点','fc-hidden',[['0','隐藏 1：h₁'],['1','隐藏 2：h₂']],'0')}</div>${nav(5)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div>`;
  function draw(){let g=shared.graph(),r=g.result,j=value('fc-hidden'),hi='h'+(j+1),hs='h'+sub[j],as='a'+sub[j],v=state.W1[j],p=v.map((w,k)=>w*r.d2[k]),gh=p[0]+p[1],dh=r.d1[j],local=r.h[j]*(1-r.h[j]),rev=[],grads={},wg={},html='',title='';
   if(step>=1)rev.push('w1_'+(j+1)+'1');if(step>=2)rev.push('w1_'+(j+1)+'2');if(step>=3)grads[hi]=gh;
   if(step>=5)for(let i=0;i<2;i++){let id='w0_'+(i+1)+(j+1);rev.push(id);wg[id]=r.g0[i][j];}
@@ -116,12 +148,12 @@ function hidden(c){
   }
   $('#fc-network').innerHTML=networkHTML(g,{selected:hi,reverseEdges:rev,gradients:grads,weightGradients:wg,reverseLabels:{['w1_'+(j+1)+'1']:'给'+hs+'：'+f(p[0],5),['w1_'+(j+1)+'2']:'给'+hs+'：'+f(p[1],5)},preGradients:step>=4?{['a1_'+(j+1)]:dh}:{}});$('#fc-explain').innerHTML=card(title,html,'fc-reverse-card');setNav(c,step,5);
  }
- controls(()=>{step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;draw();};draw();
+ controls(e=>{networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();step=0;syncNetworkControls(c);draw();};draw();
 }
 
 function update(c){
  const{root,$,select,range,controls,value}=c;let step=0,committed=false,oldGraph=null,nextState=null,lr=.5;
- root.innerHTML=`<div class="fc-step-note">先完成回到原始输入的敏感度，再用同一份旧参数梯度统一更新 8 条权重。输入、标签和中间激活各有不同身份。</div><div class="fc-controls">${select('查看哪个原始输入','fc-input',[['0','输入 1：x₁'],['1','输入 2：x₂']],'0')}${range('学习率 λ','fc-lr',.01,2,.01,.5)}${select('核验哪条权重','fc-check-weight',weightOptions(),'w0_11')}</div>${nav(4)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div><div id="fc-update-actions" class="fc-step-controls"></div><div id="fc-check"></div>`;
+ root.innerHTML=`<div class="fc-step-note">先完成回到原始输入的敏感度，再用同一份旧参数梯度统一更新 8 条权重。输入、标签和中间激活各有不同身份。提交更新后，本次对照固定输入与参数；恢复初始样例后可继续调整。</div>${networkControls(c)}<div class="fc-controls">${select('查看哪个原始输入','fc-input',[['0','输入 1：x₁'],['1','输入 2：x₂']],'0')}${range('学习率 λ','fc-lr',.01,2,.01,.5)}${select('核验哪条权重','fc-check-weight',weightOptions(),'w0_11')}</div>${nav(4)}<div id="fc-network"></div><div id="fc-explain" aria-live="polite"></div><div id="fc-update-actions" class="fc-step-controls"></div><div id="fc-check"></div>`;
  function draw(){let g=oldGraph||shared.graph(),r=g.result,i=value('fc-input'),xs='x'+sub[i],parts=[0,1].map(j=>g.state.W0[i][j]*r.d1[j]),rev=[],grads={},wg={},html='',title='';
   if(step>=1){for(let j=0;j<2;j++)rev.push('w0_'+(i+1)+(j+1));grads['x'+(i+1)]=r.gx[i];}
   if(step>=2){let id=$('#fc-check-weight').value;wg[id]=g.adjoints[id];}
@@ -133,14 +165,14 @@ function update(c){
    case 4:{let after=G.networkGraph(nextState).result;title='4 · 输入没变，参数改变使隐藏值与预测重新算出';html=`<div class="fc-grid-two">`+card('更新前：旧参数的前向',eq('h = '+fmtVec(r.h))+eq('y = '+fmtVec(r.y))+eq('L = '+f(r.loss,7)))+card('更新后：新参数的前向',eq('h = '+fmtVec(after.h))+eq('y = '+fmtVec(after.y))+eq('L = '+f(after.loss,7)))+'</div>'+`<p>这一步损失${after.loss<r.loss?'下降':'没有下降'}。单次下降取决于步长与当前位置；这只是这个样本的一步学习。输入 x、目标 d 始终保持原值。</p>`;break;}
   }
   $('#fc-network').innerHTML=networkHTML(step===4?G.networkGraph(nextState):g,{selected:step<2?'x'+(i+1):$('#fc-check-weight').value,reverseEdges:step===4?[]:rev,gradients:step===4?{}:grads,weightGradients:step===4?{}:wg});$('#fc-explain').innerHTML=card(title,html,step<3?'fc-reverse-card':'');setNav(c,step,4);
-  if(step===2){$('#fc-next').disabled=true;$('#fc-update-actions').innerHTML='<button class="primary" id="fc-commit">用这一份梯度，统一更新全部权重</button>';$('#fc-commit').onclick=()=>{lr=value('fc-lr');oldGraph=g;nextState=clone(g.state);for(let l=0;l<2;l++)for(let a=0;a<2;a++)for(let b=0;b<2;b++)nextState['W'+l][a][b]-=lr*(l?r.g1:r.g0)[a][b];Object.assign(state,clone(nextState));committed=true;step=3;draw();};}
+  if(step===2){$('#fc-next').disabled=true;$('#fc-update-actions').innerHTML='<button class="primary" id="fc-commit">用这一份梯度，统一更新全部权重</button>';$('#fc-commit').onclick=()=>{lr=value('fc-lr');oldGraph=g;nextState=clone(g.state);for(let l=0;l<2;l++)for(let a=0;a<2;a++)for(let b=0;b<2;b++)nextState['W'+l][a][b]-=lr*(l?r.g1:r.g0)[a][b];Object.assign(state,clone(nextState));committed=true;syncNetworkControls(c);lockNetworkControls(c,true);step=3;draw();};}
   else $('#fc-update-actions').innerHTML='';
   $('#fc-prev').disabled=step===0||committed;
   $('#fc-lr').disabled=committed;
   if(step>=2){let id=$('#fc-check-weight').value,check=G.finiteDifference('network',g.state,1e-5).rows.find(x=>x.id===id);$('#fc-check').innerHTML=card('用独立中心差分核对 '+weightName(id),eq(`反向传播：${f(check.analytic,9)}；中心差分：${f(check.numeric,9)}`)+`<p>只临时扰动这一条权重 ±10⁻⁵，分别重新前向。两者绝对差 ${check.absoluteError.toExponential(2)}。${committed?'这里核对的是本次更新采用的旧参数梯度。':''}</p>`);}
   else $('#fc-check').innerHTML='';
  }
- controls(e=>{if(e.id==='fc-input'&&!committed)step=0;draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();oldGraph=null;nextState=null;committed=false;step=0;lr=.5;$('#fc-lr').disabled=false;$('#fc-lr').value=lr;$('#fc-input').value='0';$('#fc-check-weight').value='w0_11';c.outputs();draw();};draw();
+ controls(e=>{if(!committed)networkControlEvent(c,e);draw();});$('#fc-prev').onclick=()=>{step--;draw();};$('#fc-next').onclick=()=>{step++;draw();};$('#fc-reset').onclick=()=>{shared.reset();oldGraph=null;nextState=null;committed=false;step=0;lr=.5;$('#fc-lr').disabled=false;$('#fc-lr').value=lr;$('#fc-input').value='0';$('#fc-check-weight').value='w0_11';lockNetworkControls(c,false);syncNetworkControls(c);draw();};draw();
 }
 
 window.FoundationLesson=function(c,l){
