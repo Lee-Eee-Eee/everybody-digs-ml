@@ -1,55 +1,29 @@
+# 从 Python 到神经网络
+
 <div align="center">
 
 <img src="docs/assets/course-banner.svg" alt="From Python to Neural Networks — Learn by building, understand by experimenting" width="100%">
 
-**从一行 Python 出发，亲手搭建、训练并理解神经网络。**
+**从一行 Python 出发，亲手搭建、训练并理解机器学习模型。**
 
-[English](README.en.md) &nbsp; · &nbsp; [开始学习](#开始学习) &nbsp; · &nbsp; [课程目录](#课程目录) &nbsp; · &nbsp; [交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/) &nbsp; · &nbsp; [动手项目](docs/PROJECTS.md)
+[English](README.en.md) &nbsp; · &nbsp; [开始学习](#开始学习) &nbsp; · &nbsp; [学习路线](#学习路线) &nbsp; · &nbsp; [课程目录](#课程目录) &nbsp; · &nbsp; [交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/)
 
-`24 个 Notebook` &nbsp; `139 道练习` &nbsp; `18 节交互实验` &nbsp; `Python 3.12 · PyTorch`
+`24 个 Notebook` &nbsp; `139 道练习` &nbsp; `18 节交互实验` &nbsp; `Python 3.12 · CPU`
 
 </div>
 
 ---
 
-一张手写数字为什么能被网络识别？一个模型如何从前面的字符预测下一个字符？一条边的权重发生变化，又会怎样影响最终的结果？
+这是一套以**计算、代码和实验**为主线的学习教程：从 Python 和 NumPy 出发，理解经典机器学习、神经网络和语言模型，再用对照实验解释结果。每节课从一个具体问题开始，将公式推导、可运行代码、图示和练习放在一起。
 
-这套课程从可计算、可观察的小例子开始，把 Python、数学推导、模型实现与实验连接起来。你会先手算一个结果，再用 NumPy 或 PyTorch 实现它，最后改变条件，观察模型为什么表现不同。
+**先预测，再计算；亲手实现，再比较结果。** 课程既有手写的核心计算，也使用 scikit-learn 和 PyTorch 构建完整实验。Notebook 正文以中文为主；[English guide](README.en.md)、[项目指南](docs/PROJECTS.md)和[术语速查](docs/REFERENCE.md)提供英文导航或双语内容。
 
-> **学习方式：** 预测结果 → 运行代码 → 检查中间量 → 动手修改 → 解释现象。
+### 选择你的第一步
 
-## 你将获得什么
-
-| 从这里出发 | 一路实践 | 最终能做什么 |
-| :--- | :--- | :--- |
-| **编程与数学基础** | Python、数组形状、矩阵乘法、导数和链式法则 | 读懂数据在程序中的表示，手写并检查一个小网络的梯度 |
-| **经典机器学习** | kNN、逻辑回归、SVM、聚类、MSE、Ridge 与 LASSO | 在同一手写数字数据上比较分类与聚类，并用连续目标理解回归 |
-| **模型与训练** | PyTorch、训练循环、MLP、CNN、RNN/LSTM | 从数据和损失函数出发，训练模型并分析训练结果 |
-| **注意力与生成** | Q/K/V、因果遮罩、Transformer、字符 GPT | 组装一个微型生成模型，并沿张量流阅读 minGPT 源码 |
-| **图与连续时间** | 消息传递、GCN、神经动力学与 LTC | 理解图结构和时间步长如何影响状态更新 |
-| **实验与评价** | 基线、数据划分、多随机种子、混淆矩阵与阈值 | 设计可比较的实验，报告结果并解释错例 |
-
-每节 Notebook 都围绕具体问题展开，包含讲解、可执行代码与练习；需要时可以展开提示和参考答案。浏览器实验室让你在回到代码前，先观察权重、梯度、卷积窗口和残差路径。
-
-## 适合谁学
-
-- **刚开始学 AI：** 从第 00 课开始，顺着 Python、数组和导数走到第一个可训练网络。
-- **会写 Python，想真正弄懂模型：** 从 [03 NumPy 与线性代数](lessons/python_math/03_numpy_shapes_linear_algebra.ipynb) 或 [04 手写反向传播](lessons/neural_network_basics/04_derivatives_numpy_mlp.ipynb)进入，跳过已熟悉的编程基础。
-- **已经训练过模型，想理解原理与研究过程：** 根据兴趣选择 CNN、序列、Transformer、GNN 或 LTC 分支，再用 [18 研究实验](lessons/experiments/18_research_experiments.ipynb)和[19 分类评价](lessons/experiments/19_evaluation_and_decisions.ipynb)组织自己的实验。
-
-课程从基础概念讲起；已有 Python 和微积分经验会帮助你更快推进。Notebook 正文以中文为主；英文课程导航见 [English README](README.en.md)，[项目指南](docs/PROJECTS.md)和[术语速查](docs/REFERENCE.md)提供中英双语。
-
-## 学习路线
-
-![课程路线：从 Python、数学和训练基础通往经典机器学习、视觉与序列、语言模型、其他网络及实验](docs/assets/course-roadmap.svg)
-
-<sub>课程路线示意：先建立共同基础，再进入模型分支；第 20–23 课虽然编号较后，也可在相应基础完成后学习。</sub>
-
-**建议顺序：** 首次学习先完成 00–07，再根据兴趣选择分支；经典机器学习的 20–21 课建议在 03、06–07 后学习；第 23 课可在第 09 课后学习；第 18 课可在完成任一模型分支后学习，第 19 课在完成第 07 课后即可开始。完成每个阶段时，试着独立回答下列问题：
-
-1. **基础：** 我能否解释一个数组的各个轴，并手算一个权重对损失的影响？
-2. **模型：** 我能否追踪一次前向计算，说明参数怎样被更新？
-3. **实验：** 我能否说明基线、数据划分、评价指标和一次失败案例？
+- **刚接触 Python 和 AI：** 从 [00 开始与环境](lessons/python_math/00_start_and_environment.ipynb) 出发，依次完成 01–07。
+- **想从手写数字认识算法：** 在完成基础后，学习 [20 经典分类与聚类](lessons/classical_ml/20_classical_classification.ipynb)、[21 回归与正则化](lessons/classical_ml/21_regression_regularization.ipynb)，再比较 [CNN](lessons/computer_vision/09_cnn_training_and_residuals.ipynb) 与[小型 ResNet](lessons/computer_vision/23_resnet_from_blocks.ipynb)。
+- **想理解语言模型：** 完成基础后，从 [12 注意力](lessons/llm/12_attention_qkv.ipynb)走到 [14 字符 GPT](lessons/llm/14_small_gpt_training.ipynb) 和 [15 minGPT 源码阅读](lessons/llm/15_mingpt_reading_and_generation.ipynb)。
+- **想先直观看看：** 打开[交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/)，改变网络权重，观察输出与梯度。
 
 ## 开始学习
 
@@ -93,9 +67,26 @@ uv run python -c "import sys; print(sys.executable)"
 3. 在练习格中填写答案，运行紧随其后的检查格；遇到困难时展开提示和参考答案。
 4. 打开[交互学习室](https://lee-eee-eee.github.io/neural-networks-from-zero/interactive/)，改变一条连接的权重，再回到 Notebook 解释变化。
 
+## 学习路线
+
+![课程路线：从 Python、数学和训练基础通往经典机器学习、视觉与序列、语言模型、其他网络及实验](docs/assets/course-roadmap.svg)
+
+<sub>课程路线示意：先建立共同基础，再进入模型分支；第 20–23 课虽然编号较后，也可在相应基础完成后学习。</sub>
+
+**文字路线：** Python 与数学 → 神经网络基础 → 经典算法 / 视觉 / 序列 / LLM / 其他网络 → 实验与项目。
+
+**建议顺序：** 首次学习先完成 00–07，再根据兴趣选择分支；经典机器学习的 20–21 课建议在 03、06–07 后学习；第 23 课可在第 09 课后学习；第 18 课可在完成任一模型分支后学习，第 19 课在完成第 07 课后即可开始。完成每个阶段时，试着独立回答下列问题：
+
+1. **基础：** 我能否解释一个数组的各个轴，并手算一个权重对损失的影响？
+2. **模型：** 我能否追踪一次前向计算，说明参数怎样被更新？
+3. **实验：** 我能否说明基线、数据划分、评价指标和一次失败案例？
+
 ## 课程目录
 
-### Python 与数学 · `python_math/`
+按兴趣展开模块；课号保持稳定，不必严格按数字顺序学习。
+
+<details>
+<summary><strong>Python 与数学 · python_math/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
@@ -104,7 +95,10 @@ uv run python -c "import sys; print(sys.executable)"
 | [02](lessons/python_math/02_python_functions_files_classes.ipynb) | 函数、文件与类 | 组织可复用的计算和数据读写 |
 | [03](lessons/python_math/03_numpy_shapes_linear_algebra.ipynb) | NumPy 与线性代数 | 用形状、广播和矩阵乘法表达批量计算 |
 
-### 神经网络基础 · `neural_network_basics/`
+</details>
+
+<details>
+<summary><strong>神经网络基础 · neural_network_basics/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
@@ -113,14 +107,20 @@ uv run python -c "import sys; print(sys.executable)"
 | [06](lessons/neural_network_basics/06_modules_data_training.ipynb) | 模型、数据与训练循环 | 连接 batch、损失、反传和参数更新 |
 | [07](lessons/neural_network_basics/07_mlp_regression_classification.ipynb) | 回归与分类 | 比较基线和 MLP，练习标准化与验证 |
 
-### 经典机器学习 · `classical_ml/`
+</details>
+
+<details>
+<summary><strong>经典机器学习 · classical_ml/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
 | [20](lessons/classical_ml/20_classical_classification.ipynb) | 手写数字与经典分类 | 比较 kNN、逻辑回归、线性 SVM 与 k-means |
 | [21](lessons/classical_ml/21_regression_regularization.ipynb) | MSE、Ridge 与 LASSO | 用连续亮度预测理解回归损失和正则化 |
 
-### 视觉与残差 · `computer_vision/`
+</details>
+
+<details>
+<summary><strong>视觉与残差 · computer_vision/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
@@ -128,14 +128,20 @@ uv run python -c "import sys; print(sys.executable)"
 | [09](lessons/computer_vision/09_cnn_training_and_residuals.ipynb) | CNN 与残差 | 训练数字分类器，追踪形状和残差梯度 |
 | [23](lessons/computer_vision/23_resnet_from_blocks.ipynb) | 小型 ResNet | 组装并训练残差网络，比较普通 CNN 与投影捷径 |
 
-### 时序模型 · `sequence_models/`
+</details>
+
+<details>
+<summary><strong>时序模型 · sequence_models/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
 | [10](lessons/sequence_models/10_rnn_time_and_bptt.ipynb) | RNN 与时间反传 | 展开状态递推并累加共享参数梯度 |
 | [11](lessons/sequence_models/11_lstm_gates_and_memory.ipynb) | LSTM | 手写门控单元，对照 PyTorch 并训练记忆任务 |
 
-### 语言模型 · `llm/`
+</details>
+
+<details>
+<summary><strong>语言模型 · llm/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
@@ -144,7 +150,10 @@ uv run python -c "import sys; print(sys.executable)"
 | [14](lessons/llm/14_small_gpt_training.ipynb) | 微型字符 GPT | 构造下一字符目标、训练、生成与保存 |
 | [15](lessons/llm/15_mingpt_reading_and_generation.ipynb) | 阅读 minGPT | 追踪真实源码中的张量和训练过程 |
 
-### 图、连续时间与生成 · `other_networks/`
+</details>
+
+<details>
+<summary><strong>图、连续时间与生成 · other_networks/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
@@ -152,12 +161,38 @@ uv run python -c "import sys; print(sys.executable)"
 | [17](lessons/other_networks/17_liquid_neural_networks.ipynb) | 液体神经网络 | 从连续时间方程到可训练 LTC |
 | [22](lessons/other_networks/22_diffusion_from_noise.ipynb) | 扩散模型入门 | 观察图像加噪，训练一维去噪模型并采样 |
 
-### 实验与评价 · `experiments/`
+</details>
+
+<details>
+<summary><strong>实验与评价 · experiments/</strong></summary>
 
 | 课 | 主题 | 本课动手完成 |
 | :---: | :--- | :--- |
 | [18](lessons/experiments/18_research_experiments.ipynb) | 研究实验 | 设置对照与多随机种子，分析外推 |
 | [19](lessons/experiments/19_evaluation_and_decisions.ipynb) | 分类评价与决策 | 比较精确率与召回率，在验证集选择阈值 |
+
+</details>
+
+## 课程预览
+
+下面的图来自学习本保存的实际输出：从两条计算路径理解残差块，再回到代码中追踪张量形状与梯度。
+
+![小型残差块：卷积分支和投影或恒等捷径在加法节点汇合，随后经过 ReLU](docs/assets/preview-resnet.png)
+
+<sub>图：[23 小型 ResNet](lessons/computer_vision/23_resnet_from_blocks.ipynb) · 主分支与捷径相加后再激活。</sub>
+
+<details>
+<summary><strong>再看两个例子：kNN 邻居投票与图像加噪</strong></summary>
+
+![二维 kNN 示例：查询点及三个最近邻](docs/assets/preview-knn.png)
+
+[20 经典分类](lessons/classical_ml/20_classical_classification.ipynb)：用二维样本观察距离与最近邻投票。
+
+![手写数字在不同扩散步数下逐渐加入噪声](docs/assets/preview-diffusion.png)
+
+[22 扩散模型](lessons/other_networks/22_diffusion_from_noise.ipynb)：固定同一图像与噪声，比较不同加噪时刻。训练与反向采样使用一维玩具数据。
+
+</details>
 
 ## 交互学习室
 
@@ -259,6 +294,9 @@ neural_networks_from_zero/
 ```bash
 # 检查 Notebook 结构、练习和本地链接
 uv run python tools/validate_course.py
+
+# 从已保存的 Notebook 输出更新课程预览图
+uv run python tools/export_readme_previews.py
 
 # 检查浏览器实验中的数值计算（需要 Node.js）
 node tools/check_interactive.cjs
