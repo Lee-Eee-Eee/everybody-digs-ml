@@ -886,7 +886,7 @@ def mlps():
     L.md(r'''
     ## 13. 接到 NTU 的实际回归作业
 
-    本地 [HW05_Regression.ipynb](../../NTU_HYLee/GenAI_ML/hw/HW05_Regression.ipynb)
+    可选的本地 NTU 作业 `HW05_Regression.ipynb`
     用游戏特征预测 Steam 游戏的 Metacritic 分数。输入从本章的一列 x 变成多列游戏特征，
     输出仍是一个连续评分，主干形状因此变成 `(B,D)→(B,1)`。
     Dataset 的 `__getitem__` 决定一份游戏数据究竟含哪些数值，模型第一层必须接得上这个 D。
@@ -1533,7 +1533,7 @@ def vision():
     L.md(r'''
     ## 16. 从这个小实验走向 NTU 的图像作业
 
-    本地 [HW06.ipynb](../../NTU_HYLee/GenAI_ML/hw/HW06.ipynb) 分类 MyGO/Ave Mujica 的10个人物，
+    可选的本地 NTU 作业 `HW06.ipynb` 分类 MyGO/Ave Mujica 的10个人物，
     原图是150×150×3，作业预处理调整为128×128×3，图像比本章大得多，也增加了颜色通道。
     它仍然经历“读取图像与标签→NCHW batch→类别 logits→交叉熵”这条数据流。
     其中输入张量的通道数改为3，输出仍有10类，卷积层与 Linear 层的维度要跟着数据变化。

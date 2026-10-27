@@ -131,5 +131,12 @@
     "path": "lessons/18_research_experiments.ipynb",
     "cells": 46,
     "exercises": 6
+  },
+  {
+    "slug": "19_evaluation_and_decisions",
+    "title": "19｜分类评价：从准确率到可解释的决策",
+    "path": "lessons/19_evaluation_and_decisions.ipynb",
+    "cells": 29,
+    "exercises": 4
   }
 ]

@@ -14,14 +14,20 @@ def local_links(text,base):
         if parsed.scheme or not parsed.path:
             continue
         destination=(base/unquote(parsed.path)).resolve()
+        assert destination.is_relative_to(ROOT), (base, target, 'outside repository')
         assert destination.exists(), (base,target)
 
 def main():
     manifest=json.loads((ROOT/'course_manifest.json').read_text(encoding='utf-8'))
     figures=exercises=0
+    assert len({row['slug'] for row in manifest}) == len(manifest), 'duplicate lesson slug'
     for row in manifest:
         path=ROOT/row['path']; notebook=nbformat.read(path,4)
         nbformat.validate(notebook)
+        assert path.stem == row['slug'], (path, row['slug'])
+        assert len(notebook.cells) == row['cells'], (path, 'cell count')
+        actual_exercises = sum('exercise' in c.metadata.get('tags', []) for c in notebook.cells)
+        assert actual_exercises == row['exercises'], (path, 'exercise count')
         assert notebook.cells[0].cell_type=='markdown'
         assert notebook.cells[1].cell_type=='markdown', (path,'problem should precede setup')
         for cell in notebook.cells:
@@ -37,9 +43,9 @@ def main():
                 assert output.output_type!='error',(path,output)
                 figures+='image/png' in output.get('data',{})
         print('PASS',row['slug'])
-    for path in [ROOT/'README.md', ROOT/'THIRD_PARTY.md',ROOT/'references/SOURCES.md',ROOT/'references/TEACHING_NOTES.md']:
+    for path in [*ROOT.glob('*.md'), *(ROOT/'docs').glob('*.md'), ROOT/'references/SOURCES.md', ROOT/'references/TEACHING_NOTES.md']:
         local_links(path.read_text(encoding='utf-8'),path.parent)
-    assert len(manifest)==19 and exercises==113,(len(manifest),exercises)
+    assert exercises == sum(row['exercises'] for row in manifest), 'manifest exercise total'
     assert (ROOT/'interactive/neural-network-lab.html').is_file()
     print(f'{len(manifest)} lessons, {exercises} exercises, {figures} saved figures; local links passed.')
 

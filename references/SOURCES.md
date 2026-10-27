@@ -39,3 +39,15 @@
 | [Neural ODE](https://arxiv.org/abs/1806.07366) | 比较离散残差与连续动力学，区分模型和数值求解器 |
 
 每课在符号与代码旁给出必要解释；末尾的问题用于把已经做过的小实验连接到论文。
+
+## 从零实现与课程组织 / From-scratch learning references
+
+| 项目 / Resource | 可借鉴的方法 / Teaching idea | 本课程对应 / In this course |
+| --- | --- | --- |
+| [Build Your Own X: Machine Learning](https://github.com/amitshekhariitbhu/build-your-own-x-machine-learning) | 按主题组织可动手实现的项目 / Organize hands-on builds by topic | [双语项目任务](../docs/PROJECTS.md)连接已有章节与可检查的成果 |
+| [micrograd](https://github.com/karpathy/micrograd) | 用小计算图理解反向传播，并与框架核对 / Inspect a small computation graph and compare gradients | 04–05 课的手算、数值差分与 autograd |
+| [Dive into Deep Learning](https://github.com/d2l-ai/d2l-en) | 将解释、公式与可执行代码放在同一学习单元 / Combine explanations, equations and executable code | Notebook 的推导、运行和练习；另有[中文版](https://github.com/d2l-ai/d2l-zh) |
+| [Machine Learning with PyTorch and Scikit-Learn](https://github.com/rasbt/machine-learning-book) | 将数据处理、模型评价与调参作为明确的学习环节 / Teach preprocessing, evaluation and model selection explicitly | 07、18–19 课中的划分、基线与验证集选择 |
+| [ML From Scratch](https://github.com/eriklindernoren/ML-From-Scratch) | 通过精简实现与例子认识算法 / Learn through small implementations and examples | 04、08、10–13 和 16–17 课的核心计算 |
+
+上述项目用于学习结构与教学方法的参考；各项目的内容和许可证请参阅其仓库。The links are references for learning structure and teaching methods; see each repository for its contents and license.
